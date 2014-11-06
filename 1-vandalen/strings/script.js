@@ -1,18 +1,32 @@
 "use strict";
 
-window.onload = function(){
+window.onload = function () {
 
+    var convertedString = "";
 	// I denna funktion ska du skriva koden för att hantera "spelet"
 	var convertString = function(str){
 		// Plats för förändring.		
 		// Returnera den konverterade strängen.
 		// Vid fel, kasta ett undantag med ett meddelande till användaren. 
-	
 
-
-
-
-
+        // Matar man in massa mellanslag så trimmas dessa bort. Kollar efter det mot längden om strängen är tom
+	    if (str.trim().length > 0) {
+	        for (var i = 0; i < str.length; i++) {
+	            if ((str.charCodeAt(i) >= 65 && str.charCodeAt(i) <= 90) || (str.charCodeAt(i) >= 132 && str.charCodeAt(i) <= 153)) {
+	                convertedString += str.charAt(i).toLowerCase();
+	            } else {
+	                convertedString += str.charAt(i).toUpperCase();
+	            }
+	        }
+	        convertedString = convertedString.replace(/A|a/g, "#");
+	        return convertedString;
+	    }
+	    else {
+            
+	        throw ReferenceError("Strängen är tom");
+            // Kasta undantag här istället men vilket yo?
+            
+	    }
 
 	};
 	// ------------------------------------------------------------------------------
