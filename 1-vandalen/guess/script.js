@@ -17,12 +17,11 @@ window.onload = function(){
 		        return [true, "Grattis du vann! Det hemliga talet var " + secret + " och du behövde " + numberOfGuesses + " gissningar för att hitta det."];
 		    } else if (number < secret) {
 		        return [false, "Det hemliga talet är högre!"]
-		    } else if (number > secret) {
+		    } else {
 		        return [false, "Det hemliga talet är lägre!"]
 		    }
-		} else
-		{
-		    return [false, "Numret var inte inom det slutna intervallet 1 - 100, försök igen!"];
+		} else{
+		    return [false, "Ej ett nummer inom det slutna intervallet 1-100, försök igen!"];
 		}	
 	};
 	
