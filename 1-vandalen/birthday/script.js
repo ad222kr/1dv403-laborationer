@@ -1,20 +1,35 @@
 "use strict";
 
 window.onload = function(){
-
-	
-	var birthday = function(date){
-		
+    
 
 
-			// Din kod här.
+    var birthday = function (date) {
+        var birthDate = new Date(date);
+        var today = new Date();
+        var mSecondsInDay = 86400000; // 1000 * 60 * 60 * 24 = antal millisekunder på en dag
 
 
-
-
+        if (Date.parse(date)) {
+            // Sätter födelsedagens år till nuvarande samt dagens timme till 1
+            // för att birthDate och today ska kunna jämföras korrekt
+            birthDate.setFullYear(today.getFullYear());
+            today.setHours(1, 0, 0, 0);
+        
+            if (birthDate >= today) {
+                // Räknar ut antal dagar kvar till födelsedag
+                var leftUntilBirthday = -(Math.floor((today - birthDate) / mSecondsInDay));
+                return leftUntilBirthday;
+            } else {
+                throw new Error("Du har redan fyllt år!");
+            }
+        } else
+        {
+            throw new Error("Fel format på datumet");
+        }
+          
 	};
 	// ------------------------------------------------------------------------------
-
 
 	// Kod för att hantera utskrift och inmatning. Denna ska du inte behöva förändra
 	var p = document.querySelector("#value"); // Referens till DOM-noden med id="#value"

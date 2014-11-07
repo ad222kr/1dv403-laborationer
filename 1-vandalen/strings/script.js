@@ -23,7 +23,7 @@ window.onload = function () {
 	    }
 	    else {
             
-	        throw ReferenceError("Strängen är tom");
+	        throw new Error("Strängen är tom");
             // Kasta undantag här istället men vilket yo?
             
 	    }
