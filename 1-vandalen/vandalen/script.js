@@ -35,7 +35,7 @@ var makePerson = function (persArr) {
 
     //averageAge = (persArr[0].age + persArr[1].age + persArr[2].age) / 3;
     
-    averageAge = sumOfAge / persArr.length;
+    averageAge = Math.round(sumOfAge / persArr.length);
     console.log(names);
     console.log(minAge);
     console.log(maxAge);
@@ -46,6 +46,8 @@ var makePerson = function (persArr) {
     var result = {};
     result.minAge = minAge;
     result.maxAge = maxAge;
+    result.averageAge = averageAge;
+    result.names = names;
     
     return result; }
 
