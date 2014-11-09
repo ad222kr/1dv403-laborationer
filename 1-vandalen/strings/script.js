@@ -7,17 +7,23 @@ window.onload = function () {
 	var convertString = function(str){
         // Matar man in massa mellanslag så trimmas dessa bort. Kollar efter det mot längden om strängen är tom
 	    if (str.trim().length > 0) {
+
 	        for (var i = 0; i < str.length; i++) {
+
 	            if ((str.charCodeAt(i) >= 65 && str.charCodeAt(i) <= 90) || (str.charCodeAt(i) >= 132 && str.charCodeAt(i) <= 153)) {
+
 	                convertedString += str.charAt(i).toLowerCase();
-	            } else {
+	            }
+	            else {
+
 	                convertedString += str.charAt(i).toUpperCase();
 	            }
 	        }
 	        convertedString = convertedString.replace(/A|a/g, "#");
 	        return convertedString;
 	    }
-	    else {           
+	    else {
+
 	        throw new Error("Strängen är tom");      
 	    }
 

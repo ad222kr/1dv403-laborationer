@@ -12,15 +12,23 @@ window.onload = function(){
 		console.log("Du gissade: " + number); // Detta nummer är det som användaren gissade på.
 
 		if (number >= 1 && number <= 100) {
+
 		    numberOfGuesses++;
 		    if (number == secret) {
+
 		        return [true, "Grattis du vann! Det hemliga talet var " + secret + " och du behövde " + numberOfGuesses + " gissningar för att hitta det."];
-		    } else if (number < secret) {
+		    }
+		    else if (number < secret) {
+
 		        return [false, "Det hemliga talet är högre!"]
-		    } else {
+		    }
+		    else {
+
 		        return [false, "Det hemliga talet är lägre!"]
 		    }
-		} else{
+		}
+		else {
+
 		    return [false, "Ej ett nummer inom det slutna intervallet 1-100, försök igen!"];
 		}	
 	};

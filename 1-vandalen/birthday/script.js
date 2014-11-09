@@ -5,28 +5,30 @@ window.onload = function(){
         var birthDate = new Date(date);
         var today = new Date();
         var mSecondsInDay = 86400000; // 1000 * 60 * 60 * 24 = antal millisekunder på en dag
+       
+        if (birthDate > today) {
 
-
-        if (birthDate.getFullYear() > today.getFullYear()) {
             throw new Error("Du är inte född än");
         }
         else if (!isNaN(Date.parse(date))) {
-            // Sätter födelsedagens år till nuvarande samt dagens timme till 1
-            // för att birthDate och today ska kunna jämföras korrekt
-            birthDate.setFullYear(today.getFullYear());
             today.setHours(1, 0, 0, 0);
-                   
+            birthDate.setYear(today.getFullYear());
+
             if (birthDate < today) {
-                birthDate.setYear(today.getFullYear + 1);
+
+                birthDate.setYear(today.getFullYear() + 1);
             }
-            // Räknar ut antal dagar kvar till födelsedag
+            
             var leftUntilBirthday = -(Math.floor((today - birthDate) / mSecondsInDay));
             return leftUntilBirthday;            
         }
         else {
+
             throw new Error("Fel format på datumet");
         }          
-	};
+    };
+
+
 	// ------------------------------------------------------------------------------
 
 	// Kod för att hantera utskrift och inmatning. Denna ska du inte behöva förändra
