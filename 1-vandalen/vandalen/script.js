@@ -21,6 +21,7 @@ var makePerson = function (persArr) {
 var data = [{ name: "John Häggerud", age: 37 }, { name: "Johan Leitet", age: 36 }, { name: "Mats Loock", age: 46 }];
 
 
+
 // Osäker om man får använda for-loop här...
 // Går igenom arrayen och kollar om den innehåller objekt
 for (var i = 0; i < data.length; i++) {

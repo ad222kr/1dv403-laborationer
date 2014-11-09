@@ -29,6 +29,7 @@ window.onload = function(){
     };
 
 
+
 	// ------------------------------------------------------------------------------
 
 	// Kod för att hantera utskrift och inmatning. Denna ska du inte behöva förändra
