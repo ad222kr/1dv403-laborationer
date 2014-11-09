@@ -6,20 +6,24 @@ window.onload = function(){
         var today = new Date();
         var mSecondsInDay = 86400000; // 1000 * 60 * 60 * 24 = antal millisekunder på en dag
 
-        if (!isNaN(Date.parse(date))) {
+
+        if (birthDate.getFullYear() > today.getFullYear()) {
+            throw new Error("Du är inte född än");
+        }
+        else if (!isNaN(Date.parse(date))) {
             // Sätter födelsedagens år till nuvarande samt dagens timme till 1
             // för att birthDate och today ska kunna jämföras korrekt
             birthDate.setFullYear(today.getFullYear());
             today.setHours(1, 0, 0, 0);
                    
-            if (birthDate >= today) {
-                // Räknar ut antal dagar kvar till födelsedag
-                var leftUntilBirthday = -(Math.floor((today - birthDate) / mSecondsInDay));
-                return leftUntilBirthday;
-            } else {
-                throw new Error("Du har redan fyllt år!");
+            if (birthDate < today) {
+                birthDate.setYear(today.getFullYear + 1);
             }
-        } else {
+            // Räknar ut antal dagar kvar till födelsedag
+            var leftUntilBirthday = -(Math.floor((today - birthDate) / mSecondsInDay));
+            return leftUntilBirthday;            
+        }
+        else {
             throw new Error("Fel format på datumet");
         }          
 	};
