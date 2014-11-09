@@ -5,7 +5,7 @@ var makePerson = function (persArr) {
     var maxAge;
     var averageAge;   
     var names = "";
-    var sumOfAge = 0;
+    var sumOfAge = [];
     var namesArr = [];
 
     // Sorterar arrayen på ålder
@@ -21,12 +21,20 @@ var makePerson = function (persArr) {
         return a.name.localeCompare(b.name, 'sv')
     });
 
-    for (var i = 0; i < persArr.length; i++) {
-        namesArr[i] = persArr[i].name;
-        sumOfAge += persArr[i].age;}
+    namesArr = persArr.map(function (item, index, array) {        
+        return item.name;
+    });
+
+    sumOfAge = persArr.map(function (item, index, array) {
+        return item.age;
+    });
 
     names = namesArr.join(", ");  
-    averageAge = Math.round(sumOfAge / persArr.length);
+
+    averageAge = Math.round(sumOfAge.reduce(function (prev, cur, index, array) {
+        return prev + cur;
+    }) / persArr.length);
+   
 
     var result = {};
     result.minAge = minAge;
@@ -34,6 +42,8 @@ var makePerson = function (persArr) {
     result.averageAge = averageAge;
     result.names = names;
     return result; }
+
+
 
 var data = [{ name: "John Häggerud", age: 37 }, { name: "Johan Leitet", age: 36 }, { name: "Mats Loock", age: 46 }];
 var result = makePerson(data);
