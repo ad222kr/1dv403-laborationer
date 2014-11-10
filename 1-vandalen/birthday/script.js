@@ -10,12 +10,16 @@ window.onload = function(){
 
             throw new Error("Du är inte född än");
         }
+        // Kollar så att date returnerar ett värde när den kallar parse
         else if (!isNaN(Date.parse(date))) {
+
+            // Sätter dagens timmar till 1 samt födelsedagens år till nuvarande för att kunna jämföra korrekt
             today.setHours(1, 0, 0, 0);
             birthDate.setYear(today.getFullYear());
 
             if (birthDate < today) {
 
+                // Om personen fyllt år i år sätts året fram till nästa så att uträkningen stämmer
                 birthDate.setYear(today.getFullYear() + 1);
             }
             
