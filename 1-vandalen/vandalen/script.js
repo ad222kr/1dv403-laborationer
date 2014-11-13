@@ -1,6 +1,23 @@
 "use strict";
 
 var makePerson = function (persArr) {
+    // Går igenom arrayen och kollar så att elemten är objekt och att objektens egenskaper har rätt värden
+    for (var i = 0; i < persArr.length; i++) {
+        
+        if (typeof (persArr[i]) !== "object") {
+        
+            throw new Error("Position " + (i + 1) + " i arrayen är ej ett objekt");
+        }
+        if (typeof (persArr[i].name) !== "string") {
+        
+            throw new Error ("Namnet är inte en sträng!")
+        }
+        if (isNaN(persArr[i].age) && isNaN(Date.parse(persArr[i].born))) {
+        
+            throw new Error("Åldern är ej ett heltal");
+        }
+    }
+
 
     // Sorterar arrayen på ålder och tilldelar min och maxage
     persArr.sort(function (a, b) { return a.age - b.age });
@@ -21,29 +38,6 @@ var makePerson = function (persArr) {
         names: names
     };
     return result; }
-
-var data = [{ name: "John Häggerud", age: 37 }, { name: "Johan Leitet", age: 36 }, { name: "Mats Loock", age: 46 }];
-
-
-// Går igenom arrayen och kollar så att elemten är objekt och att objektens egenskaper har rätt värden
-for (var i = 0; i < data.length; i++) {
-
-    if (typeof (data[i]) !== "object") {
-
-        throw new Error("Position " + (i + 1) + " i arrayen är ej ett objekt");
-    }
-    if (typeof (data[i].name) !== "string") {
-
-        throw new Error ("Namnet är inte en sträng!")
-    }
-    if (typeof (data[i].age) !== "number") {
-
-        throw new Error("Åldern är ej ett heltal");
-    }
-}
-
-var result = makePerson(data);
-console.log(result);
 
 
 
