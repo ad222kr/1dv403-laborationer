@@ -2,6 +2,7 @@
 
 var makePerson = function (persArr) {
     // Går igenom arrayen och kollar så att elemten är objekt och att objektens egenskaper har rätt värden
+    
     for (var i = 0; i < persArr.length; i++) {
         
         if (typeof (persArr[i]) !== "object") {
@@ -30,14 +31,15 @@ var makePerson = function (persArr) {
     // Sorterar arrayen på namn (localeCompare ser till att svenska tecken sorteras rätt), plockar ur namnen ur objekten och slår ihop till en sträng
     persArr.sort(function (a, b) { return a.name.localeCompare(b.name, 'sv') });
     var names = persArr.map(function (person) { return person.name; }).join(", ");
-
+    
     var result = {
         minAge: minAge,
         maxAge: maxAge,
         averageAge: averageAge,
         names: names
     };
-    return result; }
+    return result;
+    }
 
 
 
