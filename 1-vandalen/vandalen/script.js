@@ -42,6 +42,3 @@ var makePerson = function (persArr) {
     }
 
 
-
-
-
