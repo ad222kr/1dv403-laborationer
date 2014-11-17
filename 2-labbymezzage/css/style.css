@@ -1,0 +1,87 @@
+body{
+    background-color: #2E2633; /* Ändra sen */
+}
+
+h1{
+    color:#9dce2c;
+    font-family: Verdana, Helvetica;
+    font-size: 35px;
+    font-weight: normal;
+}
+
+header{
+    background-image: url("pics/logo.png");
+    background-size: 35px 35px;
+    background-repeat: no-repeat;
+    background-position: 90%;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom:10px;
+}
+
+#container{
+    width: 480px;
+    margin: 0px auto;
+}
+
+#content{
+    background: #EFFFCD;
+    border-color: #000000;
+    padding: 10px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    
+    
+}
+
+#content textarea{
+    width: 455px;
+    height: 100px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-top:20px;
+}
+
+#content button{
+    border: 0px;
+	background-color:#9dce2c;
+	-webkit-border-top-left-radius:42px;
+	-moz-border-radius-topleft:42px;
+	border-top-left-radius:42px;
+	-webkit-border-top-right-radius:42px;
+	-moz-border-radius-topright:42px;
+	border-top-right-radius:42px;
+	-webkit-border-bottom-right-radius:42px;
+	-moz-border-radius-bottomright:42px;
+	border-bottom-right-radius:42px;
+	-webkit-border-bottom-left-radius:42px;
+	-moz-border-radius-bottomleft:42px;
+	border-bottom-left-radius:42px;
+	display:inline-block;
+	color:#ffffff;
+	font-size:22px;
+	font-weight:normal;
+	font-style:normal;
+	height:35px;
+	line-height:35px;
+	width:100px;
+	text-decoration:none;
+	text-align:center;
+	margin-left: 360px;
+	margin-top: 5px;
+}
+
+#content button:hover{
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8cb82b), color-stop(1, #9dce2c) );
+	background:-moz-linear-gradient( center top, #8cb82b 5%, #9dce2c 100% );
+	background-color:#8cb82b;
+}
+
+#content button:active{
+    position: relative;
+    top: 1px;
+}
+

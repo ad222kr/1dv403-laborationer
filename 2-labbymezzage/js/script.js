@@ -1,4 +1,4 @@
-var messsageBoard = {
+var MessageBoard = {
     
     messages: [],
     
@@ -6,11 +6,13 @@ var messsageBoard = {
         window.onload;
         
         var mess = new Message("Hej! \nVad händer?", new Date());
-        console.log(mess.getText());
-        console.log(mess.getDate());
-        console.log(mess.toString());
-        console.log(mess.getHTMLtext());
+        var mess2 = new Message("tja mannen", new Date());
+        MessageBoard.messages.push(mess);
+        MessageBoard.messages.push(mess2);
+        
+        console.log(MessageBoard.messages[1].getDate());
         }
 };
 
-messsageBoard.init();
+MessageBoard.init();
+
