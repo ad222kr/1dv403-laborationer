@@ -5,22 +5,25 @@
         <title>Laboration 2 - Labby Mezzage!</title>
         <link rel="stylesheet" href="css/style.css" />
         <script src="js/Message.js"></script>
-        <script src="js/script.js"></script>
+        <script src="js/MessageBoard.js"></script>
+        
     </head>
     
     <body>
         <div id ="container">
             <header><h1>Labby Mezzage</h1></header>
             <div id="content">
+                <div id="messages"></div>
                 <div id="numberofmess"></div>
                 
-                <div id="input">
-                    <textarea name="textarea"></textarea>
-                    <button name="button">Skicka inlägg</button>    
+                <textarea id="textarea" name="textarea" placeholder="Skriv ett meddelande..."></textarea>
+                <button id="button" type="button"/>skicka</button>
+                
                 </div>
                 
-                <div id="messages"></div>
+                
             </div>
         </div>
+        
     </body>
 </html>
