@@ -18,8 +18,13 @@ function Message(message, date){
 
 Message.prototype.toString = function(){
     return this.getText() +" (" + this.getDate() + " )";
-}
+};
 Message.prototype.getHTMLtext = function(){
     var htmlText = this.getText();
     return htmlText.replace(/\n/g, "<br />");
-}
+};
+Message.prototype.getDateText = function(){
+    var dateText = this.getDate();
+    return dateText;
+    
+};

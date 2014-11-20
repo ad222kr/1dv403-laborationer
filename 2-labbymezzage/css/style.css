@@ -1,14 +1,17 @@
 body{
     background-color: #2E2633; /* Ändra sen */
     font-family: Verdana, Helvetica;
-    color:#9dce2c;
+    
 }
 
 h1{
     
-    
+    color:#9dce2c;
     font-size: 35px;
     font-weight: normal;
+}
+p{
+    color: black;
 }
 
 header{
@@ -89,7 +92,20 @@ header{
 
 #numberofmess{
     color: black;
-    font-size: 12px;
+    font-size: 11px;
     float: right;
+    margin-bottom: -25px;
 }
+
+#messages{
+    margin-bottom: -15px;
+}
+
+.message{
+    font-size: 12px;
+    border: solid 1px;
+    background: #cdeb8b;
+    padding: 4px;
+}
+
 

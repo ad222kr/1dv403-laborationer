@@ -21,8 +21,6 @@ var MessageBoard = {
         var div = document.getElementById("numberofmess");
         div.innerHTML = "";
         var text = document.createElement("p");
-        text.className = "messCount";
-        
         text.innerHTML = "Antal meddelanden: " + count;
         div.appendChild(text);
         
@@ -46,8 +44,10 @@ var MessageBoard = {
         var text = document.createElement("p");
         text.className = "message";
         
+        
         //Skickar in meddelandet till dokumentet
         text.innerHTML = MessageBoard.messages[messageID].getHTMLtext();
+        console.log(MessageBoard.messages[messageID].tja());
         div.appendChild(text);
     },
     
