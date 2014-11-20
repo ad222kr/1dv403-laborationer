@@ -5,30 +5,58 @@ var MessageBoard = {
     messages: [],
     
     init: function(){
-        //Referens till submit-knappen
+        
         var button = document.getElementById("button");
+    
         
-        // Referens till metoden så den körs när man klickar på knappn
-        button.onclick = MessageBoard.createMessage;
-        
-    },
 
-    createMessage: function(){
-        var input = document.getElementById("textarea").value;
-        var mess = new Message(input, new Date());
-        MessageBoard.messages.push(mess);
-        document.getElementById("form").reset();
-        MessageBoard.renderMessage(mess);
-        return false;
+        button.addEventListener("click", MessageBoard.createMessage, false);
+        button.addEventListener("click", MessageBoard.messageCount, false);
         
     },
     
+    messageCount: function(){
+        
+        var count = MessageBoard.messages.length;
+        var div = document.getElementById("numberofmess");
+        div.innerHTML = "";
+        var text = document.createElement("p");
+        text.className = "messCount";
+        
+        text.innerHTML = "Antal meddelanden: " + count;
+        div.appendChild(text);
+        
+    },
+    
+    createMessage: function(){
+        
+        var input = document.getElementById("textarea").value;
+        var mess = new Message(input, new Date());
+        
+        MessageBoard.messages.push(mess);
+        MessageBoard.renderMessage(MessageBoard.messages.length - 1);
+        
+        document.getElementById("form").reset();
+        return false;
+    },
+    
     renderMessage: function(messageID){
+        // Sätter ref till #messages, skapar p-tag och sätter klass till .message
         var div = document.getElementById("messages");
         var text = document.createElement("p");
-        console.log(messageID);
-        text.innerHTML = messageID.getHTMLtext();
+        text.className = "message";
+        
+        //Skickar in meddelandet till dokumentet
+        text.innerHTML = MessageBoard.messages[messageID].getHTMLtext();
         div.appendChild(text);
+    },
+    
+    renderMessages: function(){
+        // Resettar och skriver ut alla meddelanden
+        document.getElementById("messages").innerHTML ="";   
+        for(var i = 0; i < MessageBoard.messages.length; i++){
+            MessageBoard.renderMessage(i);
+        }
     }
 };
 
