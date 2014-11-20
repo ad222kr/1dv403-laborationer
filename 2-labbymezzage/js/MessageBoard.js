@@ -1,6 +1,7 @@
 "use strict";
 var MessageBoard = {
     
+    
     messages: [],
     
     init: function(){
@@ -15,12 +16,19 @@ var MessageBoard = {
     createMessage: function(){
         var input = document.getElementById("textarea").value;
         var mess = new Message(input, new Date());
-        
         MessageBoard.messages.push(mess);
+        document.getElementById("form").reset();
+        MessageBoard.renderMessage(mess);
+        return false;
         
-        MessageBoard.messages.forEach(function(message){
-            console.log(message.getText());    
-        });
+    },
+    
+    renderMessage: function(messageID){
+        var div = document.getElementById("messages");
+        var text = document.createElement("p");
+        console.log(messageID);
+        text.innerHTML = messageID.getHTMLtext();
+        div.appendChild(text);
     }
 };
 
