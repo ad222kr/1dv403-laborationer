@@ -56,7 +56,7 @@ var MessageBoard = {
         
         
         // Setting classnames and attributes
-        buttonDiv.className = "buttons"
+        buttonDiv.className = "buttons";
         messageDiv.className = "message";
         text.className = "msgtext";
         time.className = "timestamp";
@@ -72,11 +72,11 @@ var MessageBoard = {
         div.appendChild(messageDiv);
         aClose.appendChild(imgClose);
         aTime.appendChild(imgTime);
-        buttonDiv.appendChild(time);
         buttonDiv.appendChild(aClose);
         buttonDiv.appendChild(aTime);
         messageDiv.appendChild(buttonDiv);
         messageDiv.appendChild(text);
+        messageDiv.appendChild(time);
         
         
         // Rendering the message and time

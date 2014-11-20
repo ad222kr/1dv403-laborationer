@@ -127,13 +127,17 @@ header{
 }
 
 .msgtext{
+    width: 395px;
     text-align: justify;
     margin-top:-1px;
     word-wrap: break-word;
     display: block;
-    margin-right: auto;
-    margin-left: auto;
     
 }
 
+.timestamp{
+    margin-left:405px;
+    margin-bottom:-2px;
+    font-size:10px;
+}
 

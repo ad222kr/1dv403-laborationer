@@ -29,7 +29,21 @@ Message.prototype.getDateText = function(){
     
 };
 Message.prototype.toString = function(){
-    return this.getText() +" (" + this.getDate() + " )";
+    
+    var monthNames = [ "Januari", "Februari", "Mars", "April", "Maj", "Juni",
+    "Juli", "Augusti", "September", "Oktober", "November", "December" ];
+        
+    var date = this.getDate();
+    console.log(date);
+    var year = date.getFullYear().toString();
+    var month = monthNames[date.getMonth()];
+    var day = date.getDate().toString();
+    var hour = date.getHours().toString();
+    var minute = date.getMinutes().toString();
+    var seconds = date.getSeconds().toString();
+    
+    var dateTest = "Inlägget skapades den " +day+" "+month+ " "+year+" klockan "+hour+":"+minute+":"+seconds;
+    return dateTest;
 };
 Message.prototype.getHTMLtext = function(){
     var htmlText = this.getText();
