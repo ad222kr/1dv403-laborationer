@@ -102,6 +102,7 @@ header{
 }
 
 .message{
+    
     margin-bottom: 5px;
     font-size: 12px;
     border: solid 1px;
@@ -116,6 +117,23 @@ header{
 .time{
     height: 20px;
     width: 20px;
+}
+
+.buttons{
+    float: right;
+    margin-left: 200px;
+    margin: 0 0 1em 1em;
+    
+}
+
+.msgtext{
+    text-align: justify;
+    margin-top:-1px;
+    word-wrap: break-word;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    
 }
 
 

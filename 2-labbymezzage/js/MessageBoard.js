@@ -72,11 +72,12 @@ var MessageBoard = {
         div.appendChild(messageDiv);
         aClose.appendChild(imgClose);
         aTime.appendChild(imgTime);
+        buttonDiv.appendChild(time);
         buttonDiv.appendChild(aClose);
         buttonDiv.appendChild(aTime);
-        messageDiv.appendChild(text);
-        messageDiv.appendChild(time);
         messageDiv.appendChild(buttonDiv);
+        messageDiv.appendChild(text);
+        
         
         // Rendering the message and time
         text.innerHTML = MessageBoard.messages[messageID].getHTMLtext();
