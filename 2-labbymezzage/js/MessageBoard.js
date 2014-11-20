@@ -8,19 +8,16 @@ var MessageBoard = {
         
         var button = document.getElementById("button");
     
-        
-
         button.addEventListener("click", MessageBoard.createMessage, false);
         button.addEventListener("click", MessageBoard.messageCount, false);
-        
     },
     
     messageCount: function(){
         
         var count = MessageBoard.messages.length;
         var div = document.getElementById("numberofmess");
-        div.innerHTML = "";
         var text = document.createElement("p");
+        div.innerHTML = "";
         text.innerHTML = "Antal meddelanden: " + count;
         div.appendChild(text);
         
@@ -30,7 +27,6 @@ var MessageBoard = {
         
         var input = document.getElementById("textarea").value;
         var mess = new Message(input, new Date());
-        
         MessageBoard.messages.push(mess);
         MessageBoard.renderMessage(MessageBoard.messages.length - 1);
         
@@ -39,21 +35,29 @@ var MessageBoard = {
     },
     
     renderMessage: function(messageID){
-        // Sätter ref till #messages, skapar p-tag och sätter klass till .message
+
         var div = document.getElementById("messages");
+        var messageDiv = document.createElement("div");
         var text = document.createElement("p");
-        text.className = "message";
+        var time = document.createElement("p");
         
+        messageDiv.className = "message";
+        text.className = "msgtext";
+        time.className = "timestamp";
         
-        //Skickar in meddelandet till dokumentet
+        div.appendChild(messageDiv);
+        messageDiv.appendChild(text);
+        messageDiv.appendChild(time);
+        
         text.innerHTML = MessageBoard.messages[messageID].getHTMLtext();
-        console.log(MessageBoard.messages[messageID].tja());
-        div.appendChild(text);
+        time.innerHTML = MessageBoard.messages[messageID].getDateText();
+        
     },
     
     renderMessages: function(){
-        // Resettar och skriver ut alla meddelanden
-        document.getElementById("messages").innerHTML ="";   
+
+        document.getElementById("messages").innerHTML =""; 
+        
         for(var i = 0; i < MessageBoard.messages.length; i++){
             MessageBoard.renderMessage(i);
         }

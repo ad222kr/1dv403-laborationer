@@ -102,6 +102,7 @@ header{
 }
 
 .message{
+    margin-bottom: 5px;
     font-size: 12px;
     border: solid 1px;
     background: #cdeb8b;
