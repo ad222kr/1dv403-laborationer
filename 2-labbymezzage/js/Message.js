@@ -18,12 +18,13 @@ function Message(message, date){
 
 Message.prototype.getDateText = function(){
     // Hittade på http://stackoverflow.com/a/3067896
-    
     var date = this.getDate();
-    var year = date.getFullYear().toString();
-    var month = (date.getMonth()+1).toString(); 
-    var day  = date.getDate().toString();
-    var dateText = year + "-" + (month.length === 2  ? month : "0" + month[0]) + "-" +(day.length === 2 ? day : "0" + day[0]); 
+    var hour = date.getHours().toString();
+    var minute = date.getMinutes().toString();
+    var seconds = date.getSeconds().toString();
+    
+    var dateText = hour + ":" + minute +":" + seconds;
+    
     return dateText;
     
 };
@@ -32,6 +33,6 @@ Message.prototype.toString = function(){
 };
 Message.prototype.getHTMLtext = function(){
     var htmlText = this.getText();
-    return htmlText.replace(/\n/g, "<br />");
+    return htmlText.replace(/[\n\r]/g, "<br />");
 };
 

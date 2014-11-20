@@ -11,7 +11,7 @@ var MessageBoard = {
         // Add eventhandlers
         button.addEventListener("click", MessageBoard.createMessage, false);
         button.addEventListener("click", MessageBoard.messageCount, false);
-;
+
     },
     
     messageCount: function(){
@@ -46,27 +46,37 @@ var MessageBoard = {
         
         // Creating elements for message, text, time and delete/timestamp buttons
         var messageDiv = document.createElement("div");
+        var buttonDiv = document.createElement("div");
         var text = document.createElement("p");
         var time = document.createElement("p");
-        var a = document.createElement("a");
+        var aClose = document.createElement("a");
+        var aTime = document.createElement("a");
         var imgClose = document.createElement("img");
+        var imgTime = document.createElement("img");
         
         
         // Setting classnames and attributes
+        buttonDiv.className = "buttons"
         messageDiv.className = "message";
         text.className = "msgtext";
         time.className = "timestamp";
         imgClose.className = "delete";
-        a.setAttribute("href", "#");
+        imgTime.className = "time";
+        aClose.setAttribute("href", "#");
+        aTime.setAttribute("href", "#");
         imgClose.setAttribute("src", "img/Remove-icon.png");
+        imgTime.setAttribute("src", "img/clock.png");
         
         
         // Pushing elements to DOM
         div.appendChild(messageDiv);
-        a.appendChild(imgClose);
-        messageDiv.appendChild(a);
+        aClose.appendChild(imgClose);
+        aTime.appendChild(imgTime);
+        buttonDiv.appendChild(aClose);
+        buttonDiv.appendChild(aTime);
         messageDiv.appendChild(text);
         messageDiv.appendChild(time);
+        messageDiv.appendChild(buttonDiv);
         
         // Rendering the message and time
         text.innerHTML = MessageBoard.messages[messageID].getHTMLtext();
@@ -78,10 +88,14 @@ var MessageBoard = {
             MessageBoard.deleteMessage(messageID);
             MessageBoard.messageCount();
         };
+        imgTime.alt="Time";
+        imgTime.onclick = function () {
+            MessageBoard.showTimeStamp(messageID);   
+        };
     },
     
     renderMessages: function(){
-
+        // Resets messages element and renders all messages
         document.getElementById("messages").innerHTML =""; 
         
         for(var i = 0; i < MessageBoard.messages.length; i++){
@@ -90,8 +104,13 @@ var MessageBoard = {
     },
     
     deleteMessage: function(messageID){
+        // Deletes one message, then renders all messag
         MessageBoard.messages.splice(messageID, 1);
         MessageBoard.renderMessages();
+    },
+    
+    showTimeStamp: function(messageID){
+        alert(MessageBoard.messages[messageID].toString());    
     }
 };
 
