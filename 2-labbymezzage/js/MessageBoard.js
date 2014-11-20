@@ -50,7 +50,7 @@ var MessageBoard = {
         var time = document.createElement("p");
         var a = document.createElement("a");
         var imgClose = document.createElement("img");
-        imgClose.setAttribute("src", "img/Remove-icon.png");
+        
         
         // Setting classnames and attributes
         messageDiv.className = "message";
@@ -58,6 +58,7 @@ var MessageBoard = {
         time.className = "timestamp";
         imgClose.className = "delete";
         a.setAttribute("href", "#");
+        imgClose.setAttribute("src", "img/Remove-icon.png");
         
         
         // Pushing elements to DOM
@@ -75,6 +76,7 @@ var MessageBoard = {
         imgClose.alt="Close";
         imgClose.onclick = function () {
             MessageBoard.deleteMessage(messageID);
+            MessageBoard.messageCount();
         };
     },
     
@@ -88,7 +90,8 @@ var MessageBoard = {
     },
     
     deleteMessage: function(messageID){
-        console.log("hej");    
+        MessageBoard.messages.splice(messageID, 1);
+        MessageBoard.renderMessages();
     }
 };
 
