@@ -23,7 +23,7 @@ Message.prototype.getDateText = function(){
     var minute = date.getMinutes().toString();
     var seconds = date.getSeconds().toString();
     
-    var dateText = hour + ":" + minute +":" + seconds;
+    var dateText = hour + ":" + minute +":" + (seconds.length == 2 ? seconds : "0" + seconds);
     
     return dateText;
     

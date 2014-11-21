@@ -11,14 +11,11 @@ var MessageBoard = {
         
         // Add eventhandlers
         button.addEventListener("click", MessageBoard.createMessage, false);
-        button.addEventListener("click", MessageBoard.messageCount, false);
         text.addEventListener("keypress", function (e) {
             if (e.keyCode == 13 && !e.shiftKey){
                 MessageBoard.createMessage();
             }
         }, false);
-        
-
     },
     
     messageCount: function(){
@@ -30,7 +27,6 @@ var MessageBoard = {
         div.innerHTML = "";
         text.innerHTML = "Antal meddelanden: " + count;
         div.appendChild(text);
-        
     },
     
     createMessage: function(){
@@ -41,6 +37,7 @@ var MessageBoard = {
         // Adds message to array and renders it
         MessageBoard.messages.push(mess);
         MessageBoard.renderMessage(MessageBoard.messages.length - 1);
+        MessageBoard.messageCount();
         
         // Resets textarea
         document.getElementById("form").reset();
@@ -61,7 +58,6 @@ var MessageBoard = {
         var imgClose = document.createElement("img");
         var imgTime = document.createElement("img");
         
-        
         // Setting classnames and attributes
         buttonDiv.className = "buttons";
         messageDiv.className = "message";
@@ -74,7 +70,6 @@ var MessageBoard = {
         imgClose.setAttribute("src", "img/Remove-icon.png");
         imgTime.setAttribute("src", "img/clock.png");
         
-        
         // Pushing elements to DOM
         div.appendChild(messageDiv);
         aClose.appendChild(imgClose);
@@ -84,7 +79,6 @@ var MessageBoard = {
         messageDiv.appendChild(buttonDiv);
         messageDiv.appendChild(text);
         messageDiv.appendChild(time);
-        
         
         // Rendering the message and time
         text.innerHTML = MessageBoard.messages[messageID].getHTMLtext();
@@ -118,7 +112,6 @@ var MessageBoard = {
             MessageBoard.messages.splice(messageID, 1);
             MessageBoard.renderMessages();   
         }
-        
     },
     
     showTimeStamp: function(messageID){
