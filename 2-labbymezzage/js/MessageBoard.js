@@ -113,8 +113,12 @@ var MessageBoard = {
     
     deleteMessage: function(messageID){
         // Deletes one message, then renders all messag
-        MessageBoard.messages.splice(messageID, 1);
-        MessageBoard.renderMessages();
+        var result = window.confirm("Vill du verkligen ta bort meddelandet?");
+        if(result){
+            MessageBoard.messages.splice(messageID, 1);
+            MessageBoard.renderMessages();   
+        }
+        
     },
     
     showTimeStamp: function(messageID){
