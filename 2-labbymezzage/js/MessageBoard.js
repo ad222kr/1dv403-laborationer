@@ -7,13 +7,15 @@ var MessageBoard = {
     init: function(){
         // Reference to button
         var button = document.getElementById("button");
-        var text = document.getElementById("textarea")
+        var text = document.getElementById("textarea");
         
         // Add eventhandlers
         button.addEventListener("click", MessageBoard.createMessage, false);
         text.addEventListener("keypress", function (e) {
             if (e.keyCode == 13 && !e.shiftKey){
+                e.preventDefault();
                 MessageBoard.createMessage();
+                
             }
         }, false);
     },
