@@ -2,14 +2,12 @@
 function MessageBoard(boardID){
     var that = this;
     // getting reference to the board
-    var div = document.getElementById(boardID);
-    
-    
-    
+    var div = document.querySelector("#" + boardID);
     
     this.messages = [];
     
     this.init = function(){
+        console.log(div);
         // Init function that initiates the board, creating a button and a textfield
         // Creating div to hold the messages
         var messagesDiv = document.createElement("div");
@@ -28,7 +26,6 @@ function MessageBoard(boardID){
         inputButton.className = "button";
         div.appendChild(inputButton);
         
-
         // Add eventlisteners
         inputButton.addEventListener("click", that.createMessage, false);
         textarea.addEventListener("keypress", function(e) {
@@ -63,7 +60,7 @@ function MessageBoard(boardID){
         // Creating div for the message object
         var messageDiv = document.createElement("div");
         messageDiv.className = "message";
-        messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild);
+        messagesDiv.appendChild(messageDiv);
         
         // Creating a div to hold the buttons for timestamp/delete
         var buttonDiv = document.createElement("div");
@@ -112,11 +109,12 @@ function MessageBoard(boardID){
         imgTime.alt="Time";
         imgTime.addEventListener("click", function(e) {
             //that.showTimeStamp(messageID);
-            alert("TIMESTAMP");
+            that.showTimeStamp(messageID);
             
         });
         
         this.renderMessages = function(){
+            // Clears the messages and renders them all again
             document.querySelector("#" + boardID+ " .messages").innerHTML="";
             
             for(var i = 0; i < that.messages.length; i++){
@@ -133,6 +131,10 @@ function MessageBoard(boardID){
             }
             
             
+        };
+        
+        this.showTimeStamp = function(messageID){
+            alert(that.messages[messageID].toString());
         };
        
         

@@ -122,7 +122,7 @@ header{
 
 .buttons{
     float: right;
-    margin-left: 200px;
+    margin-left: 195px;
     margin: 0 0 1em 1em;
 
     
@@ -137,7 +137,7 @@ header{
 }
 
 .timestamp{
-    margin-left:405px;
+    margin-left:402px;
     margin-bottom:-2px;
     font-size:10px;
 }
