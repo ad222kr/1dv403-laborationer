@@ -34,7 +34,6 @@ Message.prototype.toString = function(){
     "Juli", "Augusti", "September", "Oktober", "November", "December" ];
         
     var date = this.getDate();
-    console.log(date);
     var year = date.getFullYear().toString();
     var month = monthNames[date.getMonth()];
     var day = date.getDate().toString();
@@ -42,7 +41,7 @@ Message.prototype.toString = function(){
     var minute = date.getMinutes().toString();
     var seconds = date.getSeconds().toString();
     
-    var dateTest = "Inlägget skapades den " +day+" "+month+ " "+year+" klockan "+hour+":"+minute+":"+seconds;
+    var dateTest = "Inlägget skapades den " +day+" "+month+ " "+year+" klockan "+hour+":"+minute+":"+(seconds.length == 2 ? seconds : "0" + seconds);
     return dateTest;
 };
 Message.prototype.getHTMLtext = function(){

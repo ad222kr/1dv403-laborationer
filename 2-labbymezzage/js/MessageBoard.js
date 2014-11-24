@@ -7,12 +7,16 @@ function MessageBoard(boardID){
     this.messages = [];
     
     this.init = function(){
-        console.log(div);
         // Init function that initiates the board, creating a button and a textfield
         // Creating div to hold the messages
         var messagesDiv = document.createElement("div");
         messagesDiv.className = "messages";
         div.appendChild(messagesDiv);
+        
+        // Create element to hold the messagecount
+        var countDiv = document.createElement("div");
+        countDiv.className = "numberofmess";
+        div.appendChild(countDiv);
         
         // Create a text-field
         var textarea = document.createElement("textarea");
@@ -45,13 +49,14 @@ function MessageBoard(boardID){
         var mess = new Message(input.value, new Date());
         
         // Adds message to array and renders it
-        that.messages.push(mess); // when using .this with "click" this points to input.button, why?
+        that.messages.push(mess); 
         that.renderMessage(that.messages.length - 1);
-        console.log(that.messages.length);
         // Resets the text-field on click/enter
         input.value= "";
-
+        that.messageCount();
         
+        // that in this func cus when i click "this" points to input.button even tho
+        // the eventhandler uses that. it works with eventlistener for enter key tho??
     };
     
     this.renderMessage = function(messageID){
@@ -103,7 +108,7 @@ function MessageBoard(boardID){
         imgClose.alt="close";
         imgClose.addEventListener("click", function(e) {
             that.deleteMessage(messageID);
-            //that.messageCount();
+            that.messageCount();
 
         });
         imgTime.alt="Time";
@@ -123,24 +128,30 @@ function MessageBoard(boardID){
         };
         
         this.deleteMessage = function(messageID){
-            var result = window.confirm("Vill du verkligen ta bort meddelandet?");
-            if(result){
-                that.messages.splice(messageID, 1);
-                that.renderMessages();
-                
+            // Deletets one message then calls renderMessages to render all
+            if(window.confirm("Vill du verkligen ta bort meddelandet?")){
+                this.messages.splice(messageID, 1);
+                this.renderMessages();
             }
-            
-            
         };
         
         this.showTimeStamp = function(messageID){
-            alert(that.messages[messageID].toString());
+            alert(this.messages[messageID].toString());
         };
-       
         
+        this.messageCount = function(messageID){
+            var count = this.messages.length;
+            var div = document.querySelector("#" +boardID +" .numberofmess");
+            
+            // Removes messagecounter if all messages are deleted
+            if(this.messages.length !== 0){
+                div.innerHTML = "Antal meddelanden: " + count;    
+            }
+            else{
+                div.innerHTML = "";
+            }
+        };
     };
-
-
 }
 
 
