@@ -18,21 +18,30 @@ header{
     background-image: url("pics/logo.png");
     background-size: 35px 35px;
     background-repeat: no-repeat;
-    background-position: 63%;
+    background-position: 66%;
     text-align: center;
     height: 40px;
     line-height: 40px;
     margin-bottom:10px;
 }
 
+.textarea{
+    width: 455px;
+    height: 100px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-top:20px;
+}
+
 #container{
-    width: 1200px;
+    width: 1000px;
     margin: 0px auto;
 }
 
 
 
-#button{
+.button{
     border: 0px;
 	background-color:#9dce2c;
 	-webkit-border-top-left-radius:42px;
@@ -61,18 +70,18 @@ header{
 	margin-top: 5px;
 }
 
-#button:hover{
+.button:hover{
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8cb82b), color-stop(1, #9dce2c) );
 	background:-moz-linear-gradient( center top, #8cb82b 5%, #9dce2c 100% );
 	background-color:#8cb82b;
 }
 
-#button:active{
+.button:active{
     position: relative;
     top: 1px;
 }
 
-#numberofmess{
+.numberofmess{
     color: black;
     font-size: 11px;
     float: right;
@@ -87,7 +96,7 @@ header{
     -moz-border-radius: 5px;
     border-radius: 5px;
 	color:white;
-	width:500px;
+	width:460px;
 	margin:10px;
     float: left
     ;

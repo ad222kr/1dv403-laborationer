@@ -47,6 +47,6 @@ Message.prototype.toString = function(){
 };
 Message.prototype.getHTMLtext = function(){
     var htmlText = this.getText();
-    return htmlText.replace(/[\n\r]/g, "<br />");
+    return htmlText.replace(/[\n\r]/g, "<br/>");
 };
 
