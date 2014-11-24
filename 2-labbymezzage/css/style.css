@@ -18,7 +18,7 @@ header{
     background-image: url("pics/logo.png");
     background-size: 35px 35px;
     background-repeat: no-repeat;
-    background-position: 90%;
+    background-position: 63%;
     text-align: center;
     height: 40px;
     line-height: 40px;
@@ -26,29 +26,11 @@ header{
 }
 
 #container{
-    width: 480px;
+    width: 1200px;
     margin: 0px auto;
 }
 
-#content{
-    background: #EFFFCD;
-    border-color: #000000;
-    padding: 10px;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    
-    
-}
 
-#content textarea{
-    width: 455px;
-    height: 100px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    margin-top:20px;
-}
 
 #button{
     border: 0px;
@@ -97,8 +79,18 @@ header{
     margin-bottom: -25px;
 }
 
-#messages{
-    margin-bottom: -15px;
+.messages{
+    background: #EFFFCD;
+    border-color: #000000;
+    padding: 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	color:white;
+	width:500px;
+	margin:10px;
+    float: left
+    ;
 }
 
 .message{
