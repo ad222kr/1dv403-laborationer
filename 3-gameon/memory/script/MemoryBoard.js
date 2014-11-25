@@ -24,6 +24,8 @@ function MemoryBoard(rows, cols, gameID){
         var header = document.createElement("h1");
         div.appendChild(header).innerHTML = "memory";
         div.appendChild(table);
+        
+        
         // Populates each cell with the facedown-image
         for(var i = 0; i < rows; i++){
             
@@ -54,36 +56,41 @@ function MemoryBoard(rows, cols, gameID){
     
     this.flipTile = function(e){
         var target = e.target;
-        
-        switch (target.className) {
-            case "1":
-                target.src ="pics/1.png";
-                break;
-            case "2":
-                target.src ="pics/2.png";
-                break;
-            case "3":
-                target.src ="pics/3.png";
-                break;
-            case "4":
-                target.src ="pics/4.png";
-                break;
-            case "5":
-                target.src ="pics/5.png";
-                break;
-            case "6":
-                target.src ="pics/6.png";
-                break;
-            case "7":
-                target.src ="pics/7.png";
-                break;
-            case "8":
-                target.src ="pics/8.png";
-                break;
+        for(var i = 0; i <= that.tiles.length; i++){
+            
+            if(target.className == that.tiles[i]){
+                
+                target.src = "pics/" + that.tiles[i] + ".png";
+            }
+            
         }
         
-        
-        
+        // switch (target.className) {
+        //     case "1":
+        //         target.src ="pics/1.png";
+        //         break;
+        //     case "2":
+        //         target.src ="pics/2.png";
+        //         break;
+        //     case "3":
+        //         target.src ="pics/3.png";
+        //         break;
+        //     case "4":
+        //         target.src ="pics/4.png";
+        //         break;
+        //     case "5":
+        //         target.src ="pics/5.png";
+        //         break;
+        //     case "6":
+        //         target.src ="pics/6.png";
+        //         break;
+        //     case "7":
+        //         target.src ="pics/7.png";
+        //         break;
+        //     case "8":
+        //         target.src ="pics/8.png";
+        //         break;
+        //}
     };
     
     
