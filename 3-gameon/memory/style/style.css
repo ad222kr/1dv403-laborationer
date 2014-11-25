@@ -1,0 +1,20 @@
+#content{
+    
+    width: 1000px;
+}
+
+h1{
+    
+
+}
+table{
+    position: relative;
+    float: left;
+}
+
+td{
+    
+    border: 1px solid black;
+    width: 10px;
+    height: 10px;
+}
