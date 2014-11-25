@@ -40,19 +40,48 @@ function MemoryBoard(rows, cols, gameID){
                 a.appendChild(img);
                 cell.appendChild(a);
                 row.appendChild(cell);
-                a.className = this.tiles[cellCount];
+                img.className = this.tiles[cellCount];
                 cellCount++;
             }
         }
         
         // Eventlistener
-        table.addEventListener("click", that.flipTile, false);
+        table.addEventListener("click", function(e){
+            
+            that.flipTile(e);    
+        });
     };
     
     this.flipTile = function(e){
-        var classname = e.className;
+        var target = e.target;
         
-        console.log(classname);
+        switch (target.className) {
+            case "1":
+                target.src ="pics/1.png";
+                break;
+            case "2":
+                target.src ="pics/2.png";
+                break;
+            case "3":
+                target.src ="pics/3.png";
+                break;
+            case "4":
+                target.src ="pics/4.png";
+                break;
+            case "5":
+                target.src ="pics/5.png";
+                break;
+            case "6":
+                target.src ="pics/6.png";
+                break;
+            case "7":
+                target.src ="pics/7.png";
+                break;
+            case "8":
+                target.src ="pics/8.png";
+                break;
+        }
+        
         
         
     };
