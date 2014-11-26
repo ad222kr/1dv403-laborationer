@@ -23,23 +23,27 @@ function MemoryBoard(rows, cols, gameID){
     
     this.flipTile = function(e){
         var target = e.target;
-         flippedCount++;
+        flippedCount++;
+        // Loops through the tiles array to check if the clicked picture classname
+        // matches with any position. When it finds a match, it sets src to the appropriate picture
         for(var i = 0; i <= that.tiles.length; i++){
             
             if(flippedCount <= 2 && target.className == that.tiles[i]){
                 target.src = "pics/" + that.tiles[i] + ".png";
                 
             }
-            
-            
         }
+        // Pushed the image to an array that will hold the two clicked
+        // to compare their classnames to find a match
         if(flippedCount <= 2){
             flippedArr.push(target);    
         }
         
+        //shit remove
         console.log(flippedCount);
         console.log(flippedArr);
         
+        // calls the checkMatch and resets the array and count for flipped images
         if(flippedCount == 2){
             
             that.checkMatch(flippedArr);
@@ -47,31 +51,36 @@ function MemoryBoard(rows, cols, gameID){
             flippedCount = 0;
         }
         
-        
-       
     };
     
     this.checkMatch = function(flippedArr){
+
+        
+            // checks if the two flipped images are the same
         if(flippedArr[0].className == flippedArr[1].className){
-            
             alert("MATCH");
             numberOfMatches++;
-            
-        } 
-        else
-        {
-          for (var i = 0; i < flippedArr.length; i++){
-              
-              flippedArr[i].src = "pics/0.png";
-          }
         }
         
+        
+        
+        // if not, flips them back
+        else {
+            setTimeout(function() {
+            
+            for (var i = 0; i < flippedArr.length; i++){
+              
+                flippedArr[i].src = "pics/0.png";
+            }
+        }, 1000);
+        }
+        
+        
+        // checks if victory, probably move this to own function later
         if(numberOfMatches == maxNumberOfMatches){
             
             alert("VICTORY");
-        }
-        
-        
+        }    
     };
     
     
