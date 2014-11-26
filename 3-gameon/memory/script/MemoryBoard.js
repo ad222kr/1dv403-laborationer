@@ -5,6 +5,10 @@ function MemoryBoard(rows, cols, gameID){
     var that = this;
 
     var div = document.querySelector("#" + gameID);
+    var maxNumberOfMatches = (rows * cols) / 2;
+    var numberOfMatches = 0;
+    var flippedCount = 0;
+    var flippedArr = [];
 
     this.tiles = [];
     
@@ -16,6 +20,61 @@ function MemoryBoard(rows, cols, gameID){
         console.log(this.tiles);
         
     };
+    
+    this.flipTile = function(e){
+        var target = e.target;
+         flippedCount++;
+        for(var i = 0; i <= that.tiles.length; i++){
+            
+            if(flippedCount <= 2 && target.className == that.tiles[i]){
+                target.src = "pics/" + that.tiles[i] + ".png";
+                
+            }
+            
+            
+        }
+        if(flippedCount <= 2){
+            flippedArr.push(target);    
+        }
+        
+        console.log(flippedCount);
+        console.log(flippedArr);
+        
+        if(flippedCount == 2){
+            
+            that.checkMatch(flippedArr);
+            flippedArr = [];
+            flippedCount = 0;
+        }
+        
+        
+       
+    };
+    
+    this.checkMatch = function(flippedArr){
+        if(flippedArr[0].className == flippedArr[1].className){
+            
+            alert("MATCH");
+            numberOfMatches++;
+            
+        } 
+        else
+        {
+          for (var i = 0; i < flippedArr.length; i++){
+              
+              flippedArr[i].src = "pics/0.png";
+          }
+        }
+        
+        if(numberOfMatches == maxNumberOfMatches){
+            
+            alert("VICTORY");
+        }
+        
+        
+    };
+    
+    
     
     this.generateTable = function(){
         // Generates the table for the game
@@ -54,18 +113,11 @@ function MemoryBoard(rows, cols, gameID){
         });
     };
     
-    this.flipTile = function(e){
-        var target = e.target;
-        for(var i = 0; i <= that.tiles.length; i++){
-            
-            if(target.className == that.tiles[i]){
-                
-                target.src = "pics/" + that.tiles[i] + ".png";
-            }
-            
-        }
-        
-        // switch (target.className) {
+    
+}
+
+// alternative this.flipTile
+// switch (target.className) {
         //     case "1":
         //         target.src ="pics/1.png";
         //         break;
@@ -91,10 +143,3 @@ function MemoryBoard(rows, cols, gameID){
         //         target.src ="pics/8.png";
         //         break;
         //}
-    };
-    
-    
-    
-    
-    
-}
