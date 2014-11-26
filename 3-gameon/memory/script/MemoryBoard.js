@@ -22,7 +22,9 @@ function MemoryBoard(rows, cols, gameID){
     };
     
     this.flipTile = function(e){
+        
         var target = e.target;
+        console.log(target);
         flippedCount++;
         // Loops through the tiles array to check if the clicked picture classname
         // matches with any position. When it finds a match, it sets src to the appropriate picture
@@ -30,13 +32,21 @@ function MemoryBoard(rows, cols, gameID){
             
             if(flippedCount <= 2 && target.className == that.tiles[i]){
                 target.src = "pics/" + that.tiles[i] + ".png";
+                target.className += " clicked";
                 
             }
         }
         // Pushed the image to an array that will hold the two clicked
         // to compare their classnames to find a match
         if(flippedCount <= 2){
-            flippedArr.push(target);    
+            if (target.className != "pair"){
+                
+                target.removeEventListener("click");
+                flippedArr.push(target);
+            }
+
+            
+            console.log(flippedArr);
         }
         
         // calls the checkMatch and resets the array and count for flipped images
@@ -55,6 +65,13 @@ function MemoryBoard(rows, cols, gameID){
         if(flippedArr[0].className == flippedArr[1].className){
             alert("MATCH");
             numberOfMatches++;
+            
+            // Sets classname of the matched 
+            for(var i = 0; i < flippedArr.length; i++){
+                flippedArr[i].className = "pair";
+                
+            }
+            flippedCount = 0;
         }
         
         
@@ -63,14 +80,16 @@ function MemoryBoard(rows, cols, gameID){
         else {
             setTimeout(function() {
             
-            for (var i = 0; i < flippedArr.length; i++){
-              
-                flippedArr[i].src = "pics/0.png";
-            }
-            flippedCount = 0;
-        }, 1000);
+                for (var i = 0; i < flippedArr.length; i++){
+                  
+                    flippedArr[i].src = "pics/0.png";
+                    flippedArr[i].classList.remove("clicked");
+                }
+                flippedCount = 0;
+            }, 1000);
+            
+            
         }
-        
         
         // checks if victory, probably move this to own function later
         if(numberOfMatches == maxNumberOfMatches){
@@ -78,8 +97,6 @@ function MemoryBoard(rows, cols, gameID){
             alert("VICTORY");
         }    
     };
-    
-    
     
     this.generateTable = function(){
         // Generates the table for the game
@@ -115,7 +132,6 @@ function MemoryBoard(rows, cols, gameID){
         if (flippedCount < 2){
             table.addEventListener("click", function(e){
             if (!e){ e = window.event}
-            console.log(e.target.tagName);
             // Checks for tagname so flipTale is only called when img is clicked
             // since eventlistener is on the whole table
             if(e.target.tagName == "IMG"){
@@ -130,6 +146,8 @@ function MemoryBoard(rows, cols, gameID){
         }
         
     };
+    
+    
     
     
 }
