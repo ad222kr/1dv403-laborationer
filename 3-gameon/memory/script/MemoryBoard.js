@@ -39,16 +39,12 @@ function MemoryBoard(rows, cols, gameID){
             flippedArr.push(target);    
         }
         
-        //shit remove
-        console.log(flippedCount);
-        console.log(flippedArr);
-        
         // calls the checkMatch and resets the array and count for flipped images
         if(flippedCount == 2){
             
             that.checkMatch(flippedArr);
             flippedArr = [];
-            flippedCount = 0;
+            
         }
         
     };
@@ -72,6 +68,7 @@ function MemoryBoard(rows, cols, gameID){
               
                 flippedArr[i].src = "pics/0.png";
             }
+            flippedCount = 0;
         }, 1000);
         }
         
@@ -115,11 +112,24 @@ function MemoryBoard(rows, cols, gameID){
             }
         }
         
-        // Eventlistener
-        table.addEventListener("click", function(e){
+        // Eventlistener only when count is less than 2
+        if (flippedCount < 2){
+            table.addEventListener("click", function(e){
+            if (!e){ e = window.event}
+            console.log(e.target.tagName);
+            // Checks for tagname so flipTale is only called when img is clicked
+            // since eventlistener is on the whole table
+            if(e.target.tagName == "IMG"){
+                that.flipTile(e);
+            }
             
-            that.flipTile(e);    
-        });
+        });}
+        // if count is 2, remove eventlistener to prevent more images from being flipped
+        // before they are flipped back to face down
+        else if(flippedCount == 2){
+            table.removeEventListener("click");
+        }
+        
     };
     
     
