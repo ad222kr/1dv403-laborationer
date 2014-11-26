@@ -44,7 +44,6 @@ function MemoryBoard(rows, cols, gameID){
             
             that.checkMatch(flippedArr);
             flippedArr = [];
-            
         }
         
     };
