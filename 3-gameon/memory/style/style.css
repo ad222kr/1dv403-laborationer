@@ -1,13 +1,16 @@
+p{
+    word-wrap: break-word;
+}
+
 #content{
-    
+
     width: 1000px;
 }
 h1{
-    
+
     margin: 0px auto;
 }
 table{
-    margin: 0px auto;
 }
 
 td{
