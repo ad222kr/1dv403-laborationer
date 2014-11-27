@@ -1,20 +1,32 @@
 p{
     word-wrap: break-word;
+    font-family: Verdana;
 }
 
-#content{
-
-    width: 1000px;
+#container{
+    margin: 0px auto;
+    width: 500px;
+    border: 1px solid black;
+    height: 250px;
 }
-h1{
+
+#header{
 
     margin: 0px auto;
 }
+h1{
+    margin: 0px auto;
+    font-family: Verdana;
+    font-size: 14px;
+}
 table{
+    background: green;
+    border: solid 2px orange;
+
+
 }
 
 td{
-    border: 1px solid black;
     width: 20px;
     height: 20px;
 }
@@ -22,4 +34,6 @@ td{
 .board{
     float: left;
     padding: 20px;
+    width: 200px;
+
 }

@@ -23,7 +23,7 @@ function MemoryBoard(rows, cols, gameID){
 
         var target = e.target;
 
-        if (!target.classList.contains("clicked" && flippedCount < 2)){
+        if (!target.classList.contains("clicked") && flippedCount < 2){
             // Loops through the tiles array to check if the clicked picture classname
             // matches with any position. When it finds a match, it sets src to the appropriate picture
             for(var i = 0; i <= this.tiles.length; i++){
@@ -52,13 +52,14 @@ function MemoryBoard(rows, cols, gameID){
 
         numberOfTries++;
         // checks if the two flipped images are the same
-        if(flippedArr[0].className == flippedArr[1].className){
+        if(flippedArr[0].className === flippedArr[1].className){
 
             numberOfMatches++;
 
             // Sets classname of the matched to pair to prevent
             // user from clicking those images again
             for(var i = 0; i < flippedArr.length; i++){
+
                 flippedArr[i].className = "pair";
             }
             flippedCount = 0;
