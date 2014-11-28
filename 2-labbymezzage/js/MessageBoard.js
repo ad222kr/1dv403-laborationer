@@ -12,7 +12,7 @@ function MessageBoard(boardID){
         var messagesDiv = document.createElement("div");
         messagesDiv.className = "messages";
         div.appendChild(messagesDiv);
-        
+
         // Create element to hold the messagecount
         var countDiv = document.createElement("div");
         countDiv.className = "numberofmess";
@@ -31,7 +31,11 @@ function MessageBoard(boardID){
         div.appendChild(inputButton);
 
         // Add eventlisteners
-        inputButton.addEventListener("click", that.createMessage, false);
+
+        inputButton.addEventListener("click", function(){
+            that.createMessage();
+        });
+
         textarea.addEventListener("keypress", function(e) {
             if (!e) {e = window.event;}
             if (e.keyCode == 13 && !e.shiftKey){
@@ -43,6 +47,7 @@ function MessageBoard(boardID){
     };
 
     this.createMessage = function(){
+
         // Reference to the textarea
         var input = document.querySelector("#"+boardID+" textarea");
 
@@ -152,4 +157,6 @@ function MessageBoard(boardID){
             }
         };
     };
+
+    this.init();
 }
