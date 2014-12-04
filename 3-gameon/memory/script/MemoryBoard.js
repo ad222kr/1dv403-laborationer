@@ -16,19 +16,18 @@ function MemoryBoard(rows, cols, gameID){
         // Starts the game
         this.tiles = RandomGenerator.getPictureArray(cols, rows);
         this.generateTable();
+        console.log(this.tiles);
 
     };
-    this.flipTile = function(e){
+    this.flipTile = function(target){
+        
         // Function for flipping a card
+        if (!target.classList.contains("clicked")){
+            // Loops through the picarray and checks agains i to find the appropriate 
+            // pictures index
+            for(var i = 0; i < this.tiles.length; i++){
 
-        var target = e.target;
-
-        if (!target.classList.contains("clicked") && flippedCount < 2){
-            // Loops through the tiles array to check if the clicked picture classname
-            // matches with any position. When it finds a match, it sets src to the appropriate picture
-            for(var i = 0; i <= this.tiles.length; i++){
-
-                if(target.className == this.tiles[i]){
+                if(target.className == i){
 
                     target.src = "pics/" + this.tiles[i] + ".png";
                 }
@@ -40,7 +39,7 @@ function MemoryBoard(rows, cols, gameID){
             flippedCount++;
         }
 
-        // calls the checkMatch and resets the array and count for flipped images
+        // Calls the checkMatch and resets the array and count for flipped images
         if(flippedArr.length === 2){
 
             this.checkMatch(flippedArr);
@@ -50,9 +49,9 @@ function MemoryBoard(rows, cols, gameID){
 
     this.checkMatch = function(flippedArr){
 
+        // Adds a try, then checks if the images match       
         numberOfTries++;
-        // checks if the two flipped images are the same
-        if(flippedArr[0].className === flippedArr[1].className){
+        if(flippedArr[0].src === flippedArr[1].src){
 
             numberOfMatches++;
 
@@ -62,7 +61,7 @@ function MemoryBoard(rows, cols, gameID){
 
                 flippedArr[i].className = "pair";
             }
-            flippedCount = 0;
+            flippedCount = 0;   
         }
 
         // if not, flips them back
@@ -74,12 +73,11 @@ function MemoryBoard(rows, cols, gameID){
                     flippedArr[i].src = "pics/0.png";
                     flippedArr[i].classList.remove("clicked");
                 }
-
                 flippedCount = 0;
             }, 1000);
         }
+        
 
-        // checks if victory, probably move this to own function later
         this.checkVictory();
     };
 
@@ -108,10 +106,12 @@ function MemoryBoard(rows, cols, gameID){
                 a.appendChild(img);
                 cell.appendChild(a);
                 row.appendChild(cell);
-                img.className = this.tiles[cellCount];
+                img.className = cellCount;
                 cellCount++;
+                
             }
         }
+<<<<<<< HEAD
         // Adding eventlistener for click to the table
         table.addEventListener("click", function(e){
             that.clickFunction(e); });
@@ -130,10 +130,48 @@ function MemoryBoard(rows, cols, gameID){
 
     this.checkVictory = function(){
 
+=======
+        // Eventlistener on the whole table
+        table.addEventListener("click", function(e){
+                    that.clickFunction(e);
+                });
+        table.addEventListener("keydown", function(e){
+            if(e.keyCode === 13){
+                e.preventDefault(); // Prevents the second tile from flipping back even when it's a pair when using enter, why?
+                that.clickFunction(e);
+            }
+        });
+
+    };
+
+    this.clickFunction = function(e){
+        if(!e){ e = window.event; }
+        var target = e.target;
+        
+        // For playing the game with tab and enter, since it tabs on the a-tags
+        // target needs to be IMG
+        if(target.tagName !== "IMG"){
+            target = target.firstElementChild;
+        }
+        
+        if(target.tagName === "IMG" && e.target.className != "pair" && flippedCount < 2){
+                this.flipTile(target);
+        }        
+    };  
+
+    this.checkVictory = function(){
+
+>>>>>>> 096f66067ccdb3916af2b5bbfdfeea4c02233b9e
         if(numberOfMatches == maxNumberOfMatches){
             var p = document.createElement("p")
             p.innerHTML = "Grattis! Det tog dig "+numberOfTries+" att klara spelet!";
             div.appendChild(p);
         }
+<<<<<<< HEAD
     }
+=======
+    };
+
+    this.start();
+>>>>>>> 096f66067ccdb3916af2b5bbfdfeea4c02233b9e
 }
