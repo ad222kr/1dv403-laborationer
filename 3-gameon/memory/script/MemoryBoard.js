@@ -111,26 +111,6 @@ function MemoryBoard(rows, cols, gameID){
                 
             }
         }
-<<<<<<< HEAD
-        // Adding eventlistener for click to the table
-        table.addEventListener("click", function(e){
-            that.clickFunction(e); });
-    };
-
-    this.clickFunction = function(e){
-
-        if (!e){ e = window.event}
-
-        // Checks for tagname so flipTale is only called when img is clicked
-        // since eventlistener is on the whole table.
-        if(e.target.tagName == "IMG" && e.target.className != "pair" && flippedCount < 2){
-            this.flipTile(e);
-        }
-    };
-
-    this.checkVictory = function(){
-
-=======
         // Eventlistener on the whole table
         table.addEventListener("click", function(e){
                     that.clickFunction(e);
@@ -161,17 +141,12 @@ function MemoryBoard(rows, cols, gameID){
 
     this.checkVictory = function(){
 
->>>>>>> 096f66067ccdb3916af2b5bbfdfeea4c02233b9e
         if(numberOfMatches == maxNumberOfMatches){
             var p = document.createElement("p")
             p.innerHTML = "Grattis! Det tog dig "+numberOfTries+" att klara spelet!";
             div.appendChild(p);
         }
-<<<<<<< HEAD
-    }
-=======
     };
 
     this.start();
->>>>>>> 096f66067ccdb3916af2b5bbfdfeea4c02233b9e
 }
