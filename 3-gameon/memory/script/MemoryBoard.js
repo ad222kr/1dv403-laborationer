@@ -18,6 +18,8 @@ function MemoryBoard(rows, cols, gameID){
         this.generateTable();
         console.log(this.tiles);
 
+
+
     };
     this.flipTile = function(target){
         
