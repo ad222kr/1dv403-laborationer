@@ -1,33 +1,73 @@
 "use strict";
 
-function Quiz(quizID){
-	var that = this;
+var Quiz = {
 
-	// Reference to quiz-div
-	var div = document.querySelector("#" + quizID);
-	var xhr = new XMLHttpRequest();
-	
+	div : document.getElementById("quiz"),
 
-	this.init = function(){
-		// Initates the quiz
-		console.log();
+	URL : "http://vhost3.lnu.se:20080/question/1", // URL for first question 
 
+	xhr: new XMLHttpRequest();,
+
+	init: function(){
+ 		Quiz.xhr = 
+		console.log(Quiz.div);
+
+		Quiz.buildApp(Quiz.div);
+		Quiz.getRequest(); 
+	},
+
+	getRequest: function(){
+
+		Quiz.xhr.onreadystatechange = function(){
+				alert("asdf");
+			if(Quiz.xhr.readyState === 4){
+				if(Quiz.xhr.status == 200 || xhr.status == 304){
+					console.log(Quiz.xhr.responseText);
+					alert();
+				}
+			}
+			else{
+				console.log("Läsfel, status: "+Quiz.xhr.status);
+			}	
+		};
+
+		Quiz.xhr.open("GET", Quiz.URL, true);
+
+		Quiz.xhr.send(null);
+
+	},
+
+	sendRequest: function(){
+
+
+	},
+
+	buildApp: function(div){
+
+		// Create question field
+		var qDiv = document.createElement("div");
+		var qField = document.createElement("p");
+		qDiv.className = "questionField"	
+		div.appendChild(qDiv);
+		qDiv.appendChild(qField);
+		qField.innerHTML = "TestLOL";
+
+		// Create input field
+		var inputDiv = document.createElement("div");
+		var inputText = document.createElement("input");
+		inputDiv.className = "inputField";
+		inputText.type = "text";
+		div.appendChild(inputDiv);
+		inputDiv.appendChild(inputText);
+
+		// Create input button
+		var inputButton = document.createElement("input");
+		inputButton.className = "inputButton";
+		inputButton.type = "button";
+		inputButton.value = "send";
+		inputDiv.appendChild(inputButton);
 	}
 
-	this.createElements = function(){
-		// Div for questions
-		var questionArea = document.createElement(div);
-		questionDiv.className = "questionArea"
-	}
-
-	this.getRequest = function(){
-		// Function for getting request from server
-	}
-
-	this.sendRequest = function(){
-		// Function for sending request
-	}
-
-	// Start quiz
-	this.init();
 }
+
+window.onload = Quiz.init;
