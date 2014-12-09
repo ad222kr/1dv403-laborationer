@@ -16,11 +16,11 @@ var Quiz = {
 
 
     getRequest: function(xhr, url){
-    	
+
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4 ){
                 if(xhr.status === 200 ){
-
+                	
             	 	Quiz.printQuestion(JSON.parse(xhr.responseText));	
             	 	xhr.onreadystatechange = null;  
                 	// FOr some reason the onreadystatechange executes when posting 
@@ -29,6 +29,7 @@ var Quiz = {
                 	     
                 }
                 else{
+
                 console.log("Läsfel, status: "+xhr.status);
                 }   
             }
@@ -55,22 +56,17 @@ var Quiz = {
 
 	    xhr.send(JSON.stringify(sendObject));
 	    
-	    console.log(response);
-
 	    var button = document.querySelector(".inputButton");
 
 	    xhr.onreadystatechange = function(){
 	        if(xhr.readyState === 4 ){
 	            if(xhr.status === 200 ){
-
+	            	document.querySelector(".statustext").innerHTML = "du svarade rätt";
 	        	 	Quiz.newQuestion(JSON.parse(xhr.responseText).nextURL);
 	        	 	xhr.onreadystatechange = null;  
-	            	// FOr some reason the onreadystatechange executes when posting 
-					// when sending to server, have to remove it here otherwise the 
-					// innerHTML of question field becomes undefined
-	            	     
-	            }
+	            	            }
 	            else{
+	            	document.querySelector(".statustext").innerHTML = "du svarade fel";
 	            console.log("Läsfel, status: "+xhr.status);
 	            }   
 	        }
@@ -78,27 +74,34 @@ var Quiz = {
 	    };
 	    
 	},
+
+	correctAnswer: function(){
+
+
+	},
+
+	wrongAnster: function(){
+
+
+	},
+
     newQuestion: function(url){
     	
     	var a = document.querySelector(".nextQuestion");
+    	var status = document.querySelector(".statustext");
     	
     	a.innerHTML = "Nästa Fråga";
     	
     	console.log(url);
     	a.addEventListener("click", function(){
     		Quiz.getRequest(Quiz.xhr, url);
+    		a.innerHTML = "";
+    		status.innerHTML = "";
     	});
     	
 
     },
     
-
-    nextQuestion: function () {
-	
-    },
-
-   
-        
     printQuestion: function(response){
 
         var qField = document.querySelector(".questionField");
@@ -108,8 +111,6 @@ var Quiz = {
 
 
     },
-
-    
 
     buildBasicElements: function(div){
 
@@ -138,6 +139,14 @@ var Quiz = {
         inputButton.type = "button";
         inputButton.value = "send";
         inputDiv.appendChild(inputButton);
+
+        // div for statusfield
+        var statusDiv = document.createElement("div");
+        statusDiv.className = "statusfield";
+        div.appendChild(statusDiv);
+        var statusMessage = document.createElement("p");
+        statusDiv.className = "statustext";
+        statusDiv.appendChild(statusMessage);
 
         // a-tag for next question link
     	var a = document.createElement("a");
