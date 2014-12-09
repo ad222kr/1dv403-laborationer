@@ -9,56 +9,61 @@ var Quiz = {
 	xhr: new XMLHttpRequest(),
 
 	init: function(){ 
-		console.log(Quiz.div);
-		Quiz.getRequest();
-		Quiz.buildApp(Quiz.div);
+		Quiz.getRequest(Quiz.xhr);
+		Quiz.buildBasicElements(Quiz.div);
 	},
+    hej: function(){
+        a
+    }
 
-	getRequest: function(){
-		var response;
-		Quiz.xhr.onreadystatechange = function(){
-			if(Quiz.xhr.readyState === 4){
-				if(Quiz.xhr.status == 200){
-					response = JSON.parse(Quiz.xhr.responseText);
-					Quiz.printQuestion(response);
-
+	getRequest: function(xhr){
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState === 4){
+				if(xhr.status === 200 ){
+					Quiz.printQuestion(JSON.parse(xhr.responseText));
+					console.log(JSON.parse(xhr.responseText))
 				}
 				else{
-				console.log("Läsfel, status: "+Quiz.xhr.status);
+				console.log("Läsfel, status: "+xhr.status);
 				}	
 			}
 			
 		};
 		
-
 		Quiz.xhr.open("GET", Quiz.URL, true);
 
 		Quiz.xhr.send(null);		
 
 	},
 
-	onStateChange: function(xhr){
-			
+	sendRequest: function(input, xhr){
+		var response = JSON.parse(xhr.responseText);
+
+		xhr.open("POST", response.nextURL, true);
+
+		xhr.setRequestHeader("Content-Type", "application/json");
+
+		var sendObject = {
+			answer: input.value
+		}
+
+		xhr.send(JSON.stringify(sendObject));
+
 
 
 	},
 
 	printQuestion: function(response){
 		var qField = document.querySelector(".questionField");
-		console.log(qField);
-		console.log(response);
 
 		qField.innerHTML = response.question;
 
 
 	},
 
-	sendRequest: function(){
+	
 
-
-	},
-
-	buildApp: function(div){
+	buildBasicElements: function(div){
 
 		// Create question field
 		var qDiv = document.createElement("div");
@@ -75,7 +80,7 @@ var Quiz = {
 		inputText.type = "text";
 		div.appendChild(inputDiv);
 		inputDiv.appendChild(inputText);
-
+				
 		// Create input button
 		var inputButton = document.createElement("input");
 		inputButton.className = "inputButton";
@@ -85,7 +90,8 @@ var Quiz = {
 
 		// Eventhandlers
 		inputButton.addEventListener("click", function(){
-			
+			Quiz.sendRequest(inputText, Quiz.xhr);
+			inputText.value = "";
 		});
 	}
 
