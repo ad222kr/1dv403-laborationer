@@ -6,34 +6,50 @@ var Quiz = {
 
 	URL : "http://vhost3.lnu.se:20080/question/1", // URL for first question 
 
-	xhr: new XMLHttpRequest();,
+	xhr: new XMLHttpRequest(),
 
-	init: function(){
- 		Quiz.xhr = 
+	init: function(){ 
 		console.log(Quiz.div);
-
+		Quiz.getRequest();
 		Quiz.buildApp(Quiz.div);
-		Quiz.getRequest(); 
 	},
 
 	getRequest: function(){
-
-		Quiz.xhr.onreadystatechange = function(){
-				alert("asdf");
-			if(Quiz.xhr.readyState === 4){
-				if(Quiz.xhr.status == 200 || xhr.status == 304){
-					console.log(Quiz.xhr.responseText);
-					alert();
-				}
-			}
-			else{
-				console.log("Läsfel, status: "+Quiz.xhr.status);
-			}	
-		};
+		
+		
 
 		Quiz.xhr.open("GET", Quiz.URL, true);
 
-		Quiz.xhr.send(null);
+		Quiz.xhr.send(null);		
+
+	},
+
+	onStateChange: function(xhr){
+		var response;
+		Quiz.xhr.onreadystatechange = function(){
+			if(Quiz.xhr.readyState === 4){
+				if(Quiz.xhr.status == 200){
+					response = JSON.parse(Quiz.xhr.responseText);
+					Quiz.printQuestion(response);
+
+				}
+				else{
+				console.log("Läsfel, status: "+Quiz.xhr.status);
+				}	
+			}
+			
+		};	
+
+
+	}
+
+	printQuestion: function(response){
+		var qField = document.querySelector(".questionField");
+		console.log(qField);
+		console.log(response);
+
+		qField.innerHTML = response.question;
+
 
 	},
 
@@ -47,7 +63,7 @@ var Quiz = {
 		// Create question field
 		var qDiv = document.createElement("div");
 		var qField = document.createElement("p");
-		qDiv.className = "questionField"	
+		qField.className = "questionField"	
 		div.appendChild(qDiv);
 		qDiv.appendChild(qField);
 		qField.innerHTML = "TestLOL";
@@ -66,6 +82,11 @@ var Quiz = {
 		inputButton.type = "button";
 		inputButton.value = "send";
 		inputDiv.appendChild(inputButton);
+
+		// Eventhandlers
+		inputButton.addEventListener("click", function(){
+			
+		});
 	}
 
 }
