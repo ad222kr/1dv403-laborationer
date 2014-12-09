@@ -12,9 +12,7 @@ var Quiz = {
 		Quiz.getRequest(Quiz.xhr);
 		Quiz.buildBasicElements(Quiz.div);
 	},
-    hej: function(){
-        a
-    }
+
 
 	getRequest: function(xhr){
 		xhr.onreadystatechange = function(){
@@ -80,7 +78,7 @@ var Quiz = {
 		inputText.type = "text";
 		div.appendChild(inputDiv);
 		inputDiv.appendChild(inputText);
-				
+
 		// Create input button
 		var inputButton = document.createElement("input");
 		inputButton.className = "inputButton";
