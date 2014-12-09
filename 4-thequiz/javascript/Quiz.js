@@ -15,16 +15,6 @@ var Quiz = {
 	},
 
 	getRequest: function(){
-		
-		
-
-		Quiz.xhr.open("GET", Quiz.URL, true);
-
-		Quiz.xhr.send(null);		
-
-	},
-
-	onStateChange: function(xhr){
 		var response;
 		Quiz.xhr.onreadystatechange = function(){
 			if(Quiz.xhr.readyState === 4){
@@ -38,10 +28,20 @@ var Quiz = {
 				}	
 			}
 			
-		};	
+		};
+		
+
+		Quiz.xhr.open("GET", Quiz.URL, true);
+
+		Quiz.xhr.send(null);		
+
+	},
+
+	onStateChange: function(xhr){
+			
 
 
-	}
+	},
 
 	printQuestion: function(response){
 		var qField = document.querySelector(".questionField");
