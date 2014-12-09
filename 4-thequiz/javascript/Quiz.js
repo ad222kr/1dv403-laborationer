@@ -9,17 +9,24 @@ var Quiz = {
     xhr: new XMLHttpRequest(),
 
     init: function(){ 
-        Quiz.getRequest(Quiz.xhr);
+        Quiz.getRequest(Quiz.xhr, Quiz.URL);
         Quiz.buildBasicElements(Quiz.div);
+        
     },
 
 
-    getRequest: function(xhr){
+    getRequest: function(xhr, url){
+    	
         xhr.onreadystatechange = function(){
-            if(xhr.readyState === 4){
+            if(xhr.readyState === 4 ){
                 if(xhr.status === 200 ){
-                    Quiz.printQuestion(JSON.parse(xhr.responseText));
-                    console.log(JSON.parse(xhr.responseText))
+
+            	 	Quiz.printQuestion(JSON.parse(xhr.responseText));	
+            	 	xhr.onreadystatechange = null;  
+                	// FOr some reason the onreadystatechange executes when posting 
+					// when sending to server, have to remove it here otherwise the 
+					// innerHTML of question field becomes undefined
+                	     
                 }
                 else{
                 console.log("Läsfel, status: "+xhr.status);
@@ -28,36 +35,75 @@ var Quiz = {
             
         };
         
-        Quiz.xhr.open("GET", Quiz.URL, true);
-
+        Quiz.xhr.open("GET", url, true);
+        
         Quiz.xhr.send(null);
 
-
-    },
-    hej: function(){
-    	// TEST HSIT
     },
 
-    sendRequest: function(input, xhr){
-        var response = JSON.parse(xhr.responseText);
+     sendRequest: function(input, xhr){
+    	
+		var response = JSON.parse(xhr.responseText);
 
-        xhr.open("POST", response.nextURL, true);
+	    xhr.open("POST", response.nextURL, true);
 
-        xhr.setRequestHeader("Content-Type", "application/json");
+	    xhr.setRequestHeader("Content-Type", "application/json");
 
-        var sendObject = {
-            answer: input.value
-        }
+	    var sendObject = {
+	        answer: input.value
+	    }
 
-        xhr.send(JSON.stringify(sendObject));
+	    xhr.send(JSON.stringify(sendObject));
+	    
+	    console.log(response);
 
+	    var button = document.querySelector(".inputButton");
 
+	    xhr.onreadystatechange = function(){
+	        if(xhr.readyState === 4 ){
+	            if(xhr.status === 200 ){
+
+	        	 	Quiz.newQuestion(JSON.parse(xhr.responseText).nextURL);
+	        	 	xhr.onreadystatechange = null;  
+	            	// FOr some reason the onreadystatechange executes when posting 
+					// when sending to server, have to remove it here otherwise the 
+					// innerHTML of question field becomes undefined
+	            	     
+	            }
+	            else{
+	            console.log("Läsfel, status: "+xhr.status);
+	            }   
+	        }
+	        
+	    };
+	    
+	},
+    newQuestion: function(url){
+    	
+    	var a = document.querySelector(".nextQuestion");
+    	
+    	a.innerHTML = "Nästa Fråga";
+    	
+    	console.log(url);
+    	a.addEventListener("click", function(){
+    		Quiz.getRequest(Quiz.xhr, url);
+    	});
+    	
 
     },
+    
 
+    nextQuestion: function () {
+	
+    },
+
+   
+        
     printQuestion: function(response){
-        var qField = document.querySelector(".questionField");
 
+        var qField = document.querySelector(".questionField");
+        var qHeader = document.querySelector(".questionHeader");
+        qHeader.innerHTML = "Fråga nummer: " + response.id;
         qField.innerHTML = response.question;
 
 
@@ -69,11 +115,14 @@ var Quiz = {
 
         // Create question field
         var qDiv = document.createElement("div");
+        qDiv.className = "question";
+        var qHeader = document.createElement("h3");
+        qHeader.className = "questionHeader";
         var qField = document.createElement("p");
         qField.className = "questionField"  
         div.appendChild(qDiv);
+        qDiv.appendChild(qHeader);
         qDiv.appendChild(qField);
-        qField.innerHTML = "TestLOL";
 
         // Create input field
         var inputDiv = document.createElement("div");
@@ -90,6 +139,12 @@ var Quiz = {
         inputButton.value = "send";
         inputDiv.appendChild(inputButton);
 
+        // a-tag for next question link
+    	var a = document.createElement("a");
+    	div.appendChild(a);
+    	a.className = "nextQuestion";
+    	a.href = "#";
+
         // Eventhandlers
         inputButton.addEventListener("click", function(){
             Quiz.sendRequest(inputText, Quiz.xhr);
@@ -99,4 +154,4 @@ var Quiz = {
 
 }
 
-window.onload = Quiz.init;
+window.onload = Quiz.init();
