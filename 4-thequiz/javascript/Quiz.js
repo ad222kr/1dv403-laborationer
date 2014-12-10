@@ -48,6 +48,7 @@ var Quiz = {
                 }
                 else{
                     document.querySelector(".statustext").innerHTML = "du svarade fel, försök igen";
+                    document.querySelector(".nextQuestion").innerHTML = "";
                     console.log("Läsfel, status: "+xhr.status);
                 }   
             }               
