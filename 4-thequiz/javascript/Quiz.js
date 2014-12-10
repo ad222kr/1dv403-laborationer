@@ -2,6 +2,7 @@
 
 var Quiz = {
     // TODO: Prevent user from clicking send if question already answered, remove eventlisteners maybe?
+    // Refactor shit for readability, code is messy as f right now
 
     div : document.getElementById("quiz"),
 
