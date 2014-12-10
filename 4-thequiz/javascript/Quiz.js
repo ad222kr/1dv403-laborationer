@@ -33,7 +33,7 @@ var Quiz = {
                 }   
             }           
         };
-
+        // ASS
         Quiz.xhr.open("GET", url, true);        
         Quiz.xhr.send(null);
     },
