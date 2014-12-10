@@ -10,7 +10,9 @@ var Quiz = {
 
     xhr: new XMLHttpRequest(),
 
-    tries: 0,
+    tries: [],
+
+    count: 0,
 
     init: function(){ 
         Quiz.getRequest(Quiz.xhr, Quiz.URL);
@@ -41,12 +43,14 @@ var Quiz = {
     sendRequest: function(input, url, xhr){
         // Sent to server, if status 400 URL now still stays the same (for answer)
         // so user can try again until they get the right answer
-        Quiz.tries++;
+        
+        Quiz.count++;
         xhr.onreadystatechange = function(){
 
             if(xhr.readyState === 4 ){
                 if(xhr.status != 400 ){                   
                     if(JSON.parse(xhr.responseText).nextURL === undefined){
+                        Quiz.correctAnswer();
                         Quiz.victory();
                     }
                     else{
@@ -87,6 +91,8 @@ var Quiz = {
     },
     correctAnswer: function(){
         document.querySelector(".statustext").innerHTML = "du svarade rätt";
+        Quiz.tries.push(Quiz.count);
+        Quiz.count = 0;
         Quiz.newQuestion(JSON.parse(Quiz.xhr.responseText).nextURL);
     },
 
@@ -104,12 +110,22 @@ var Quiz = {
         };
 
         div.innerHTML = "<h2>Grattis! Du vann! </h2>"
-        div.appendChild(document.createElement("p")).innerHTML = "Det tog dit " + Quiz.tries + " gissningar!";
+
+        /*for (var i = 1; i <= Quiz.tries.length; i++){
+            div.appendChild(document.createElement("p")).innerHTML = "Fråga " + i + ": " + Quiz.tries[i - 1] + " försök.";
+
+        };*/
+
+        Quiz.tries.forEach(function(e, index){
+            div.appendChild(document.createElement("p")).innerHTML = "Fråga " + (index + 1) + ": " + e + " försök.";         
+        }); 
+        //div.appendChild(document.createElement("p")).innerHTML = "Det tog dit " + Quiz.tries + " gissningar!";
     },
+
+
 
     buildBasicElements: function(){
 
-        // Refactor this into smaller funcs?
         var div = document.getElementById("quiz");
         // Create question field
         var qDiv = document.createElement("div");
@@ -157,21 +173,24 @@ var Quiz = {
         // Eventhandlers
         inputButton.addEventListener("click", function(){
             if (inputText.value != ""){
-            Quiz.sendRequest(inputText, Quiz.URL, Quiz.xhr);
-            inputText.value = "";   
+                Quiz.sendRequest(inputText, Quiz.URL, Quiz.xhr);
+                inputText.value = "";   
             }
         });
 
         inputText.addEventListener("keypress", function(e){
             if (!e){ e = window.event; }
-            if (e.keyCode === 13){
+            if (e.keyCode === 13 && inputText.value != ""){
                 e.preventDefault();
                 Quiz.sendRequest(inputText, Quiz.URL, Quiz.xhr);
                 inputText.value = "";
             }
 
         });
-    }
+    },
+
+
+
 
 }
 
