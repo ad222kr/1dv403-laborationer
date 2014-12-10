@@ -10,9 +10,11 @@ var Quiz = {
 
     xhr: new XMLHttpRequest(),
 
+    tries: 0,
+
     init: function(){ 
         Quiz.getRequest(Quiz.xhr, Quiz.URL);
-        Quiz.buildBasicElements(Quiz.div);        
+        Quiz.buildBasicElements();        
     },
 
     getRequest: function(xhr, url){
@@ -24,16 +26,14 @@ var Quiz = {
                 if(xhr.status === 200 || xhr.status === 304){
 
                     Quiz.printQuestion(JSON.parse(xhr.responseText));
-                    Quiz.URL =      JSON.parse(xhr.responseText).nextURL;
-                    console.log(Quiz.URL);
-
+                    Quiz.URL = JSON.parse(xhr.responseText).nextURL;
                 }
                 else{
                     console.log("Läsfel, status: "+xhr.status);
                 }   
             }           
         };
-        // ASS
+        
         Quiz.xhr.open("GET", url, true);        
         Quiz.xhr.send(null);
     },
@@ -41,16 +41,20 @@ var Quiz = {
     sendRequest: function(input, url, xhr){
         // Sent to server, if status 400 URL now still stays the same (for answer)
         // so user can try again until they get the right answer
+        Quiz.tries++;
         xhr.onreadystatechange = function(){
+
             if(xhr.readyState === 4 ){
-                if(xhr.status != 400 ){
-                    document.querySelector(".statustext").innerHTML = "du svarade rätt";
-                    Quiz.newQuestion(JSON.parse(Quiz.xhr.responseText).nextURL); 
+                if(xhr.status != 400 ){                   
+                    if(JSON.parse(xhr.responseText).nextURL === undefined){
+                        Quiz.victory();
+                    }
+                    else{
+                        Quiz.correctAnswer(); 
+                    }                                     
                 }
                 else{
-                    document.querySelector(".statustext").innerHTML = "du svarade fel, försök igen";
-                    document.querySelector(".nextQuestion").innerHTML = "";
-                    console.log("Läsfel, status: "+xhr.status);
+                    Quiz.wrongAnswer();
                 }   
             }               
         };
@@ -58,12 +62,12 @@ var Quiz = {
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         var sendObject = { answer: input.value }        
-        xhr.send(JSON.stringify(sendObject));    
+        xhr.send(JSON.stringify(sendObject)); 
     },
 
     newQuestion: function(url){
         // Shows link for getting to next question when user inputs correct answer
-        var a = document.querySelector(".nextQuestion");
+        var a = document.querySelector(".nextA");
         var status = document.querySelector(".statustext");
 
         a.innerHTML = "Nästa Fråga";
@@ -72,7 +76,6 @@ var Quiz = {
             a.innerHTML = "";
             status.innerHTML = "";
         });
-
     },
 
     printQuestion: function(response){
@@ -81,29 +84,33 @@ var Quiz = {
         var qHeader = document.querySelector(".questionHeader");
         qHeader.innerHTML = "Fråga nummer: " + response.id;
         qField.innerHTML = response.question;
-
     },
     correctAnswer: function(){
-        // TODO: refactor correct answer to this func
-
+        document.querySelector(".statustext").innerHTML = "du svarade rätt";
+        Quiz.newQuestion(JSON.parse(Quiz.xhr.responseText).nextURL);
     },
 
-    wrongAnster: function(){
-        // TODO: refactor wrong answer to this func
-
+    wrongAnswer: function(){
+        document.querySelector(".statustext").innerHTML = "du svarade fel, försök igen";
+        document.querySelector(".nextA").innerHTML = "";
     },
 
     victory: function(){
-        // TODO: function to remove questionfield, button etc when all q's done
-        // and print out a table, maybe number of tries per question and a
-        // congratulation
+        
+        // Solution found at http://stackoverflow.com/a/3955238
+        var div = document.getElementById("quiz");
+        while(div.firstChild){
+            div.removeChild(div.firstChild);
+        };
 
+        div.innerHTML = "<h2>Grattis! Du vann! </h2>"
+        div.appendChild(document.createElement("p")).innerHTML = "Det tog dit " + Quiz.tries + " gissningar!";
     },
 
-    buildBasicElements: function(div){
+    buildBasicElements: function(){
 
         // Refactor this into smaller funcs?
-
+        var div = document.getElementById("quiz");
         // Create question field
         var qDiv = document.createElement("div");
         qDiv.className = "question";
@@ -139,10 +146,13 @@ var Quiz = {
         statusDiv.appendChild(statusMessage);
 
         // a-tag for next question link
+        var aDiv = document.createElement("div");
         var a = document.createElement("a");
-        div.appendChild(a);
-        a.className = "nextQuestion";
+        div.appendChild(aDiv);
+        aDiv.appendChild(a);
+        aDiv.className = "nextQuestion";
         a.href = "#";
+        a.className = "nextA";
 
         // Eventhandlers
         inputButton.addEventListener("click", function(){
@@ -151,8 +161,18 @@ var Quiz = {
             inputText.value = "";   
             }
         });
+
+        inputText.addEventListener("keypress", function(e){
+            if (!e){ e = window.event; }
+            if (e.keyCode === 13){
+                e.preventDefault();
+                Quiz.sendRequest(inputText, Quiz.URL, Quiz.xhr);
+                inputText.value = "";
+            }
+
+        });
     }
 
 }
 
-window.onload = Quiz.init();
+window.onload = Quiz.init;
