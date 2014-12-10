@@ -14,12 +14,10 @@ var Quiz = {
 
     count: 0, // Counter for try
 
-    init: function(){ 
-        
+    init: function(){        
         Quiz.buildBasicElements(Quiz.div); 
         Quiz.getRequest(Quiz.xhr, Quiz.URL);
-        Quiz.addEventListeners(); 
-        Quiz.removeEventListeners();    
+        Quiz.addEventListeners();    
     },
 
     getRequest: function(xhr, url){
@@ -28,7 +26,6 @@ var Quiz = {
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4 ){
                 if(xhr.status === 200 || xhr.status === 304){
-
                     Quiz.printQuestion(JSON.parse(xhr.responseText));
                     Quiz.URL = JSON.parse(xhr.responseText).nextURL;
                 }
@@ -36,8 +33,7 @@ var Quiz = {
                     console.log("Läsfel, status: "+xhr.status);
                 }   
             }           
-        };
-        
+        };        
         Quiz.xhr.open("GET", url, true);        
         Quiz.xhr.send(null);
     },
@@ -97,8 +93,7 @@ var Quiz = {
         }
         else{
             Quiz.victory();
-        } 
-        
+        }        
     },
 
     wrongAnswer: function(){
@@ -106,8 +101,7 @@ var Quiz = {
         document.querySelector(".nextA").innerHTML = "";
     },
 
-    victory: function(){
-        
+    victory: function(){       
         // Solution found at http://stackoverflow.com/a/3955238
         // Removes everything and prints out congratz and
         // number of tries per question
@@ -122,10 +116,7 @@ var Quiz = {
         }); 
     },
 
-
-
     buildBasicElements: function(div){
-
         // Create question field
         var qDiv = document.createElement("div");
         qDiv.className = "question";
@@ -173,12 +164,9 @@ var Quiz = {
     },
 
     addEventListeners: function(){
-
         var inputButton = document.querySelector(".inputButton");
         var inputText = document.querySelector(".inputText");
         
-
-
         inputButton.addEventListener("click", function (){
             if (inputText.value != ""){
                 Quiz.sendRequest(inputText, Quiz.URL, Quiz.xhr);
@@ -193,20 +181,15 @@ var Quiz = {
                 Quiz.sendRequest(inputText, Quiz.URL, Quiz.xhr);
                 inputText.value = "";
             }
-
         });
     },
 
     removeEventListeners: function(){
         var inputButton = document.querySelector(".inputButton");
         var inputText = document.querySelector(".inputText");
-
         // TODO: Figure out how to remove eventlisteners with anonymous functions
         // Possible?
-
-
     },
-
 }
 
 window.onload = Quiz.init;
