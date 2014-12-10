@@ -1,6 +1,7 @@
 "use strict";
 
 var Quiz = {
+	// TODO: Prevent user from clicking send if question already answered, remove eventlisteners maybe?
 
     div : document.getElementById("quiz"),
 
@@ -15,7 +16,7 @@ var Quiz = {
 
     getRequest: function(xhr, url){
     	// Get request from server, prints the question
-    	// And sets URL for the next question
+    	// And sets Quiz.URL to url for getting the answer
 
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4 ){
@@ -27,8 +28,7 @@ var Quiz = {
     
                 }
                 else{
-
-                console.log("Läsfel, status: "+xhr.status);
+                	console.log("Läsfel, status: "+xhr.status);
                 }   
             }           
         };
@@ -38,32 +38,29 @@ var Quiz = {
     },
 
  	sendRequest: function(input, url, xhr){
-
+ 		// Sent to server, if status 400 URL now still stays the same (for answer)
+ 		// so user can try again until they get the right answer
 		xhr.onreadystatechange = function(){
 	        if(xhr.readyState === 4 ){
 	            if(xhr.status != 400 ){
 	            	document.querySelector(".statustext").innerHTML = "du svarade rätt";
-	            	console.log(JSON.parse(xhr.responseText).nextURL);
-	        	 	Quiz.newQuestion(JSON.parse(Quiz.xhr.responseText).nextURL);
-	        	 	xhr.onreadystatechange = null;  
+	        	 	Quiz.newQuestion(JSON.parse(Quiz.xhr.responseText).nextURL); 
 	            }
 	            else{
-	            	
+	            	document.querySelector(".statustext").innerHTML = "du svarade fel, försök igen";
 	            	console.log("Läsfel, status: "+xhr.status);
 	            }   
 	        }	        
 	    };
-		
-	    xhr.open("POST", url, true); // Using 
+		// Post the stringified object to server
+	    xhr.open("POST", url, true);
 	    xhr.setRequestHeader("Content-Type", "application/json");
-	    var sendObject = {
-	        answer: input.value
-	    }
+	    var sendObject = { answer: input.value }	    
 	    xhr.send(JSON.stringify(sendObject));    
 	},
 
     newQuestion: function(url){
-    	
+    	// Shows link for getting to next question when user inputs correct answer
     	var a = document.querySelector(".nextQuestion");
     	var status = document.querySelector(".statustext");
     	
@@ -77,7 +74,7 @@ var Quiz = {
     },
     
     printQuestion: function(response){
-
+    	// Prints the question (lol)
         var qField = document.querySelector(".questionField");
         var qHeader = document.querySelector(".questionHeader");
         qHeader.innerHTML = "Fråga nummer: " + response.id;
@@ -91,6 +88,13 @@ var Quiz = {
 
 	wrongAnster: function(){
 		// TODO: refactor wrong answer to this func
+
+	},
+
+	victory: function(){
+		// TODO: function to remove questionfield, button etc when all q's done
+		// and print out a table, maybe number of tries per question and a
+		// congratulation
 
 	},
 
