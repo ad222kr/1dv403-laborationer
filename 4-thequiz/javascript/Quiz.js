@@ -4,85 +4,62 @@ var Quiz = {
 
     div : document.getElementById("quiz"),
 
-    URL : "http://vhost3.lnu.se:20080/question/1", // URL for first question 
+    URL : "http://vhost3.lnu.se:20080/question/1",
 
     xhr: new XMLHttpRequest(),
 
     init: function(){ 
         Quiz.getRequest(Quiz.xhr, Quiz.URL);
-        Quiz.buildBasicElements(Quiz.div);
-        
+        Quiz.buildBasicElements(Quiz.div);        
     },
 
-
     getRequest: function(xhr, url){
+    	// Get request from server, prints the question
+    	// And sets URL for the next question
 
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4 ){
-                if(xhr.status === 200 ){
+                if(xhr.status === 200 || xhr.status === 304){
                 	
-            	 	Quiz.printQuestion(JSON.parse(xhr.responseText));	
-            	 	xhr.onreadystatechange = null;  
-                	// FOr some reason the onreadystatechange executes when posting 
-					// when sending to server, have to remove it here otherwise the 
-					// innerHTML of question field becomes undefined
-                	     
+            	 	Quiz.printQuestion(JSON.parse(xhr.responseText));
+            	 	Quiz.URL = 	JSON.parse(xhr.responseText).nextURL;
+            	 	console.log(Quiz.URL);
+    
                 }
                 else{
 
                 console.log("Läsfel, status: "+xhr.status);
                 }   
-            }
-            
+            }           
         };
         
-        Quiz.xhr.open("GET", url, true);
-        
+        Quiz.xhr.open("GET", url, true);        
         Quiz.xhr.send(null);
-
     },
 
-     sendRequest: function(input, xhr){
-    	
-		var response = JSON.parse(xhr.responseText);
+ 	sendRequest: function(input, url, xhr){
 
-	    xhr.open("POST", response.nextURL, true);
-
+		xhr.onreadystatechange = function(){
+	        if(xhr.readyState === 4 ){
+	            if(xhr.status != 400 ){
+	            	document.querySelector(".statustext").innerHTML = "du svarade rätt";
+	            	console.log(JSON.parse(xhr.responseText).nextURL);
+	        	 	Quiz.newQuestion(JSON.parse(Quiz.xhr.responseText).nextURL);
+	        	 	xhr.onreadystatechange = null;  
+	            }
+	            else{
+	            	
+	            	console.log("Läsfel, status: "+xhr.status);
+	            }   
+	        }	        
+	    };
+		
+	    xhr.open("POST", url, true); // Using 
 	    xhr.setRequestHeader("Content-Type", "application/json");
-
 	    var sendObject = {
 	        answer: input.value
 	    }
-
-	    xhr.send(JSON.stringify(sendObject));
-	    
-	    var button = document.querySelector(".inputButton");
-
-	    xhr.onreadystatechange = function(){
-	        if(xhr.readyState === 4 ){
-	            if(xhr.status === 200 ){
-	            	document.querySelector(".statustext").innerHTML = "du svarade rätt";
-	        	 	Quiz.newQuestion(JSON.parse(xhr.responseText).nextURL);
-	        	 	xhr.onreadystatechange = null;  
-	            	            }
-	            else{
-	            	document.querySelector(".statustext").innerHTML = "du svarade fel";
-	            console.log("Läsfel, status: "+xhr.status);
-	            }   
-	        }
-	        
-	    };
-	    
-	},
-
-	correctAnswer: function(){
-
-
-	},
-
-	wrongAnster: function(){
-
-
+	    xhr.send(JSON.stringify(sendObject));    
 	},
 
     newQuestion: function(url){
@@ -91,15 +68,12 @@ var Quiz = {
     	var status = document.querySelector(".statustext");
     	
     	a.innerHTML = "Nästa Fråga";
-    	
-    	console.log(url);
     	a.addEventListener("click", function(){
     		Quiz.getRequest(Quiz.xhr, url);
     		a.innerHTML = "";
     		status.innerHTML = "";
     	});
     	
-
     },
     
     printQuestion: function(response){
@@ -109,10 +83,20 @@ var Quiz = {
         qHeader.innerHTML = "Fråga nummer: " + response.id;
         qField.innerHTML = response.question;
 
-
     },
+    correctAnswer: function(){
+    	// TODO: refactor correct answer to this func
+
+	},
+
+	wrongAnster: function(){
+		// TODO: refactor wrong answer to this func
+
+	},
 
     buildBasicElements: function(div){
+
+    	// Refactor this into smaller funcs?
 
         // Create question field
         var qDiv = document.createElement("div");
@@ -156,8 +140,11 @@ var Quiz = {
 
         // Eventhandlers
         inputButton.addEventListener("click", function(){
-            Quiz.sendRequest(inputText, Quiz.xhr);
-            inputText.value = "";
+        	if (inputText.value != ""){
+        		Quiz.sendRequest(inputText, Quiz.URL, Quiz.xhr);
+            	inputText.value = "";	
+        	}
+            
         });
     }
 
