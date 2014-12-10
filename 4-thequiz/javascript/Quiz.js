@@ -1,12 +1,13 @@
 "use strict";
 
 var Quiz = {
-    // TODO: Prevent user from clicking send if question already answered, remove eventlisteners maybe?
-    // Refactor shit for readability, code is messy as f right now
+    // TODO: A function to remove eventlisteners. Cant have them as
+    // anonymous functions. Want to remove them to prevent user from
+    // se
 
     div : document.getElementById("quiz"),
 
-    URL : "http://vhost3.lnu.se:20080/question/1", // URL for first question
+    URL : "http://vhost3.lnu.se:20080/question/1",
 
     xhr: new XMLHttpRequest(),
 
@@ -14,15 +15,18 @@ var Quiz = {
 
     count: 0, // Counter for try
 
-    init: function(){        
+    init: function(){
+        // Initiates the quiz and gets the first question
+
         Quiz.buildBasicElements(Quiz.div); 
         Quiz.getRequest(Quiz.xhr, Quiz.URL);
         Quiz.addEventListeners();    
     },
 
     getRequest: function(xhr, url){
-        // Get request from server, prints the question
-        // And sets Quiz.URL to url for getting the answer      
+        // Gets request from the server, calls printQuestion
+        // And sets URL to the nextURL property from JSON object 
+
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4 ){
                 if(xhr.status === 200 || xhr.status === 304){
@@ -38,12 +42,11 @@ var Quiz = {
         Quiz.xhr.send(null);
     },
 
-    sendRequest: function(input, url, xhr){
-        // Sent to server, if status 400 URL now still stays the same (for answer)
-        // so user can try again until they get the right answer
-        
-        Quiz.count++;
+    sendRequest: function(input, url, xhr){     
+        // Sends request to server, calls correct or wrongAnswer depending on if
+        // the input is correct. Increases counter for number of tries
 
+        Quiz.count++;
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4 ){
                 if(xhr.status != 400 ){                       
@@ -54,7 +57,7 @@ var Quiz = {
                 }   
             }               
         };
-        // Post the stringified object to server
+
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         var sendObject = { answer: input.value }        
@@ -62,7 +65,9 @@ var Quiz = {
     },
 
     nextQuestion: function(url){
-        // Shows link for getting to next question when user inputs correct answer
+        // Displays a link to get to the next question and adds
+        // an eventlistener to it for getRequest.
+
         var a = document.querySelector(".nextA");
         var status = document.querySelector(".statustext");       
 
@@ -70,21 +75,20 @@ var Quiz = {
         a.addEventListener("click", function(){
             Quiz.getRequest(Quiz.xhr, url);
             a.innerHTML = "";
-            status.innerHTML = "";
-              
+            status.innerHTML = "";            
         });      
     },
 
     printQuestion: function(response){
-        // Prints the question (lol)
         var qField = document.querySelector(".questionField");
         var qHeader = document.querySelector(".questionHeader");
         qHeader.innerHTML = "Fråga nummer: " + response.id;
         qField.innerHTML = response.question;
     },
     correctAnswer: function(response){
-        // Prints out text that the answer is correct, pushes the count to array
-        // and resets it. Calls nextQuestion and removes eventlisteners
+        // Called when answer is correct. Pushes the try-counter to the array
+        // and resets it.
+
         document.querySelector(".statustext").innerHTML = "du svarade rätt";
         Quiz.tries.push(Quiz.count);
         Quiz.count = 0;
@@ -101,22 +105,33 @@ var Quiz = {
         document.querySelector(".nextA").innerHTML = "";
     },
 
-    victory: function(){       
-        // Solution found at http://stackoverflow.com/a/3955238
-        // Removes everything and prints out congratz and
-        // number of tries per question
+    victory: function(){
+        // Removes all elements and prints out the result (number of truies
+        // per question and a little grats-message)
+
         var div = document.getElementById("quiz");
+        var header = document.createElement("h2");
+        var p;     
+        
+        // http://stackoverflow.com/a/3955238
         while(div.firstChild){
             div.removeChild(div.firstChild);
         };
+        
+        header.className = "counterHeading";
+        header.innerHTML = "Grattis! Du vann";
+        div.appendChild(header);
 
-        div.innerHTML = "<h2>Grattis! Du vann! </h2>"
         Quiz.tries.forEach(function(e, index){
-            div.appendChild(document.createElement("p")).innerHTML = "Fråga " + (index + 1) + ": " + e + " försök.";         
+            p = document.createElement("p");
+            p.className = "counter";
+            p.innerHTML = "Fråga " + (index + 1) + ": " + e + " försök.";
+            div.appendChild(p);        
         }); 
     },
 
     buildBasicElements: function(div){
+
         // Create question field
         var qDiv = document.createElement("div");
         qDiv.className = "question";
@@ -144,7 +159,7 @@ var Quiz = {
         inputButton.value = "send";
         inputDiv.appendChild(inputButton);
 
-        // div for statusfield
+        // Create statusfield
         var statusDiv = document.createElement("div");
         statusDiv.className = "statusfield";
         div.appendChild(statusDiv);
@@ -152,7 +167,7 @@ var Quiz = {
         statusDiv.className = "statustext";
         statusDiv.appendChild(statusMessage);
 
-        // a-tag for next question link
+        // Create a-tag for the nextQuestion-function
         var aDiv = document.createElement("div");
         var a = document.createElement("a");
         div.appendChild(aDiv);
@@ -183,13 +198,5 @@ var Quiz = {
             }
         });
     },
-
-    removeEventListeners: function(){
-        var inputButton = document.querySelector(".inputButton");
-        var inputText = document.querySelector(".inputText");
-        // TODO: Figure out how to remove eventlisteners with anonymous functions
-        // Possible?
-    },
 }
-
 window.onload = Quiz.init;
