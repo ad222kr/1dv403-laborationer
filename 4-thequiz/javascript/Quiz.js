@@ -6,23 +6,25 @@ var Quiz = {
 
     div : document.getElementById("quiz"),
 
-    URL : "http://vhost3.lnu.se:20080/question/1",
+    URL : "http://vhost3.lnu.se:20080/question/1", // URL for first question
 
     xhr: new XMLHttpRequest(),
 
-    tries: [],
+    tries: [], // Holds the counts for each question
 
-    count: 0,
+    count: 0, // Counter for try
 
     init: function(){ 
+        
+        Quiz.buildBasicElements(Quiz.div); 
         Quiz.getRequest(Quiz.xhr, Quiz.URL);
-        Quiz.buildBasicElements();        
+        Quiz.addEventListeners(); 
+        Quiz.removeEventListeners();    
     },
 
     getRequest: function(xhr, url){
         // Get request from server, prints the question
-        // And sets Quiz.URL to url for getting the answer
-
+        // And sets Quiz.URL to url for getting the answer      
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4 ){
                 if(xhr.status === 200 || xhr.status === 304){
@@ -45,17 +47,11 @@ var Quiz = {
         // so user can try again until they get the right answer
         
         Quiz.count++;
-        xhr.onreadystatechange = function(){
 
+        xhr.onreadystatechange = function(){
             if(xhr.readyState === 4 ){
-                if(xhr.status != 400 ){                   
-                    if(JSON.parse(xhr.responseText).nextURL === undefined){
-                        Quiz.correctAnswer();
-                        Quiz.victory();
-                    }
-                    else{
-                        Quiz.correctAnswer(); 
-                    }                                     
+                if(xhr.status != 400 ){                       
+                    Quiz.correctAnswer(JSON.parse(xhr.responseText));                                    
                 }
                 else{
                     Quiz.wrongAnswer();
@@ -69,17 +65,18 @@ var Quiz = {
         xhr.send(JSON.stringify(sendObject)); 
     },
 
-    newQuestion: function(url){
+    nextQuestion: function(url){
         // Shows link for getting to next question when user inputs correct answer
         var a = document.querySelector(".nextA");
-        var status = document.querySelector(".statustext");
+        var status = document.querySelector(".statustext");       
 
-        a.innerHTML = "Nästa Fråga";
+        a.innerHTML = "Nästa Fråga"; 
         a.addEventListener("click", function(){
             Quiz.getRequest(Quiz.xhr, url);
             a.innerHTML = "";
             status.innerHTML = "";
-        });
+              
+        });      
     },
 
     printQuestion: function(response){
@@ -89,11 +86,19 @@ var Quiz = {
         qHeader.innerHTML = "Fråga nummer: " + response.id;
         qField.innerHTML = response.question;
     },
-    correctAnswer: function(){
+    correctAnswer: function(response){
+        // Prints out text that the answer is correct, pushes the count to array
+        // and resets it. Calls nextQuestion and removes eventlisteners
         document.querySelector(".statustext").innerHTML = "du svarade rätt";
         Quiz.tries.push(Quiz.count);
         Quiz.count = 0;
-        Quiz.newQuestion(JSON.parse(Quiz.xhr.responseText).nextURL);
+        if(response.nextURL !== undefined){
+            Quiz.nextQuestion(JSON.parse(Quiz.xhr.responseText).nextURL);    
+        }
+        else{
+            Quiz.victory();
+        } 
+        
     },
 
     wrongAnswer: function(){
@@ -104,29 +109,23 @@ var Quiz = {
     victory: function(){
         
         // Solution found at http://stackoverflow.com/a/3955238
+        // Removes everything and prints out congratz and
+        // number of tries per question
         var div = document.getElementById("quiz");
         while(div.firstChild){
             div.removeChild(div.firstChild);
         };
 
         div.innerHTML = "<h2>Grattis! Du vann! </h2>"
-
-        /*for (var i = 1; i <= Quiz.tries.length; i++){
-            div.appendChild(document.createElement("p")).innerHTML = "Fråga " + i + ": " + Quiz.tries[i - 1] + " försök.";
-
-        };*/
-
         Quiz.tries.forEach(function(e, index){
             div.appendChild(document.createElement("p")).innerHTML = "Fråga " + (index + 1) + ": " + e + " försök.";         
         }); 
-        //div.appendChild(document.createElement("p")).innerHTML = "Det tog dit " + Quiz.tries + " gissningar!";
     },
 
 
 
-    buildBasicElements: function(){
+    buildBasicElements: function(div){
 
-        var div = document.getElementById("quiz");
         // Create question field
         var qDiv = document.createElement("div");
         qDiv.className = "question";
@@ -142,6 +141,7 @@ var Quiz = {
         var inputDiv = document.createElement("div");
         var inputText = document.createElement("input");
         inputDiv.className = "inputField";
+        inputText.className = "inputText";
         inputText.type = "text";
         div.appendChild(inputDiv);
         inputDiv.appendChild(inputText);
@@ -169,16 +169,24 @@ var Quiz = {
         aDiv.className = "nextQuestion";
         a.href = "#";
         a.className = "nextA";
+        
+    },
 
-        // Eventhandlers
-        inputButton.addEventListener("click", function(){
+    addEventListeners: function(){
+
+        var inputButton = document.querySelector(".inputButton");
+        var inputText = document.querySelector(".inputText");
+        
+
+
+        inputButton.addEventListener("click", function (){
             if (inputText.value != ""){
                 Quiz.sendRequest(inputText, Quiz.URL, Quiz.xhr);
                 inputText.value = "";   
             }
         });
 
-        inputText.addEventListener("keypress", function(e){
+        inputText.addEventListener("keypress", function (e){
             if (!e){ e = window.event; }
             if (e.keyCode === 13 && inputText.value != ""){
                 e.preventDefault();
@@ -189,8 +197,15 @@ var Quiz = {
         });
     },
 
+    removeEventListeners: function(){
+        var inputButton = document.querySelector(".inputButton");
+        var inputText = document.querySelector(".inputText");
+
+        // TODO: Figure out how to remove eventlisteners with anonymous functions
+        // Possible?
 
 
+    },
 
 }
 
