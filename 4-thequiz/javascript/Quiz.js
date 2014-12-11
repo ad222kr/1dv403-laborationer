@@ -20,13 +20,15 @@ var Quiz = {
 
         Quiz.buildBasicElements(Quiz.div); 
         Quiz.getRequest(Quiz.xhr, Quiz.URL);
-        Quiz.addEventListeners();    
+        
+        
+         
     },
 
     getRequest: function(xhr, url){
         // Gets request from the server, calls printQuestion
         // And sets URL to the nextURL property from JSON object 
-
+        Quiz.addEventListeners();   
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4 ){
                 if(xhr.status === 200 || xhr.status === 304){
@@ -80,15 +82,13 @@ var Quiz = {
     },
 
     printQuestion: function(response){
-        var qField = document.querySelector(".questionField");
-        var qHeader = document.querySelector(".questionHeader");
-        qHeader.innerHTML = "Fråga nummer: " + response.id;
-        qField.innerHTML = response.question;
+        document.querySelector(".questionHeader").innerHTML = "Fråga nummer: " + response.id;
+        document.querySelector(".questionField").innerHTML = response.question;
     },
     correctAnswer: function(response){
         // Called when answer is correct. Pushes the try-counter to the array
         // and resets it.
-
+        Quiz.removeEventListeners();
         document.querySelector(".statustext").innerHTML = "du svarade rätt";
         Quiz.tries.push(Quiz.count);
         Quiz.count = 0;
@@ -96,7 +96,7 @@ var Quiz = {
             Quiz.nextQuestion(JSON.parse(Quiz.xhr.responseText).nextURL);    
         }
         else{
-            Quiz.victory();
+            Quiz.victory(Quiz.div);
         }        
     },
 
@@ -105,19 +105,15 @@ var Quiz = {
         document.querySelector(".nextA").innerHTML = "";
     },
 
-    victory: function(){
+    victory: function(div){
         // Removes all elements and prints out the result (number of truies
         // per question and a little grats-message)
 
-        var div = document.getElementById("quiz");
         var header = document.createElement("h2");
         var p;     
         
-        // http://stackoverflow.com/a/3955238
-        while(div.firstChild){
-            div.removeChild(div.firstChild);
-        };
-        
+        Quiz.removeElements(Quiz.div);
+              
         header.className = "counterHeading";
         header.innerHTML = "Grattis! Du vann";
         div.appendChild(header);
@@ -128,6 +124,44 @@ var Quiz = {
             p.innerHTML = "Fråga " + (index + 1) + ": " + e + " försök.";
             div.appendChild(p);        
         }); 
+    },
+
+    removeElements: function(div){
+        // http://stackoverflow.com/a/3955238
+        while(div.firstChild){
+            div.removeChild(div.firstChild);
+        };
+    },
+
+    addEventListeners: function(){
+        var elements = Quiz.getInputElements();
+        elements.inputButton.addEventListener("click", Quiz.eventFunction, false);
+        elements.inputText.addEventListener("keypress", Quiz.eventFunction, false);
+        elements.inputText.value = "";
+    },
+
+    removeEventListeners: function(){
+        var elements = Quiz.getInputElements();
+        elements.inputButton.removeEventListener("click", Quiz.eventFunction);
+        elements.inputText.removeEventListener("keypress", Quiz.eventFunction);
+    },
+
+    eventFunction: function(){
+        var inputText = document.querySelector(".inputText");
+        if (!e){ var e = window.event; }
+        if(inputText.value !== "" && (e.type === "click" || e.keyCode === 13)) {            
+                Quiz.sendRequest(inputText, Quiz.URL, Quiz.xhr);
+                                
+        }
+    },
+
+    getInputElements: function(){
+        // Obsolete?
+        return {
+            inputText : document.querySelector(".inputText"),
+            inputButton : document.querySelector(".inputButton"),
+        }
+
     },
 
     buildBasicElements: function(div){
@@ -176,27 +210,6 @@ var Quiz = {
         a.href = "#";
         a.className = "nextA";
         
-    },
-
-    addEventListeners: function(){
-        var inputButton = document.querySelector(".inputButton");
-        var inputText = document.querySelector(".inputText");
-        
-        inputButton.addEventListener("click", function (){
-            if (inputText.value != ""){
-                Quiz.sendRequest(inputText, Quiz.URL, Quiz.xhr);
-                inputText.value = "";   
-            }
-        });
-
-        inputText.addEventListener("keypress", function (e){
-            if (!e){ e = window.event; }
-            if (e.keyCode === 13 && inputText.value != ""){
-                e.preventDefault();
-                Quiz.sendRequest(inputText, Quiz.URL, Quiz.xhr);
-                inputText.value = "";
-            }
-        });
-    },
+    },       
 }
 window.onload = Quiz.init;
