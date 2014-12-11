@@ -127,7 +127,7 @@ var Quiz = {
         // http://stackoverflow.com/a/3955238
         while(div.firstChild){
             div.removeChild(div.firstChild);
-        };
+        }
     },
 
     addEventListeners: function(){
@@ -156,7 +156,7 @@ var Quiz = {
         // Obsolete?
         return {
             inputText : document.querySelector(".inputText"),
-            inputButton : document.querySelector(".inputButton"),
+            inputButton : document.querySelector(".inputButton")
         }
     },
 
@@ -168,7 +168,7 @@ var Quiz = {
         var qHeader = document.createElement("h3");
         qHeader.className = "questionHeader";
         var qField = document.createElement("p");
-        qField.className = "questionField"  
+        qField.className = "questionField";
         div.appendChild(qDiv);
         qDiv.appendChild(qHeader);
         qDiv.appendChild(qField);
@@ -205,6 +205,6 @@ var Quiz = {
         aDiv.className = "nextQuestion";
         a.href = "#";
         a.className = "nextA";        
-    },       
+    }
 }
 window.onload = Quiz.init;
