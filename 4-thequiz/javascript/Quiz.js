@@ -19,10 +19,7 @@ var Quiz = {
         // Initiates the quiz and gets the first question
 
         Quiz.buildBasicElements(Quiz.div); 
-        Quiz.getRequest(Quiz.xhr, Quiz.URL);
-        
-        
-         
+        Quiz.getRequest(Quiz.xhr, Quiz.URL);       
     },
 
     getRequest: function(xhr, url){
@@ -161,7 +158,6 @@ var Quiz = {
             inputText : document.querySelector(".inputText"),
             inputButton : document.querySelector(".inputButton"),
         }
-
     },
 
     buildBasicElements: function(div){
@@ -208,8 +204,7 @@ var Quiz = {
         aDiv.appendChild(a);
         aDiv.className = "nextQuestion";
         a.href = "#";
-        a.className = "nextA";
-        
+        a.className = "nextA";        
     },       
 }
 window.onload = Quiz.init;
