@@ -25,12 +25,15 @@ var Quiz = {
     getRequest: function(xhr, url){
         // Gets request from the server, calls printQuestion
         // And sets URL to the nextURL property from JSON object 
+        var response;
+
         Quiz.addEventListeners();   
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4 ){
                 if(xhr.status === 200 || xhr.status === 304){
-                    Quiz.printQuestion(JSON.parse(xhr.responseText));
-                    Quiz.URL = JSON.parse(xhr.responseText).nextURL;
+                    response = JSON.parse(xhr.responseText);
+                    Quiz.printQuestion(response);
+                    Quiz.URL = response.nextURL;
                 }
                 else{
                     console.log("Läsfel, status: "+xhr.status);
@@ -44,15 +47,19 @@ var Quiz = {
     sendRequest: function(input, url, xhr){     
         // Sends request to server, calls correct or wrongAnswer depending on if
         // the input is correct. Increases counter for number of tries
-
+        var response;
         Quiz.count++;
+
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4 ){
-                if(xhr.status != 400 ){                       
-                    Quiz.correctAnswer(JSON.parse(xhr.responseText));                                    
+                if(xhr.status === 200 ){                    
+                    Quiz.correctAnswer(JSON.parse(xhr.responseText));                              
+                }
+                else if (xhr.status === 400){
+                    Quiz.wrongAnswer();
                 }
                 else{
-                    Quiz.wrongAnswer();
+                    console.log("Läsfel, status: "+xhr.status);
                 }   
             }               
         };
@@ -84,13 +91,13 @@ var Quiz = {
     },
     correctAnswer: function(response){
         // Called when answer is correct. Pushes the try-counter to the array
-        // and resets it.
+        // and resets it. Also checks if nextURL is defined
         Quiz.removeEventListeners();
         document.querySelector(".statustext").innerHTML = "du svarade rätt";
         Quiz.tries.push(Quiz.count);
         Quiz.count = 0;
         if(response.nextURL !== undefined){
-            Quiz.nextQuestion(JSON.parse(Quiz.xhr.responseText).nextURL);    
+            Quiz.nextQuestion(response.nextURL);    
         }
         else{
             Quiz.victory(Quiz.div);
@@ -100,6 +107,7 @@ var Quiz = {
     wrongAnswer: function(){
         document.querySelector(".statustext").innerHTML = "du svarade fel, försök igen";
         document.querySelector(".nextA").innerHTML = "";
+        document.querySelector(".inputText").value = "";
     },
 
     victory: function(div){
