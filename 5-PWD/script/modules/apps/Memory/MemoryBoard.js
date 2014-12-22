@@ -4,7 +4,7 @@ function MemoryBoard(rows, cols, gameID){
 
     var that = this;
 
-    var div = document.querySelector("#" + gameID);
+    var div = $(gameID);
     var maxNumberOfMatches = (rows * cols) / 2;
     var numberOfMatches = 0;
     var flippedCount = 0;
@@ -49,7 +49,7 @@ function MemoryBoard(rows, cols, gameID){
         }
     };
 
-    this.checkMatch = function(flippedArr){
+    this.checvkMatch = function(flippedArr){
 
         // Adds a try, then checks if the images match       
         numberOfTries++;
@@ -88,8 +88,8 @@ function MemoryBoard(rows, cols, gameID){
         var cellCount = 0;
         var table = document.createElement("table");
         var header = document.createElement("h1");
-        div.appendChild(header).innerHTML = "memory";
-        div.appendChild(table);
+        div.append(header).innerHTML = "memory";
+        div.append(table);
 
 
         // Generating cells and populating with the face-down image
