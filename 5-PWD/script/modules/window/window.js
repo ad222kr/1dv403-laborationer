@@ -46,6 +46,8 @@ define(function(){
 	};
 
 	Window.prototype.createBottomBar = function(){
+		var bottomBar = document.createElement("div");
+		var 
 
 
 	};

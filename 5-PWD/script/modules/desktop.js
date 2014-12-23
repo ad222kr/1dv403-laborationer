@@ -61,6 +61,8 @@ define(
             imgViewerA.appendChild(imgViewerImg);
             taskbar.appendChild(imgViewerA);
 
+            // adding listeners
+            this.addListeners()
 
             
         };
