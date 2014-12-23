@@ -55,7 +55,6 @@ body{
 	background: black;
 }
 
-/* Style for desktop div */
 #desktop{
 	position: relative; /* For keeping task-bar div inside of parent div */
 	display: block;
@@ -92,12 +91,35 @@ body{
 #taskbar{
 
 	background: red;
-	height: 25px;
+	height: 30px;
 	position: absolute; /* Absolute and bottom for keeping taskbar att bottom of parent div */
 	width: 100%;
 	bottom: 0px;
 }
 
+/* Style for the window, its top/bottombar, statustext */
+.window{
+	display: block;
+	border: 1px black solid;
+	height: 300px;
+	width: 300px;
+
+}
+
+.wTopBar{
+	display: block;
+	width: 100%;
+	height: 20px;
+	background-color: green;
+}
+
+.wBottomBar{
+
+}
+
+.wStatusText{
+
+}
 
 
 

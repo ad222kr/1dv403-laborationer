@@ -3,16 +3,17 @@
 define(
     [
         "mustache",
-        "window",
+        "../modules/window/window",
         "require",
         "apps/Memory/MemoryBoard"
     ],
-    function(mustache, Window, require){
+    function(mustache, Window, require, MemoryBoard){
 
         // Constructor
     	var Desktop = function(size){
             // Ref to div for passing around
-            this.div = document.getElementById("desktop");
+            var div = document.getElementById("desktop");
+
 
             // Getter & Setter for size, might add functionality
             // to change desktop resolution later
@@ -21,19 +22,17 @@ define(
             };
             this.getSize = function(){
                 return size;
-            }
+            };
 
-            this.getTaskBarSize = function(){
-                if(size === "xsmall"){
-                    return 800;
-                } else if(size ==="small"){
-                    return 1024;
-                } else {
-                    return 1280;
+            this.getIcons = function(){
+                var icons = {
+                    imgViewer: "pics/taskbar/folder32.png",
                 }
+                return icons;
             }
 
-            this.createDesktop(this.div);
+            this.createDesktop(div);
+
 
         };
 
@@ -41,19 +40,36 @@ define(
             var that = this;
             div.className = this.getSize();
 
-            this.createTaskBar(div);
-            
+            this.createTaskBar(div);            
 
         };
 
-        Desktop.prototype.createTaskBar = function(div){
+        Desktop.prototype.createTaskBar = function(div, icons){
             var that = this;
-            // Creating elements for the footer
+            // Creating elements for the fskbar
+            // Setting icons on the taskbar
+            var icons = this.getIcons();
             var taskbar = document.createElement("div");
             taskbar.id = "taskbar";
-            taskbar.className = this.getTaskBarSize();
             div.appendChild(taskbar);
-        }
+
+            // Icons for imageviewer
+            var imgViewerA = document.createElement("a");
+            var imgViewerImg = document.createElement("img");
+            imgViewerA.href = "#";
+            imgViewerImg.src = icons.imgViewer;
+            imgViewerA.appendChild(imgViewerImg);
+            taskbar.appendChild(imgViewerA);
+
+
+            
+        };
+
+        Desktop.prototype.addListeners = function(arrOfIcons){
+
+        };
+
+
         return Desktop;
     }
 )

@@ -36,7 +36,7 @@ define(["apps/Memory/MemoryBoard", "apps/Memory/random"],
 
                     if(target.className == i){
 
-                        target.src = "pics/" + this.tiles[i] + ".png";
+                        target.src = "pics/memory/" + this.tiles[i] + ".png";
                     }
                 }
                 // Pushed the image to an array that will hold the two clicked
@@ -77,7 +77,7 @@ define(["apps/Memory/MemoryBoard", "apps/Memory/random"],
 
                     for (var i = 0; i < flippedArr.length; i++){
 
-                        flippedArr[i].src = "pics/0.png";
+                        flippedArr[i].src = "pics/memory/0.png";
                         flippedArr[i].classList.remove("clicked");
                     }
                     flippedCount = 0;
@@ -93,7 +93,7 @@ define(["apps/Memory/MemoryBoard", "apps/Memory/random"],
             var cellCount = 0;
             var table = document.createElement("table");
             var header = document.createElement("h1");
-
+            console.log(gameID);
             div.appendChild(table);
 
 
@@ -109,7 +109,7 @@ define(["apps/Memory/MemoryBoard", "apps/Memory/random"],
                     var a = document.createElement("a");
                     var img = document.createElement("img");
                     a.href = "#";
-                    img.src = "pics/0.png";
+                    img.src = "pics/memory/0.png";
                     a.appendChild(img);
                     cell.appendChild(a);
                     row.appendChild(cell);
