@@ -3,7 +3,7 @@ define(function(){
     
     var Window = function(appID){
         this.height = 200;
-        this.width = 200;
+        this.width = 280;
 
         this.getAppId = function(){
             return appID;

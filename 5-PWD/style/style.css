@@ -119,6 +119,13 @@ body{
 }
 
 
+.thumbDiv{
+	display: block;
+	float:left;
+	padding: 5px;
+	margin: 0px auto;
+}
+
 
 
 

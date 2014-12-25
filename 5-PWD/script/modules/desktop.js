@@ -34,8 +34,6 @@ define(
 
             this.createDesktop(div);
             var img = new ImageViewer("ImageViewer");
-            var mem = new Memory("Memory");
-
 
         };
 

@@ -6,25 +6,29 @@ define(["modules/window/window"],
 		Window.call(this, appID);
 
 		var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
+		this.winDiv = document.querySelector(".window");
+
 		this.getUrl = function(){
 			return url;
 		}
 
+
+
+		this.getPics(this.winDiv);
+
 	}
+	
 	ImageViewer.prototype = Object.create(Window.prototype);
 
-
-	ImageViewer.prototype.getPics = function(){
+	ImageViewer.prototype.getPics = function(div){
+		var that = this;
 		var xhr = new XMLHttpRequest();
-		var response;
+
 
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState === 4){
 				if(xhr.status === 200){
-					response = JSON.parse(xhr.responseText);
-					console.log(response);
-					
-					
+					that.renderThumbs(JSON.parse(xhr.responseText), div);				
 				}
 				else{
 					console.log("Läsfel, status: "+xhr.status);
@@ -34,10 +38,48 @@ define(["modules/window/window"],
 
 		xhr.open("GET", this.getUrl(), true);
 		xhr.send(null);
+	};
+
+	ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
+		var maxThumbHeight = 0;
+		var maxThumbWidth = 0;
+
+		// Getting the highest thumbwidth/height
+		imgArr.forEach(function(element){
+			if (maxThumbWidth < element.thumbWidth){
+				maxThumbWidth = element.thumbWidth;
+			}
+			if (maxThumbHeight < element.thumbHeight){
+				maxThumbHeight = element.thumbHeight;
+			}
+		});
+
+		imgArr.forEach(function(element, index){
+			var div = document.createElement("div");
+			var a = document.createElement("a");
+			var img = document.createElement("img");
+
+			console.log(element)
+
+			div.className = "thumbDiv";
+			a.href = "#";
+			img.className = "thumbURL";
+
+			img.src = element.thumbURL;
+
+			div.style.width = maxThumbWidth+"px";
+			div.style.height = maxThumbHeight+"px";
+
+			winDiv.appendChild(div);
+			div.appendChild(a);
+			a.appendChild(img);
+
+
+
+
+		});
 
 		
-
-
 
 	};
 
