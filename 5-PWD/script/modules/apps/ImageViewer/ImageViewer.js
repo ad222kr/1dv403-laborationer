@@ -3,14 +3,45 @@ define(["modules/window/window"],
 	function(Window){
 
 	var ImageViewer = function(appID){
-		// Calling Windows constructor, inhereting props
 		Window.call(this, appID);
 
+		var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
+		this.getUrl = function(){
+			return url;
+		}
+
 	}
-
-
-	// Inherits functions on Window prototype
 	ImageViewer.prototype = Object.create(Window.prototype);
+
+
+	ImageViewer.prototype.getPics = function(){
+		var xhr = new XMLHttpRequest();
+		var response;
+
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState === 4){
+				if(xhr.status === 200){
+					response = JSON.parse(xhr.responseText);
+					console.log(response);
+					
+					
+				}
+				else{
+					console.log("Läsfel, status: "+xhr.status);
+				}
+			}
+		}
+
+		xhr.open("GET", this.getUrl(), true);
+		xhr.send(null);
+
+		
+
+
+
+	};
+
+	
 
 	return ImageViewer;
 })
