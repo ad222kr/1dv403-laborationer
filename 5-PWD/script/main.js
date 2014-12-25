@@ -5,9 +5,9 @@ require.config({
 
     paths: {
         "mustache": "mustache",
-        "window": "../modules/window/window",
         "require": "../require",
         "apps": "../modules/apps",
+        "modules": "../modules/"
         
     }
 });

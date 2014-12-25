@@ -5,9 +5,10 @@ define(
         "mustache",
         "../modules/window/window",
         "require",
-        "apps/Memory/MemoryBoard"
+        "apps/Memory/Memory",
+        "apps/ImageViewer/ImageViewer",
     ],
-    function(mustache, Window, require, MemoryBoard){
+    function(mustache, Window, require, Memory, ImageViewer){
 
         // Constructor
     	var Desktop = function(size){
@@ -32,6 +33,8 @@ define(
             }
 
             this.createDesktop(div);
+            var img = new ImageViewer("ImageViewer");
+            var mem = new Memory("Memory");
 
 
         };

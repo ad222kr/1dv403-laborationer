@@ -1,30 +1,35 @@
         "use strict";
 
-define(["apps/Memory/MemoryBoard", "apps/Memory/random"],
-    function(MemoryBoard, RandomGenerator){
+define(["apps/Memory/MemoryBoard", "apps/Memory/random", "modules/window/window"],
+    function(MemoryBoard, RandomGenerator, Window){
 
+    
 
     var MemoryBoard = function(rows, cols, gameID){
 
         var that = this;
-
-        var div = gameID;
-        console.log(div);
+        
+        
+        //var div = gameID;
+        var div = document.querySelector(".window");
         var maxNumberOfMatches = (rows * cols) / 2;
         var numberOfMatches = 0;
         var flippedCount = 0;
         var flippedArr = [];
         var numberOfTries = 0;
         this.tiles = [];
-        console.log(RandomGenerator);
+        console.log(this);
+        this.prototype.createWindow();
+
 
         this.start = function(){
             // Starts the game
+
             this.tiles = RandomGenerator.getPictureArray(cols, rows);
-            this.generateTable();
+            this.generateTable(div);
         };
 
-
+       
     
         this.flipTile = function(target){
             
@@ -88,13 +93,12 @@ define(["apps/Memory/MemoryBoard", "apps/Memory/random"],
             this.checkVictory();
         };
 
-        this.generateTable = function(){
+        this.generateTable = function(div){
             // Creating the table
             var cellCount = 0;
             var table = document.createElement("table");
             var header = document.createElement("h1");
-            console.log(gameID);
-            div.appendChild(table);
+            gameID.appendChild(table);
 
 
             // Generating cells and populating with the face-down image
@@ -155,6 +159,12 @@ define(["apps/Memory/MemoryBoard", "apps/Memory/random"],
             }
         };
 
+
+
+        MemoryBoard.prototype = Object.create(Window.prototype);
+        console.log(MemoryBoard.prototype)
+        console.log(MemoryBoard.createWindow)
+        Window.call(this);
         this.start();
         }
 

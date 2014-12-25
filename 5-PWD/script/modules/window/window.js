@@ -2,14 +2,14 @@
 define(function(){
     
     var Window = function(appID){
-        this.height = 300;
-        this.width = 300;
+        this.height = 200;
+        this.width = 200;
 
         this.getAppId = function(){
             return appID;
         }
-
         this.createWindow();
+        
     };
 
 
@@ -27,6 +27,9 @@ define(function(){
     Window.prototype.createMain = function () {
         var windowDiv = document.createElement("div");      
         windowDiv.className = "window";
+        windowDiv.style.width = this.width + "px";
+        windowDiv.style.height = this.height + "px";
+        //windowDiv.setAttribute("width", this.width + "px");
         
         return windowDiv;
         
@@ -38,7 +41,7 @@ define(function(){
 
         topBar.className = "wTopBar";
         statusText.className = "wStatusText";
-
+        statusText.innerHTML = this.getAppId();
         topBar.appendChild(statusText);
 
         return topBar;
@@ -47,15 +50,10 @@ define(function(){
 
     Window.prototype.createBottomBar = function(){
         var bottomBar = document.createElement("div");
-        var 
+        
 
 
     };
-
-
-
-
-
 
     return Window;  
 });
