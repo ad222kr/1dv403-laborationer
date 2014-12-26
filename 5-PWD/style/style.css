@@ -69,11 +69,9 @@ body{
 	height: 600px; 
 }
 
-.small{
-	
+.small{	
 	width: 1024px;
 	height: 640px;
-
 }
 
 .medium{
@@ -90,7 +88,6 @@ body{
 
 /* Style for taskbar */
 #taskbar{
-
 	background: red;
 	height: 30px;
 	position: absolute; /* Absolute and bottom for keeping taskbar att bottom of parent div */
@@ -132,6 +129,11 @@ body{
 
 }
 
+.wClosePic{
+	width: 15px;
+	height: 15px;
+	float: right;
+}
 
 .thumbDiv{
 	display: block;

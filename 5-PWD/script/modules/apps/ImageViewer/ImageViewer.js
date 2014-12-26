@@ -2,19 +2,26 @@
 define(["modules/window/window"],
 	function(Window){
 
-	var ImageViewer = function(appID){
+	var ImageViewer = function(appID, isGallery, imageUrl){
 		Window.call(this, appID);
 
 		var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
-		this.winDiv = document.querySelector(".wContent");
+		
 
 		this.getUrl = function(){
 			return url;
 		}
 
 
+		if (isGallery){
+			this.getPics(this.winDiv);	
+		}
+		else{
+			this.showFullPic(this.winDiv, imageUrl);
+		}
 
-		this.getPics(this.winDiv);
+		console.log(this.winDiv);
+		
 
 	}
 	
@@ -41,8 +48,11 @@ define(["modules/window/window"],
 	};
 
 	ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
+
 		var maxThumbHeight = 0;
 		var maxThumbWidth = 0;
+		var that = this;
+		var contentDiv = document.querySelectorAll(".wContent");
 
 		// Getting the highest thumbwidth/height
 		imgArr.forEach(function(element){
@@ -69,19 +79,29 @@ define(["modules/window/window"],
 
 			div.style.width = maxThumbWidth+"px";
 			div.style.height = maxThumbHeight+"px";
-
-			winDiv.appendChild(div);
+			contentDiv[contentDiv.length - 1].appendChild(div);
 			div.appendChild(a);
 			a.appendChild(img);
 
+			a.addEventListener("click", function(){
+				that.clickFunc(element.URL)
+			}, false);
 
-
-
+			
 		});
 
 		
 
 	};
+
+	ImageViewer.prototype.clickFunc = function(url){
+		var fp = new ImageViewer("ImageViewer", false, url);
+
+	}
+
+	ImageViewer.prototype.showFullPic = function(div, url){
+
+	}
 
 	
 

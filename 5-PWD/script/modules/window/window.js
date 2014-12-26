@@ -2,14 +2,20 @@
 define(function(){
     
     var Window = function(appID){
+
         this.height = 300;
         this.width = 280;
         this.barHeight = 20; // Height of bars
+
+        
 
         this.getAppId = function(){
             return appID;
         }
         this.createWindow();
+        this.contentDiv = document.querySelector(".wContent");
+
+        console.log(this.contentDiv);
         
     };
 
@@ -48,13 +54,26 @@ define(function(){
     }
 
     Window.prototype.createTopBar = function(){
+        var that = this;
         var topBar = document.createElement("div");
         var statusText = document.createElement("span");
+        var closeA = document.createElement("a");
+        var closeImg = document.createElement("img");
 
         topBar.className = "wTopBar";
         statusText.className = "wStatusText";
         statusText.innerHTML = this.getAppId();
+
+        closeA.href = "#";
+        closeA.className = "wClose";
+        closeImg.src = "pics/window/stop32.png";
+        closeImg.className = "wClosePic";
+        
         topBar.appendChild(statusText);
+        closeA.appendChild(closeImg);
+        topBar.appendChild(closeA);
+
+        closeA.addEventListener("click", that.close, false);
 
         return topBar;
 
@@ -66,9 +85,13 @@ define(function(){
         bottomBar.className = "wBottomBar";
 
         return bottomBar;
-        
+    };
 
 
+    Window.prototype.close = function(){
+        var div = document.querySelector("#desktop");
+        var win = document.querySelector(".window");
+        desktop.removeChild(win);
     };
 
     return Window;  

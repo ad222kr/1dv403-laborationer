@@ -34,7 +34,6 @@ define(
             }
 
             this.createDesktop(div);
-            var img = new ImageViewer("ImageViewer");
 
         };
 
@@ -64,7 +63,10 @@ define(
             taskbar.appendChild(imgViewerA);
 
             // adding listeners
-            this.addListeners()
+            imgViewerA.addEventListener("click", function(e){
+                e.preventDefault();
+                new ImageViewer("ImageViewer", true);
+            })
 
             
         };
