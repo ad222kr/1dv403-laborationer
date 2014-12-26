@@ -19,10 +19,6 @@ define(["modules/window/window"],
 		else{
 			this.showFullPic(this.winDiv, imageUrl);
 		}
-
-		console.log(this.winDiv);
-		
-
 	}
 	
 	ImageViewer.prototype = Object.create(Window.prototype);
@@ -30,7 +26,6 @@ define(["modules/window/window"],
 	ImageViewer.prototype.getPics = function(div){
 		var that = this;
 		var xhr = new XMLHttpRequest();
-
 
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState === 4){
@@ -52,7 +47,8 @@ define(["modules/window/window"],
 		var maxThumbHeight = 0;
 		var maxThumbWidth = 0;
 		var that = this;
-		var contentDiv = document.querySelectorAll(".wContent");
+		var winDiv = document.getElementById(this.windowId);
+		var contentDiv = winDiv.firstChild.nextSibling;
 
 		// Getting the highest thumbwidth/height
 		imgArr.forEach(function(element){
@@ -79,7 +75,7 @@ define(["modules/window/window"],
 
 			div.style.width = maxThumbWidth+"px";
 			div.style.height = maxThumbHeight+"px";
-			contentDiv[contentDiv.length - 1].appendChild(div);
+			contentDiv.appendChild(div);
 			div.appendChild(a);
 			a.appendChild(img);
 

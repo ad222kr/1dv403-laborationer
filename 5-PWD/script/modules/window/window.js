@@ -6,6 +6,7 @@ define(function(){
         this.height = 300;
         this.width = 280;
         this.barHeight = 20; // Height of bars
+        this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
 
         
 
@@ -15,7 +16,7 @@ define(function(){
         this.createWindow();
         this.contentDiv = document.querySelector(".wContent");
 
-        console.log(this.contentDiv);
+        console.log(this.windowId);
         
     };
 
@@ -32,11 +33,13 @@ define(function(){
         windowDiv.appendChild(topBar);
         windowDiv.appendChild(contentDiv); 
         windowDiv.appendChild(bottomBar);
+        console.log(this.windowId);
         
     };
 
     Window.prototype.createMain = function () {
-        var windowDiv = document.createElement("div");      
+        var windowDiv = document.createElement("div"); 
+        windowDiv.id = this.windowId;    
         windowDiv.className = "window";
         windowDiv.style.width = this.width + "px";
         windowDiv.style.height = this.height + "px";
@@ -73,7 +76,9 @@ define(function(){
         closeA.appendChild(closeImg);
         topBar.appendChild(closeA);
 
-        closeA.addEventListener("click", that.close, false);
+        closeA.addEventListener("click", function(){
+            that.close(that.windowId);
+        });
 
         return topBar;
 
@@ -88,10 +93,20 @@ define(function(){
     };
 
 
-    Window.prototype.close = function(){
+    Window.prototype.close = function(id){
+        var that = this;
         var div = document.querySelector("#desktop");
-        var win = document.querySelector(".window");
-        desktop.removeChild(win);
+        var win = document.getElementById(id);
+        console.log(id);
+        div.removeChild(win);
+    };
+
+
+    Window.prototype.getRandomId = function(max, min){
+        // Random ID for windows to solve the problem of always
+        // loading pics in same window and removing first window
+        return Math.floor(Math.random()*(max-min+1)+min);
+
     };
 
     return Window;  
