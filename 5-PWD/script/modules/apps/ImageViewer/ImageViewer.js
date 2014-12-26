@@ -10,7 +10,7 @@ define(["modules/window/window"],
 		this.getUrl = function(){
 			return url;
 		}
-
+		
 		// Boolean to decide if window should be gallery or big picture
 		if (isGallery){
 			this.getPics(this.winDiv);	
@@ -100,9 +100,10 @@ define(["modules/window/window"],
 		var div = document.getElementById(id);
 		var content = div.firstChild.nextSibling;
 		var img = document.createElement("img");
+		div.style.width = imgObject.width + "px";
+		div.style.height = imgObject.height + this.barHeight * 2 + "px";
+		content.style.height = "auto";
 		img.src = imgObject.URL;
-		console.log(content);
-		console.log(img);
 		content.appendChild(img);
 		
 

@@ -15,7 +15,8 @@ define(
             // Ref to div for passing around
             var div = document.getElementById("desktop");
 
-
+            this.appArr = [];
+            this.zIndex = 0;
             // Getter & Setter for size, might add functionality
             // to change desktop resolution later
             this.setSize = function(_size){
@@ -65,7 +66,8 @@ define(
             // adding listeners
             imgViewerA.addEventListener("click", function(e){
                 e.preventDefault();
-                new ImageViewer("ImageViewer", true);
+                var img = new ImageViewer("ImageViewer", true);
+                img.zIndex = this.zIndex += 1;
             })
 
             
@@ -75,7 +77,7 @@ define(
 
         };
 
-        
+
 
 
         return Desktop;

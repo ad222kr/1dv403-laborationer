@@ -99,13 +99,14 @@ body{
 .window{
 	display: block;
 	border: 1px black solid;
-	position: relative;
+	position: absolute; /* stacking divs on top of each other */
 	
 }
 
 .wContent{
 	display: block;
 	overflow: auto;
+	height: auto;
 }
 
 .wTopBar{

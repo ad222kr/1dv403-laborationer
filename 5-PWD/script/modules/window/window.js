@@ -5,18 +5,15 @@ define(function(){
 
         this.height = 300;
         this.width = 280;
+        this.positionTop = 0;
+        this.positionLeft = 0;
         this.barHeight = 20; // Height of bars
+        this.zIndex = 0;
         this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
-
-        
-
         this.getAppId = function(){
             return appID;
         }
-        this.createWindow();
-
-        
-        
+        this.createWindow();    
     };
 
 
@@ -32,7 +29,11 @@ define(function(){
         windowDiv.appendChild(topBar);
         windowDiv.appendChild(contentDiv); 
         windowDiv.appendChild(bottomBar);
-        
+
+        console.log(windowDiv);
+        windowDiv.style.left = this.positionLeft + 10 + "px";
+        windowDiv.style.top = this.positionTop + 10 + "px";
+        windowDiv.style.zIndex = this.zIndex;
     };
 
     Window.prototype.createMain = function () {
@@ -74,7 +75,8 @@ define(function(){
         closeA.appendChild(closeImg);
         topBar.appendChild(closeA);
 
-        closeA.addEventListener("click", function(){
+        closeA.addEventListener("click", function(e){
+            e.preventDefault();
             that.close(that.windowId);
         });
 
