@@ -26,6 +26,7 @@ define(
             };
 
             this.getIcons = function(){
+                // Icon-array to iterate over it when creating toolbar?
                 var icons = {
                     imgViewer: "pics/taskbar/folder32.png",
                 }

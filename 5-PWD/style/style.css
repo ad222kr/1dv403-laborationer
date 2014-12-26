@@ -59,6 +59,7 @@ body{
 	position: relative; /* For keeping task-bar div inside of parent div */
 	display: block;
 	background: white;
+	margin: auto;
 	
 }
 
@@ -101,6 +102,13 @@ body{
 .window{
 	display: block;
 	border: 1px black solid;
+	position: relative;
+	
+}
+
+.wContent{
+	display: block;
+	overflow: auto;
 }
 
 .wTopBar{
@@ -111,6 +119,12 @@ body{
 }
 
 .wBottomBar{
+	display: block;
+	width: 100%;
+	height: 20px;
+	background-color: yellow;
+	position: absolute;
+	bottom: 0px;
 
 }
 

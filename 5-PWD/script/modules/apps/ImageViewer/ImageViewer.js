@@ -6,7 +6,7 @@ define(["modules/window/window"],
 		Window.call(this, appID);
 
 		var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
-		this.winDiv = document.querySelector(".window");
+		this.winDiv = document.querySelector(".wContent");
 
 		this.getUrl = function(){
 			return url;
@@ -55,11 +55,11 @@ define(["modules/window/window"],
 		});
 
 		imgArr.forEach(function(element, index){
+
+			// Creates each element for the thumbpic.
 			var div = document.createElement("div");
 			var a = document.createElement("a");
 			var img = document.createElement("img");
-
-			console.log(element)
 
 			div.className = "thumbDiv";
 			a.href = "#";
