@@ -2,22 +2,21 @@
 define(["modules/window/window"],
 	function(Window){
 
-	var ImageViewer = function(appID, isGallery, imageUrl){
+	var ImageViewer = function(appID, isGallery, imgObject){
 		Window.call(this, appID);
 
 		var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
 		
-
 		this.getUrl = function(){
 			return url;
 		}
 
-
+		// Boolean to decide if window should be gallery or big picture
 		if (isGallery){
 			this.getPics(this.winDiv);	
 		}
 		else{
-			this.showFullPic(this.winDiv, imageUrl);
+			this.showFullPic(this.windowId, imgObject);
 		}
 	}
 	
@@ -80,7 +79,7 @@ define(["modules/window/window"],
 			a.appendChild(img);
 
 			a.addEventListener("click", function(){
-				that.clickFunc(element.URL)
+				that.clickFunc(imgArr[index])
 			}, false);
 
 			
@@ -90,12 +89,22 @@ define(["modules/window/window"],
 
 	};
 
-	ImageViewer.prototype.clickFunc = function(url){
-		var fp = new ImageViewer("ImageViewer", false, url);
+	ImageViewer.prototype.clickFunc = function(imgObject){
+		var that = this;
+		var pic = new ImageViewer("ImageViewer", false, imgObject);
+
 
 	}
 
-	ImageViewer.prototype.showFullPic = function(div, url){
+	ImageViewer.prototype.showFullPic = function(id, imgObject){
+		var div = document.getElementById(id);
+		var content = div.firstChild.nextSibling;
+		var img = document.createElement("img");
+		img.src = imgObject.URL;
+		console.log(content);
+		console.log(img);
+		content.appendChild(img);
+		
 
 	}
 

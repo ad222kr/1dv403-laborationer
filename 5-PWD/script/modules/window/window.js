@@ -14,9 +14,8 @@ define(function(){
             return appID;
         }
         this.createWindow();
-        this.contentDiv = document.querySelector(".wContent");
 
-        console.log(this.windowId);
+        
         
     };
 
@@ -33,7 +32,6 @@ define(function(){
         windowDiv.appendChild(topBar);
         windowDiv.appendChild(contentDiv); 
         windowDiv.appendChild(bottomBar);
-        console.log(this.windowId);
         
     };
 
