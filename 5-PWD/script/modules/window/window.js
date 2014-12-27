@@ -111,19 +111,13 @@ define(function(){
         var div = document.getElementById("desktop").lastChild.previousSibling; // LastChild is taskbar 
         
         // If taskbar just return 10
-        if (div.id == "taskbar"){
-            console.log("shu");
-            return { left: 10, top: 10 };
-
-        }
+        if (div.id == "taskbar"){ return { left: 10, top: 10 }; }
+            
+        
         // If prevSibl is a window get its top & left, parse and return value + 10
         else{
-            console.log("fitta");
             var top = parseInt(div.style.top, 10);
             var left = parseInt(div.style.left, 10);
-
-            console.log(div.style.top);
-
 
             return { top: top + 10, left: left + 10 };
         }
