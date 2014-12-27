@@ -5,15 +5,13 @@ define(function(){
 
         this.height = 300;
         this.width = 280;
-        this.positionTop = 0;
-        this.positionLeft = 0;
+
         this.barHeight = 20; // Height of bars
-        this.zIndex = 0;
         this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
         this.getAppId = function(){
             return appID;
         }
-        this.createWindow();    
+        this.createWindow();   
     };
 
 
@@ -22,18 +20,16 @@ define(function(){
             windowDiv = this.createMain(),
             topBar = this.createTopBar(),
             contentDiv = this.createContentArea(),
-            bottomBar = this.createBottomBar();
+            bottomBar = this.createBottomBar(),
+            taskBar = document.getElementById("taskbar");
 
 
         div.appendChild(windowDiv);
         windowDiv.appendChild(topBar);
         windowDiv.appendChild(contentDiv); 
         windowDiv.appendChild(bottomBar);
-
-        console.log(windowDiv);
-        windowDiv.style.left = this.positionLeft + 10 + "px";
-        windowDiv.style.top = this.positionTop + 10 + "px";
-        windowDiv.style.zIndex = this.zIndex;
+        windowDiv.style.left = this.getOffset().left + "px";
+        windowDiv.style.top = this.getOffset().top + "px";         
     };
 
     Window.prototype.createMain = function () {
@@ -42,16 +38,15 @@ define(function(){
         windowDiv.className = "window";
         windowDiv.style.width = this.width + "px";
         windowDiv.style.height = this.height + "px";
-        //windowDiv.setAttribute("width", this.width + "px");
-        
-        return windowDiv;
-        
+       
+        return windowDiv;       
     };
 
     Window.prototype.createContentArea = function(){
         var contentDiv = document.createElement("div");
         contentDiv.className = "wContent";
-        contentDiv.style.height = this.height - this.barHeight * 2 + "px";
+        contentDiv.style.height = this.height - this.barHeight * 2 + "px"; // total height minus 2 bars
+
         return contentDiv;
     }
 
@@ -85,6 +80,8 @@ define(function(){
     };
 
     Window.prototype.createBottomBar = function(){
+        // TODO add functions that inserts ajax-loader and remove
+        // it when ajax-obj is retrieved from server to bot-bar
         var bottomBar = document.createElement("div");
 
         bottomBar.className = "wBottomBar";
@@ -108,6 +105,31 @@ define(function(){
         return Math.floor(Math.random()*(max-min+1)+min);
 
     };
+
+    Window.prototype.getOffset = function(){
+        // TODO: Fix "bouncing" windows when they reach the bottom of the desktop
+        var div = document.getElementById("desktop").lastChild.previousSibling; // LastChild is taskbar 
+        
+        // If taskbar just return 10
+        if (div.id == "taskbar"){
+            console.log("shu");
+            return { left: 10, top: 10 };
+
+        }
+        // If prevSibl is a window get its top & left, parse and return value + 10
+        else{
+            console.log("fitta");
+            var top = parseInt(div.style.top, 10);
+            var left = parseInt(div.style.left, 10);
+
+            console.log(div.style.top);
+
+
+            return { top: top + 10, left: left + 10 };
+        }
+            
+    };
+
 
     return Window;  
 });

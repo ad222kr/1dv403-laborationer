@@ -2,7 +2,7 @@
 define(["modules/window/window"],
 	function(Window){
 
-	var ImageViewer = function(appID, isGallery, imgObject){
+	var ImageViewer = function(appID,isGallery, imgObject){
 		Window.call(this, appID);
 
 		var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
@@ -10,7 +10,6 @@ define(["modules/window/window"],
 		this.getUrl = function(){
 			return url;
 		}
-		
 		// Boolean to decide if window should be gallery or big picture
 		if (isGallery){
 			this.getPics(this.winDiv);	
@@ -80,36 +79,29 @@ define(["modules/window/window"],
 
 			a.addEventListener("click", function(){
 				that.clickFunc(imgArr[index])
-			}, false);
-
-			
+			}, false);			
 		});
 
-		
-
 	};
+
+
 
 	ImageViewer.prototype.clickFunc = function(imgObject){
 		var that = this;
 		var pic = new ImageViewer("ImageViewer", false, imgObject);
 
-
 	}
 
 	ImageViewer.prototype.showFullPic = function(id, imgObject){
 		var div = document.getElementById(id);
-		var content = div.firstChild.nextSibling;
+		var content = div.firstChild.nextSibling; // Firstchild is topbar
 		var img = document.createElement("img");
 		div.style.width = imgObject.width + "px";
 		div.style.height = imgObject.height + this.barHeight * 2 + "px";
-		content.style.height = "auto";
+		content.style.height = "auto"; // Tried setting heigh to imgObject.height but scrollbars visible then?
 		img.src = imgObject.URL;
 		content.appendChild(img);
-		
-
 	}
-
-	
 
 	return ImageViewer;
 })

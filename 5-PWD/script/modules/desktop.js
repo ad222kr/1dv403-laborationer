@@ -10,13 +10,10 @@ define(
     ],
     function(mustache, Window, require, Memory, ImageViewer){
 
-        // Constructor
     	var Desktop = function(size){
-            // Ref to div for passing around
+
             var div = document.getElementById("desktop");
 
-            this.appArr = [];
-            this.zIndex = 0;
             // Getter & Setter for size, might add functionality
             // to change desktop resolution later
             this.setSize = function(_size){
@@ -39,9 +36,8 @@ define(
         };
 
         Desktop.prototype.createDesktop = function(div){
-            var that = this;
-            div.className = this.getSize();
 
+            div.className = this.getSize();
             this.createTaskBar(div);            
 
         };
@@ -63,11 +59,11 @@ define(
             imgViewerA.appendChild(imgViewerImg);
             taskbar.appendChild(imgViewerA);
 
-            // adding listeners
+            // adding listeners, move to function when more apps?
             imgViewerA.addEventListener("click", function(e){
                 e.preventDefault();
-                var img = new ImageViewer("ImageViewer", true);
-                img.zIndex = this.zIndex += 1;
+                var img = new ImageViewer("nigga", true);
+
             })
 
             
@@ -76,10 +72,7 @@ define(
         Desktop.prototype.addListeners = function(arrOfIcons){
 
         };
-
-
-
-
+        
         return Desktop;
     }
 )
