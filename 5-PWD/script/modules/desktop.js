@@ -62,7 +62,7 @@ define(
             // adding listeners, move to function when more apps?
             imgViewerA.addEventListener("click", function(e){
                 e.preventDefault();
-                var img = new ImageViewer("nigga", true);
+                var img = new ImageViewer("ImageViewer", true);
 
             })
 
