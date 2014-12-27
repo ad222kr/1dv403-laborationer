@@ -7,8 +7,8 @@ define(["modules/window/window"],
 
 		var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
 		this.settings = {
-			height: 178,
-			width: 127,
+			height: 400,
+			width: 300,
 		}
 		this.getUrl = function(){
 			return url;

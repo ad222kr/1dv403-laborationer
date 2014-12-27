@@ -4,7 +4,7 @@ define(function(){
     var Window = function(settings, appID){
         this.height = settings.height;
         this.width = settings.width;
-
+        this.desktop = document.getElementById("desktop");
         this.barHeight = 20; // Height of bars
         this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
         this.getAppId = function(){
@@ -33,11 +33,15 @@ define(function(){
     };
 
     Window.prototype.createMain = function () {
+        var that = this;
         var windowDiv = document.createElement("div"); 
         windowDiv.id = this.windowId;    
         windowDiv.className = "window";
         windowDiv.style.width = this.width + "px";
         windowDiv.style.height = this.height + "px";
+        windowDiv.addEventListener("click", function(){
+            that.giveFocus(windowDiv);
+        });
        
         return windowDiv;       
     };
@@ -146,6 +150,16 @@ define(function(){
        
         return retObj;    
     };
+
+    Window.prototype.giveFocus = function(windowDiv){
+        var nodeList = document.querySelectorAll(".window");
+        console.log(nodeList.length);
+        for (var i = 0; i < nodeList.length; ++i) {
+            nodeList[i].style.zIndex = 0;
+        }
+        windowDiv.style.zIndex = 1;
+    };
+
 
 
     return Window;  
