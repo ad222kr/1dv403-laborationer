@@ -1,10 +1,9 @@
 "use strict";
 define(function(){
     
-    var Window = function(appID){
-
-        this.height = 300;
-        this.width = 280;
+    var Window = function(settings, appID){
+        this.height = settings.height;
+        this.width = settings.width;
 
         this.barHeight = 20; // Height of bars
         this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
@@ -28,6 +27,7 @@ define(function(){
         windowDiv.appendChild(topBar);
         windowDiv.appendChild(contentDiv); 
         windowDiv.appendChild(bottomBar);
+        console.log(this.getOffset());
         windowDiv.style.left = this.getOffset().left + "px";
         windowDiv.style.top = this.getOffset().top + "px";         
     };
@@ -102,26 +102,49 @@ define(function(){
     Window.prototype.getRandomId = function(max, min){
         // Random ID for windows to solve the problem of always
         // loading pics in same window and removing first window
-        return Math.floor(Math.random()*(max-min+1)+min);
+        return Math.floor(Math.random()*(max-min+1)+min); // http://stackoverflow.com/a/7228322
 
     };
 
     Window.prototype.getOffset = function(){
-        // TODO: Fix "bouncing" windows when they reach the bottom of the desktop
+        // Fic func to get the max left & top values instead of hardcoding
         var div = document.getElementById("desktop").lastChild.previousSibling; // LastChild is taskbar 
-        
-        // If taskbar just return 10
-        if (div.id == "taskbar"){ return { left: 10, top: 10 }; }
-            
-        
-        // If prevSibl is a window get its top & left, parse and return value + 10
-        else{
-            var top = parseInt(div.style.top, 10);
-            var left = parseInt(div.style.left, 10);
+        var desk = document.getElementById("desktop");
 
-            return { top: top + 10, left: left + 10 };
+        // Top & left of previous dude
+        var top = parseInt(div.style.top, 10);
+        var left = parseInt(div.style.left, 10);
+
+        // Height & width of desktop
+        var deskHeight = parseInt(window.getComputedStyle(desk, null).height);
+        var deskWidth = parseInt(window.getComputedStyle(desk, null).width);
+
+        // maxTop & left, so it works with every possible window size
+        var maxTop = deskHeight - this.height - 50; // 50 is taskbar + 20px whitespace left
+        var maxLeft = deskWidth - this.width - 30;
+        
+        var retObj = {};
+        // If taskbar just return 10
+        if (div.id == "taskbar"){
+            retObj.top = 15;
+            retObj.left = 15;
         }
-            
+
+        else if (top >= maxTop){
+            retObj.top = 10;
+            retObj.left = left + 20;
+        }
+        else if(left >=maxLeft){
+            retObj.top = top + 20;
+            retObj.left = 10;
+        }
+        else {
+            retObj.top = top + 20;
+            retObj.left = left + 20;
+        }
+                  
+       
+        return retObj;    
     };
 
 

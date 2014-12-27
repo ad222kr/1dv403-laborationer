@@ -60,6 +60,7 @@ body{
 	display: block;
 	background: white;
 	margin: auto;
+	overflow: hidden;
 	
 }
 
@@ -93,6 +94,7 @@ body{
 	position: absolute; /* Absolute and bottom for keeping taskbar att bottom of parent div */
 	width: 100%;
 	bottom: 0px;
+	z-index: 1;
 }
 
 /* Style for the window, its top/bottombar, statustext */

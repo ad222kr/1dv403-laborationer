@@ -2,14 +2,18 @@
 define(["modules/window/window"],
 	function(Window){
 
-	var ImageViewer = function(appID,isGallery, imgObject){
-		Window.call(this, appID);
+	var ImageViewer = function(appID, isGallery, imgObject){
+		
 
 		var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
-		
+		this.settings = {
+			height: 178,
+			width: 127,
+		}
 		this.getUrl = function(){
 			return url;
 		}
+		Window.call(this, this.settings, appID);
 		// Boolean to decide if window should be gallery or big picture
 		if (isGallery){
 			this.getPics(this.winDiv);	
