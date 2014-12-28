@@ -110,6 +110,7 @@ body{
 	overflow: auto;
 	height: auto;
 	background: white;
+	position: absolute;
 }
 
 .wTopBar{

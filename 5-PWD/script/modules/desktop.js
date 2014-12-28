@@ -49,6 +49,7 @@ define(
             var icons = this.getIcons();
             var taskbar = document.createElement("div");
             taskbar.id = "taskbar";
+            taskbar.style.zIndex = 5;
             div.appendChild(taskbar);
 
             // Icons for imageviewer

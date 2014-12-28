@@ -10,6 +10,7 @@ define(["modules/window/window"],
 			height: 400,
 			width: 300,
 		}
+		
 		this.getUrl = function(){
 			return url;
 		}
@@ -91,21 +92,39 @@ define(["modules/window/window"],
 
 
 	ImageViewer.prototype.clickFunc = function(imgObject){
-		var that = this;
 		var pic = new ImageViewer("ImageViewer", false, imgObject);
-
-	}
+	};
 
 	ImageViewer.prototype.showFullPic = function(id, imgObject){
 		var div = document.getElementById(id);
-		var content = div.firstChild.nextSibling; // Firstchild is topbar
+		var content = this.window.node.querySelector(".content");
 		var img = document.createElement("img");
 		div.style.width = imgObject.width + "px";
 		div.style.height = imgObject.height + this.barHeight * 2 + "px";
 		content.style.height = "auto"; // Tried setting heigh to imgObject.height but scrollbars visible then?
 		img.src = imgObject.URL;
 		content.appendChild(img);
-	}
+	};
+
+	ImageViewer.prototype.showFullPic = function(id, imgObject){
+
+		var winDiv = document.getElementById(id);
+		var contentDiv = winDiv.firstChild.nextSibling;
+
+		// Getting the highest thumbwidth/height
+		
+
+
+			var img = document.createElement("img");
+
+			img.className = "bigpic";
+
+			img.src = imgObject.URL;
+
+			winDiv.style.width = imgObject.width + "px";
+			winDiv.style.height = imgObject.height + this.barHeight * 2 + "px";
+			contentDiv.appendChild(img);
+	};
 
 	return ImageViewer;
 })

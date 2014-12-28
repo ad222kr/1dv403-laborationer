@@ -7,10 +7,11 @@ define(function(){
         this.desktop = document.getElementById("desktop");
         this.barHeight = 20; // Height of bars
         this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
+
         this.getAppId = function(){
             return appID;
         }
-        this.createWindow();   
+        this.createWindow(); 
     };
 
 
@@ -27,9 +28,9 @@ define(function(){
         windowDiv.appendChild(topBar);
         windowDiv.appendChild(contentDiv); 
         windowDiv.appendChild(bottomBar);
-        console.log(this.getOffset());
         windowDiv.style.left = this.getOffset().left + "px";
-        windowDiv.style.top = this.getOffset().top + "px";         
+        windowDiv.style.top = this.getOffset().top + "px"; 
+        this.makeMovable(contentDiv);        
     };
 
     Window.prototype.createMain = function () {
@@ -39,8 +40,8 @@ define(function(){
         windowDiv.className = "window";
         windowDiv.style.width = this.width + "px";
         windowDiv.style.height = this.height + "px";
-        windowDiv.addEventListener("click", function(){
-            that.giveFocus(windowDiv);
+        windowDiv.addEventListener("click", function(e){
+            that.giveFocus(windowDiv, e);
         });
        
         return windowDiv;       
@@ -48,9 +49,8 @@ define(function(){
 
     Window.prototype.createContentArea = function(){
         var contentDiv = document.createElement("div");
-        contentDiv.className = "wContent";
+        contentDiv.className = "wContent " + this.windowId;
         contentDiv.style.height = this.height - this.barHeight * 2 + "px"; // total height minus 2 bars
-
         return contentDiv;
     }
 
@@ -151,15 +151,29 @@ define(function(){
         return retObj;    
     };
 
-    Window.prototype.giveFocus = function(windowDiv){
+    Window.prototype.giveFocus = function(windowDiv, e){
+        // Ty robin for suggesting this on slack
         var nodeList = document.querySelectorAll(".window");
-        console.log(nodeList.length);
-        for (var i = 0; i < nodeList.length; ++i) {
-            nodeList[i].style.zIndex = 0;
+        if (e.target.tagName !== "IMG"){
+            this.desktop.removeChild(windowDiv);
+            this.desktop.appendChild(windowDiv);   
         }
-        windowDiv.style.zIndex = 1;
+        
+        
+        /*
+        for (var i = 0; i < nodeList.length; ++i) {
+                nodeList[i].style.zIndex = 0;                
+        }
+        if (e.target.tagName !== "IMG"){
+            windowDiv.style.zIndex = 2;    
+        }*/
+        
     };
 
+    Window.prototype.makeMovable = function(div){
+
+
+    };
 
 
     return Window;  
