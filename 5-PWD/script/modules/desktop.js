@@ -33,6 +33,7 @@ define(
             }
 
             this.createDesktop(this.div);
+            var mem = new Memory("Memory");
 
         };
 

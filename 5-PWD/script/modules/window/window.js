@@ -48,7 +48,7 @@ define(function(){
 
     Window.prototype.createContentArea = function(){
         var contentDiv = document.createElement("div");
-        contentDiv.className = "wContent " + this.windowId;
+        contentDiv.className = "wContent";
         contentDiv.style.height = this.height - this.barHeight * 2 + "px"; // total height minus 2 bars
         return contentDiv;
     }
