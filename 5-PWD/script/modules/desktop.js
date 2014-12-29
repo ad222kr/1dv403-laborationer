@@ -28,9 +28,9 @@ define(
                 // Icon-array to iterate over it when creating toolbar?
                 var icons = {
                     imgViewer: "pics/taskbar/folder32.png",
-                }
+                };
                 return icons;
-            }
+            };
 
             this.createDesktop(this.div);
             var mem = new Memory("Memory");
@@ -55,7 +55,7 @@ define(
         };
 
         Desktop.prototype.createTaskBar = function(div, icons){
-            var that = this;
+
             // Creating elements for the fskbar
             // Setting icons on the taskbar
             var icons = this.getIcons();
@@ -75,9 +75,9 @@ define(
             // adding listeners, move to function when more apps?
             imgViewerA.addEventListener("click", function(e){
                 e.preventDefault();
-                var img = new ImageViewer("ImageViewer", true);
+                new ImageViewer("ImageViewer", true);
 
-            })
+            });
 
             
         };
@@ -103,4 +103,4 @@ define(
         
         return Desktop;
     }
-)
+);

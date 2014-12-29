@@ -10,7 +10,7 @@ define(function(){
 
         this.getAppId = function(){
             return appID;
-        }
+        };
         this.createWindow(); 
     };
 
@@ -20,8 +20,7 @@ define(function(){
             windowDiv = this.createMain(),
             topBar = this.createTopBar(),
             contentDiv = this.createContentArea(),
-            bottomBar = this.createBottomBar(),
-            taskBar = document.getElementById("taskbar");
+            bottomBar = this.createBottomBar();
 
 
         div.appendChild(windowDiv);
@@ -51,7 +50,7 @@ define(function(){
         contentDiv.className = "wContent";
         contentDiv.style.height = this.height - this.barHeight * 2 + "px"; // total height minus 2 bars
         return contentDiv;
-    }
+    };
 
     Window.prototype.createTopBar = function(){
         var that = this;
@@ -94,10 +93,10 @@ define(function(){
 
 
     Window.prototype.close = function(id){
-        var that = this;
+
         var div = document.querySelector("#desktop");
         var win = document.getElementById(id);
-        console.log(id);
+ 
         div.removeChild(win);
     };
 
@@ -152,26 +151,15 @@ define(function(){
 
     Window.prototype.giveFocus = function(windowDiv, e){
         // Ty robin for suggesting this on slack
-        var nodeList = document.querySelectorAll(".window");
         if (e.target.tagName !== "IMG"){
             this.desktop.removeChild(windowDiv);
             this.desktop.appendChild(windowDiv);   
         }
-        
-        
-        /*
-        for (var i = 0; i < nodeList.length; ++i) {
-                nodeList[i].style.zIndex = 0;                
-        }
-        if (e.target.tagName !== "IMG"){
-            windowDiv.style.zIndex = 2;    
-        }*/
-        
     };
 
     Window.prototype.makeMovable = function(div){
 
-    }
+    };
 
 
     return Window;  

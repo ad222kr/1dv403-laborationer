@@ -9,12 +9,15 @@ define(["modules/window/window"],
 		this.settings = {
 			height: 400,
 			width: 300,
-		}
+		};
+		
+
 		
 		this.getUrl = function(){
 			return url;
-		}
+		};
 		Window.call(this, this.settings, appID);
+		this.winDiv = document.getElementById(this.windowId);
 		// Boolean to decide if window should be gallery or big picture
 		if (isGallery){
 			this.getPics(this.winDiv);	
@@ -22,7 +25,7 @@ define(["modules/window/window"],
 		else{
 			this.showFullPic(this.windowId, imgObject);
 		}
-	}
+	};
 	
 	ImageViewer.prototype = Object.create(Window.prototype);
 
@@ -39,7 +42,7 @@ define(["modules/window/window"],
 					console.log("Läsfel, status: "+xhr.status);
 				}
 			}
-		}
+		};
 
 		xhr.open("GET", this.getUrl(), true);
 		xhr.send(null);
@@ -50,7 +53,6 @@ define(["modules/window/window"],
 		var maxThumbHeight = 0;
 		var maxThumbWidth = 0;
 		var that = this;
-		var winDiv = document.getElementById(this.windowId);
 		var contentDiv = winDiv.firstChild.nextSibling;
 
 		// Getting the highest thumbwidth/height
@@ -83,7 +85,7 @@ define(["modules/window/window"],
 			a.appendChild(img);
 
 			a.addEventListener("click", function(){
-				that.clickFunc(imgArr[index])
+				that.clickFunc(imgArr[index]);
 			}, false);			
 		});
 
@@ -92,7 +94,7 @@ define(["modules/window/window"],
 
 
 	ImageViewer.prototype.clickFunc = function(imgObject){
-		var pic = new ImageViewer("ImageViewer", false, imgObject);
+		new ImageViewer("ImageViewer", false, imgObject);
 	};
 
 	ImageViewer.prototype.showFullPic = function(id, imgObject){
@@ -109,4 +111,4 @@ define(["modules/window/window"],
 	
 
 	return ImageViewer;
-})
+});

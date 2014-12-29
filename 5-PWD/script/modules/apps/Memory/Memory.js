@@ -7,7 +7,7 @@ define(["modules/window/window", "apps/Memory/random"],
 		this.settings = {
 			height: 200,
 			width: 200,
-		}
+		};
 
 		this.rows = 4;
 		this.cols = 4;
@@ -24,22 +24,22 @@ define(["modules/window/window", "apps/Memory/random"],
 		 
         
         this.startGame();
- 
 
-	}
+
+
+	};
 	// Inherits functions on Windows prototype
 	Memory.prototype = Object.create(Window.prototype);
 
 	Memory.prototype.startGame = function(){
 
-		this.tiles = Random.getPictureArray(this.cols, this.rows)
+		this.tiles = Random.getPictureArray(this.cols, this.rows);
 		this.generateTable();
 	};
 
 	Memory.prototype.flipTile = function(target){
-		console.log(this.flippedCount)
 		if (!target.classList.contains("clicked")  && this.flippedCount < 2){
-			console.log(this.flippedCount)
+
 			for(var i = 0; i < this.tiles.length; i++){
 				if(target.className == i){
 					target.src = "pics/memory/" + this.tiles[i] + ".png";
@@ -60,10 +60,9 @@ define(["modules/window/window", "apps/Memory/random"],
 	};
 
 	Memory.prototype.checkMatch = function(flippedArr){
-		console.log(this);
 		var that = this;
 		this.numberOfTries++;
-		console.log(flippedArr);
+
 		if(flippedArr[0].src === flippedArr[1].src){
 			this.numberOfMatches++;
 			for(var i = 0; i < flippedArr.length; i++){
@@ -79,15 +78,14 @@ define(["modules/window/window", "apps/Memory/random"],
 					flippedArr[i].classList.remove("clicked");	
 				}
 				
-				console.log(this);
 
 				that.flippedCount = 0;
-			}, 1000)
+			}, 1000);
 
 
 		}
 		
-	}
+	};
 
 	Memory.prototype.generateTable = function(){
 		var that = this;
@@ -127,12 +125,12 @@ define(["modules/window/window", "apps/Memory/random"],
                 that.clickFunc(e);
             }
         });
-	}
+	};
 
 
 	Memory.prototype.clickFunc = function(e){
 
-		if (!e) { e = window.event }
+		if (!e) { e = window.event; }
 		var target = e.target;
 
 		if (target.tagName !== "IMG"){
@@ -141,8 +139,8 @@ define(["modules/window/window", "apps/Memory/random"],
 		if (target.tagName === "IMG" && target.className != "pair"){
 			this.flipTile(target);
 		}
-	}
+	};
 
 	
 	return Memory;
-})
+});
