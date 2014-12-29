@@ -29,8 +29,7 @@ define(function(){
         windowDiv.appendChild(contentDiv); 
         windowDiv.appendChild(bottomBar);
         windowDiv.style.left = this.getOffset().left + "px";
-        windowDiv.style.top = this.getOffset().top + "px"; 
-        this.makeMovable(contentDiv);        
+        windowDiv.style.top = this.getOffset().top + "px";       
     };
 
     Window.prototype.createMain = function () {
@@ -116,8 +115,8 @@ define(function(){
         var desk = document.getElementById("desktop");
 
         // Top & left of previous dude
-        var top = parseInt(div.style.top, 10);
-        var left = parseInt(div.style.left, 10);
+        var top = div.offsetTop; //parseInt(div.style.top, 10);
+        var left = div.offsetLeft; //parseInt(div.style.left, 10);
 
         // Height & width of desktop
         var deskHeight = parseInt(window.getComputedStyle(desk, null).height);
@@ -130,8 +129,8 @@ define(function(){
         var retObj = {};
         // If taskbar just return 10
         if (div.id == "taskbar"){
-            retObj.top = 15;
-            retObj.left = 15;
+            retObj.top = 10;
+            retObj.left = 10;
         }
 
         else if (top >= maxTop){
@@ -139,7 +138,7 @@ define(function(){
             retObj.left = left + 20;
         }
         else if(left >=maxLeft){
-            retObj.top = top + 20;
+            retObj.top = top + 170;
             retObj.left = 10;
         }
         else {
@@ -172,8 +171,7 @@ define(function(){
 
     Window.prototype.makeMovable = function(div){
 
-
-    };
+    }
 
 
     return Window;  

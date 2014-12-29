@@ -10,9 +10,10 @@ define(
     ],
     function(mustache, Window, require, Memory, ImageViewer){
 
+        // TODO: Event delegation? Click on whole desktop && check for windows ID etc
     	var Desktop = function(size){
 
-            var div = document.getElementById("desktop");
+            this.div = document.getElementById("desktop");
 
             // Getter & Setter for size, might add functionality
             // to change desktop resolution later
@@ -31,14 +32,24 @@ define(
                 return icons;
             }
 
-            this.createDesktop(div);
+            this.createDesktop(this.div);
 
         };
 
         Desktop.prototype.createDesktop = function(div){
-
+            var that = this;
             div.className = this.getSize();
-            this.createTaskBar(div);            
+            this.createTaskBar(div); 
+
+
+           /* Listener for contextmeny
+           div.addEventListener("contextmenu", function(e){
+                e.preventDefault();
+                that.showContextMenu(e);
+            })   
+            div.addEventListener("click", function(e){
+
+            }) */       
 
         };
 
@@ -73,6 +84,21 @@ define(
         Desktop.prototype.addListeners = function(arrOfIcons){
 
         };
+
+        /*Desktop.prototype.showContextMenu = function(e){
+            // contextmenu implement later?
+
+            var menu = document.createElement("div");
+            menu.innerHTML = "TJenare";
+            menu.style.display = "block";
+            menu.style.position = "absolute";
+            menu.style.left = e.pageX - this.div.offsetLeft + "px"; //clientX - no scrolling accounted
+            menu.style.top = e.pageY - this.div.offsetTop + "px"; // clientY - no scrolling accounted
+            menu.style.visibility = "visible";
+            this.div.appendChild(menu);
+            console.log(this.div.offsetLeft);
+            console.log(this.div.offsetTop);
+        };*/
         
         return Desktop;
     }
