@@ -1,116 +1,116 @@
 "use strict";
 define(["modules/window/window"],
-	function(Window){
+function(Window){
 
-	var ImageViewer = function(appID, isGallery, imgObject){
-		
+var ImageViewer = function(appID, isGallery, imgObject){
+	
 
-		var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
-		this.settings = {
-			height: 400,
-			width: 300,
-		};
-		
-
-		
-		this.getUrl = function(){
-			return url;
-		};
-		Window.call(this, this.settings, appID);
-		this.winDiv = document.getElementById(this.windowId);
-		// Boolean to decide if window should be gallery or big picture
-		if (isGallery){
-			this.setLoading();
-			this.getPics(this.winDiv);	
-		}
-		else{
-			this.showFullPic(this.windowId, imgObject);
-		}
+	var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
+	this.settings = {
+		height: 300,
+		width: 400,
 	};
 	
-	ImageViewer.prototype = Object.create(Window.prototype);
 
-	ImageViewer.prototype.getPics = function(div){
-		var that = this;
-		var xhr = new XMLHttpRequest();
+	
+	this.getUrl = function(){
+		return url;
+	};
+	Window.call(this, this.settings, appID);
+	this.winDiv = document.getElementById(this.windowId);
+	// Boolean to decide if window should be gallery or big picture
+	if (isGallery){
+		this.setLoading();
+		this.getPics(this.winDiv);	
+	}
+	else{
+		this.showFullPic(this.windowId, imgObject);
+	}
+};
 
-		xhr.onreadystatechange = function(){
-			if(xhr.readyState === 4){
-				if(xhr.status === 200){
-					that.renderThumbs(JSON.parse(xhr.responseText), div);
-					that.setLoaded();				
-				}
-				else{
-					console.log("Läsfel, status: "+xhr.status);
-				}
+ImageViewer.prototype = Object.create(Window.prototype);
+
+ImageViewer.prototype.getPics = function(div){
+	var that = this;
+	var xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState === 4){
+			if(xhr.status === 200){
+				that.renderThumbs(JSON.parse(xhr.responseText), div);
+				that.setLoaded();				
 			}
-		};
-
-		xhr.open("GET", this.getUrl(), true);
-		xhr.send(null);
+			else{
+				console.log("Läsfel, status: "+xhr.status);
+			}
+		}
 	};
 
-	ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
+	xhr.open("GET", this.getUrl(), true);
+	xhr.send(null);
+};
 
-		var maxThumbHeight = 0;
-		var maxThumbWidth = 0;
-		var that = this;
-		var contentDiv = winDiv.firstChild.nextSibling;
+ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
 
-		// Getting the highest thumbwidth/height
-		imgArr.forEach(function(element){
-			if (maxThumbWidth < element.thumbWidth){
-				maxThumbWidth = element.thumbWidth;
-			}
-			if (maxThumbHeight < element.thumbHeight){
-				maxThumbHeight = element.thumbHeight;
-			}
-		});
+	var maxThumbHeight = 0;
+	var maxThumbWidth = 0;
+	var that = this;
+	var contentDiv = winDiv.firstChild.nextSibling;
 
-		imgArr.forEach(function(element, index){
+	// Getting the highest thumbwidth/height
+	imgArr.forEach(function(element){
+		if (maxThumbWidth < element.thumbWidth){
+			maxThumbWidth = element.thumbWidth;
+		}
+		if (maxThumbHeight < element.thumbHeight){
+			maxThumbHeight = element.thumbHeight;
+		}
+	});
 
-			// Creates each element for the thumbpic.
-			var div = document.createElement("div");
-			var a = document.createElement("a");
-			var img = document.createElement("img");
+	imgArr.forEach(function(element, index){
 
-			div.className = "thumbDiv";
-			a.href = "#";
-			img.className = "thumbURL";
-
-			img.src = element.thumbURL;
-
-			div.style.width = maxThumbWidth+"px";
-			div.style.height = maxThumbHeight+"px";
-			contentDiv.appendChild(div);
-			div.appendChild(a);
-			a.appendChild(img);
-
-			a.addEventListener("click", function(){
-				that.clickFunc(imgArr[index]);
-			}, false);			
-		});
-
-	};
-
-
-
-	ImageViewer.prototype.clickFunc = function(imgObject){
-		new ImageViewer("ImageViewer", false, imgObject);
-	};
-
-	ImageViewer.prototype.showFullPic = function(id, imgObject){
-		var div = document.getElementById(id);
-		var content = div.firstChild.nextSibling; // Firstchild is topbar
+		// Creates each element for the thumbpic.
+		var div = document.createElement("div");
+		var a = document.createElement("a");
 		var img = document.createElement("img");
-		div.style.width = imgObject.width + "px";
-		div.style.height = imgObject.height + this.barHeight * 2 + "px";
-		content.style.height = "auto"; // Tried setting heigh to imgObject.height but scrollbars visible then?
-		img.src = imgObject.URL;
-		content.appendChild(img);
-	};
 
-	
+		div.className = "thumbDiv";
+		a.href = "#";
+		img.className = "thumbURL";
 
-	return ImageViewer;
+		img.src = element.thumbURL;
+
+		div.style.width = maxThumbWidth+"px";
+		div.style.height = maxThumbHeight+"px";
+		contentDiv.appendChild(div);
+		div.appendChild(a);
+		a.appendChild(img);
+
+		a.addEventListener("click", function(){
+			that.clickFunc(imgArr[index]);
+		}, false);			
+	});
+
+};
+
+
+
+ImageViewer.prototype.clickFunc = function(imgObject){
+	new ImageViewer("ImageViewer", false, imgObject);
+};
+
+ImageViewer.prototype.showFullPic = function(id, imgObject){
+	var div = document.getElementById(id);
+	var content = div.firstChild.nextSibling; // Firstchild is topbar
+	var img = document.createElement("img");
+	div.style.width = imgObject.width + "px";
+	div.style.height = imgObject.height + this.barHeight * 2 + "px";
+	content.style.height = "auto"; // Tried setting heigh to imgObject.height but scrollbars visible then?
+	img.src = imgObject.URL;
+	content.appendChild(img);
+};
+
+
+
+return ImageViewer;
 });
