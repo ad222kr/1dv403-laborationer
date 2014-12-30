@@ -20,6 +20,7 @@ define(["modules/window/window"],
 		this.winDiv = document.getElementById(this.windowId);
 		// Boolean to decide if window should be gallery or big picture
 		if (isGallery){
+			this.setLoading();
 			this.getPics(this.winDiv);	
 		}
 		else{
@@ -36,7 +37,8 @@ define(["modules/window/window"],
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState === 4){
 				if(xhr.status === 200){
-					that.renderThumbs(JSON.parse(xhr.responseText), div);				
+					that.renderThumbs(JSON.parse(xhr.responseText), div);
+					that.setLoaded();				
 				}
 				else{
 					console.log("Läsfel, status: "+xhr.status);

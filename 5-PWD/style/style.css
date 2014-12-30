@@ -97,6 +97,11 @@ body{
 	z-index: 1;
 }
 
+.icon{
+	height: 28px;
+	width: 28px;
+}
+
 /* Style for the window, its top/bottombar, statustext */
 .window{
 	display: block;
@@ -127,6 +132,10 @@ body{
 	position: absolute;
 	bottom: 0px;
 
+}
+.ajaxLoader{
+	width: 16px;
+	height: 16px;
 }
 
 .wStatusText{

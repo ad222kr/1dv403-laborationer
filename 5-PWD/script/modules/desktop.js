@@ -28,12 +28,13 @@ define(
                 // Icon-array to iterate over it when creating toolbar?
                 var icons = {
                     imgViewer: "pics/taskbar/folder32.png",
+                    memory: "pics/taskbar/cardgame32.png",
                 };
                 return icons;
             };
 
             this.createDesktop(this.div);
-            var mem = new Memory("Memory");
+           
 
         };
 
@@ -69,15 +70,47 @@ define(
             var imgViewerImg = document.createElement("img");
             imgViewerA.href = "#";
             imgViewerImg.src = icons.imgViewer;
+            imgViewerImg.className = "imageViewer icon";
             imgViewerA.appendChild(imgViewerImg);
             taskbar.appendChild(imgViewerA);
 
             // adding listeners, move to function when more apps?
-            imgViewerA.addEventListener("click", function(e){
+           /* imgViewerA.addEventListener("click", function(e){
                 e.preventDefault();
                 new ImageViewer("ImageViewer", true);
 
             });
+*/
+            var memoryImg = document.createElement("img");
+            var memoryA = document.createElement("a");
+            memoryA.href = "#";
+            memoryImg.src = icons.memory;
+            memoryImg.className = "memory icon";
+            memoryA.appendChild(memoryImg);
+            taskbar.appendChild(memoryA);
+
+            taskbar.addEventListener("click", function(e){
+                if(!e){e=window.event;}
+                e.preventDefault();
+                var target = e.target;
+                if (target.tagName === "A"){
+                    target = target.firstChild;
+                }
+                if(target.tagName === "IMG"){
+                    switch(target.className){
+                        case "memory icon":
+
+                            new Memory("Memory");
+                            break;
+                        case "imageViewer icon":
+                            new ImageViewer("ImageViewer", true);
+                            break;
+
+                    }
+                }
+            })
+
+
 
             
         };

@@ -7,11 +7,17 @@ define(function(){
         this.desktop = document.getElementById("desktop");
         this.barHeight = 20; // Height of bars
         this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
+        this.icons = {
+            ajaxLoader: "pics/window/ajax-loader.gif",
+            winSettings: "pics/window/gear32.png",
+            close: "pics/window/stop32.png"
+        }
+
 
         this.getAppId = function(){
             return appID;
         };
-        this.createWindow(); 
+        this.createWindow();
     };
 
 
@@ -65,7 +71,7 @@ define(function(){
 
         closeA.href = "#";
         closeA.className = "wClose";
-        closeImg.src = "pics/window/stop32.png";
+        closeImg.src = this.icons.close;
         closeImg.className = "wClosePic";
         
         topBar.appendChild(statusText);
@@ -155,6 +161,20 @@ define(function(){
             this.desktop.removeChild(windowDiv);
             this.desktop.appendChild(windowDiv);   
         }
+    };
+
+    Window.prototype.setLoading = function(){
+        var statusBar = document.getElementById(this.windowId).lastChild;
+        var ajaxLoader = document.createElement("img");
+        ajaxLoader.className = "ajaxLoader";
+        ajaxLoader.src = this.icons.ajaxLoader;
+        statusBar.appendChild(ajaxLoader);
+    };
+
+    Window.prototype.setLoaded = function(){
+        var statusBar = document.getElementById(this.windowId).lastChild;
+        var ajaxLoader = statusBar.firstChild;
+        statusBar.removeChild(ajaxLoader);
     };
 
     Window.prototype.makeMovable = function(div){
