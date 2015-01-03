@@ -8,6 +8,7 @@ var RSSReader = function(appId){
 	this.settings = {
 		height: 550,
 		width: 400,
+		icon: "pics/taskbar/feed.png",
 	};
 	this.feeds = {
 		DN: "http://homepage.lnu.se/staff/tstjo/labbyServer/rssproxy/?url="+escape("http://www.dn.se/m/rss/senaste-nytt"),
@@ -25,12 +26,12 @@ RSSReader.prototype = Object.create(Window.prototype);
 RSSReader.prototype.getFeed = function(xhr){
 	var that = this;
 	var content = document.getElementById(this.windowId).firstChild.nextSibling;
-	console.log(content);
+	var response;
+
 	this.setLoading();
 	xhr.onreadystatechange = function(e){
 		if(xhr.readyState === 4){
 			if(xhr.status === 200){
-				e.preventDefault();
 				content.innerHTML = xhr.responseText;
 				that.setLoaded();
 			}
@@ -47,6 +48,7 @@ RSSReader.prototype.getFeed = function(xhr){
 
 
 };
+
 return RSSReader;
 
 })

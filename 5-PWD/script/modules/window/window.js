@@ -9,8 +9,8 @@ var Window = function(settings, appID){
     this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
     this.icons = {
         ajaxLoader: "pics/window/ajax-loader.gif",
-        winSettings: "pics/window/gear32.png",
-        close: "pics/window/stop32.png"
+        winSettings: "pics/window/cog.png",
+        close: "pics/window/cross.png"
     }
 
 
@@ -60,12 +60,15 @@ Window.prototype.createContentArea = function(){
 
 Window.prototype.createTopBar = function(){
     var that = this;
+    var appImg = document.createElement("img");
     var topBar = document.createElement("div");
     var statusText = document.createElement("span");
     var closeA = document.createElement("a");
     var closeImg = document.createElement("img");
 
     topBar.className = "wTopBar";
+    appImg.src = this.settings.icon;
+    appImg.className = "appMiniPic";
     statusText.className = "wStatusText";
     statusText.innerHTML = this.getAppId();
 
@@ -74,6 +77,7 @@ Window.prototype.createTopBar = function(){
     closeImg.src = this.icons.close;
     closeImg.className = "wClosePic";
     
+    topBar.appendChild(appImg);
     topBar.appendChild(statusText);
     closeA.appendChild(closeImg);
     topBar.appendChild(closeA);
@@ -134,21 +138,21 @@ Window.prototype.getOffset = function(){
     var retObj = {};
     // If taskbar just return 10
     if (div.id == "taskbar"){
-        retObj.top = 10;
-        retObj.left = 10;
+        retObj.top = 15;
+        retObj.left = 15;
     }
 
     else if (top >= maxTop){
-        retObj.top = 10;
-        retObj.left = left + 20;
+        retObj.top = 15;
+        retObj.left = left + 15;
     }
     else if(left >=maxLeft){
-        retObj.top = top + 170;
-        retObj.left = 10;
+        retObj.top = top + 45;
+        retObj.left = 15;
     }
     else {
-        retObj.top = top + 20;
-        retObj.left = left + 20;
+        retObj.top = top + 15;
+        retObj.left = left + 15;
     }
               
    
@@ -157,7 +161,9 @@ Window.prototype.getOffset = function(){
 
 Window.prototype.giveFocus = function(windowDiv, e){
     // Ty robin for suggesting this on slack
-    if (e.target.tagName !== "IMG"){
+    // thumbURL to not give gallery focus when clicking on pic,
+    // wClosePic to not get error when closing a window
+    if (e.target.className !== "thumbURL" && e.target.className !== "wClosePic"){
         this.desktop.removeChild(windowDiv);
         this.desktop.appendChild(windowDiv);   
     }

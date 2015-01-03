@@ -8,7 +8,8 @@ var ImageViewer = function(appID, isGallery, imgObject){
 	var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
 	this.settings = {
 		height: 300,
-		width: 400,
+		width: 500,
+		icon: "pics/taskbar/folder_picture.png",
 	};
 	
 
@@ -104,8 +105,10 @@ ImageViewer.prototype.showFullPic = function(id, imgObject){
 	var content = div.firstChild.nextSibling; // Firstchild is topbar
 	var img = document.createElement("img");
 	div.style.width = imgObject.width + "px";
-	div.style.height = imgObject.height + this.barHeight * 2 + "px";
-	content.style.height = "auto"; // Tried setting heigh to imgObject.height but scrollbars visible then?
+	div.style.height = (imgObject.height + this.barHeight * 2 ) + "px";
+	content.style.height = imgObject.height + "px"; // Tried setting heigh to imgObject.height but scrollbars visible then?
+	content.style.overflow = "hidden"; // w/o this scrollbars are visible even though they are not needed
+	console.log(content);
 	img.src = imgObject.URL;
 	content.appendChild(img);
 };

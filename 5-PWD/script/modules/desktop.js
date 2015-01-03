@@ -28,15 +28,16 @@ var Desktop = function(size){
     this.getIcons = function(){
         // Icon-array to iterate over it when creating toolbar?
         var icons = {
-            imgViewer: "pics/taskbar/folder32.png",
-            memory: "pics/taskbar/cardgame32.png",
+            imgViewer: "pics/taskbar/folder_picture.png",
+            memory: "pics/taskbar/controller.png",
+            rss: "pics/taskbar/feed.png"
+
         };
         return icons;
     };
 
     this.createDesktop(this.div);
-    var reader = new RSSReader("RSS");
-   
+    new ImageViewer("ImageViewer", true);   
 
 };
 
@@ -64,7 +65,6 @@ Desktop.prototype.createTaskBar = function(div, icons){
     var icons = this.getIcons();
     var taskbar = document.createElement("div");
     taskbar.id = "taskbar";
-    taskbar.style.zIndex = 5;
     div.appendChild(taskbar);
 
     // Icons for imageviewer
@@ -84,6 +84,14 @@ Desktop.prototype.createTaskBar = function(div, icons){
     memoryA.appendChild(memoryImg);
     taskbar.appendChild(memoryA);
 
+    var rssImg = document.createElement("img");
+    var rssA = document.createElement("a");
+    rssA.href = "#";
+    rssImg.src = icons.rss;
+    rssImg.className = "rss icon";
+    rssA.appendChild(rssImg);
+    taskbar.appendChild(rssA);
+
     taskbar.addEventListener("click", function(e){
         if(!e){e=window.event;}
         e.preventDefault();
@@ -98,6 +106,9 @@ Desktop.prototype.createTaskBar = function(div, icons){
                     break;
                 case "imageViewer icon":
                     new ImageViewer("ImageViewer", true);
+                    break;
+                case "rss icon":
+                    new RSSReader("RSS");
                     break;
 
             }

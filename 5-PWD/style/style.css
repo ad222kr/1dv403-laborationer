@@ -48,74 +48,98 @@ table {
 	border-spacing: 0;
 }
 
-
-
 /*START OF REAL CSS*/
+@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+
+
 body{
+	font-family: 'Ubuntu', sans-serif;
 	background: black;
 }
+
+p, span{
+	font-size: 14px;
+	color: white;
+}
+
+
+
 
 #desktop{
 	position: relative; /* For keeping task-bar div inside of parent div */
 	display: block;
-	background: white;
+	background: #16499a;
 	margin: auto;
 	overflow: hidden;
-	
+	background-image: url("pics/background.jpg");
+
 }
 
 /* Classes for different resolutions*/
 .xsmall{
 	width: 800px;
-	height: 600px; 
+	height: 600px;
+	background-size: 800px 600px !important; 
+
 }
 
 .small{	
 	width: 1024px;
 	height: 640px;
+	background-size: 1024px 640px !important;
+
 }
 
 .medium{
-	display: block;
 	width: 1280px;
 	height: 720px;	
+	background-size: 1280px 720px !important;
 }
 
 .large{
-	display: block;
 	width: 1280px;
 	height: 900px;
+	background-size: 1280px 900px !important;
 }
 
 /* Style for taskbar */
 #taskbar{
-	background: red;
+	background: #003366 ;
 	height: 30px;
 	position: absolute; /* Absolute and bottom for keeping taskbar att bottom of parent div */
 	width: 100%;
 	bottom: 0px;
-	z-index: 1;
+	z-index: 5;
 }
 
 .icon{
-	height: 28px;
-	width: 28px;
+	height: 25px;
+	width: 25px;
+	top: 3px;
+	margin-left: 5px;
+	position: relative;
 }
+
 
 /* Style for the window, its top/bottombar, statustext */
 .window{
 	display: block;
 	border: 1px black solid;
 	position: absolute; /* stacking divs on top of each other */
+}
 
-	
+.appMiniPic{
+	position: absolute;
+	margin-left: 3px;
+	margin-top: 3px;
+	width: 16px;
+	height: 16px;
 }
 
 .wContent{
 	display: block;
 	overflow: auto;
-	height: auto;
-	background: yellow;
+	background: white;
 	word-wrap: break-word;
 }
 
@@ -124,38 +148,49 @@ body{
 	display: block;
 	width: 100%;
 	height: 20px;
-	background-color: green;
+	background-color: #003366 ;
 }
+
 
 .wBottomBar{
 	display: block;
 	width: 100%;
 	height: 20px;
-	background-color: green;
+	background-color: #003366 ;
 	position: absolute;
 	bottom: 0px;
 
 }
+
 .ajaxLoader{
-	width: 16px;
-	height: 16px;
+	position: relative;
+	top: 2px;
+	left: 2px;
 }
-
 .wStatusText{
-
+	position: absolute;
+	top: 3px;
+	width: 100%;
+	text-align: center;
 }
 
 .wClosePic{
+	position: relative;
 	width: 15px;
 	height: 15px;
 	float: right;
+	margin-top:2px;
+	margin-right: 2px;
 }
 
 .thumbDiv{
 	display: block;
-	float:left;
-	padding: 5px;
-	margin: 0px auto;
+	position: relative;
+	float: left;
+	text-align: center;
+	border: 1px solid black;
+	background: white;
+	margin: 5px;
 }
 
 

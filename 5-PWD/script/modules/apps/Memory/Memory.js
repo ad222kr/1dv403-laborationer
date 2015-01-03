@@ -7,6 +7,8 @@ define(["modules/window/window", "apps/Memory/random"],
 		this.settings = {
 			height: 200,
 			width: 200,
+			icon: "pics/taskbar/controller.png",
+
 		};
 
 		this.rows = 4;
