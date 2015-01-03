@@ -4,7 +4,6 @@ require.config({
     "baseUrl": "script/lib",
 
     paths: {
-        "mustache": "mustache",
         "require": "../require",
         "apps": "../modules/apps",
         "modules": "../modules/"

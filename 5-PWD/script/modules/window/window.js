@@ -6,15 +6,17 @@ var Window = function(settings, appID){
     this.width = settings.width;
     this.desktop = document.getElementById("desktop");
     this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
+    this.barHeight = 20;
     this.icons = {
         ajaxLoader: "pics/window/ajax-loader.gif",
         winSettings: "pics/window/cog.png",
         close: "pics/window/cross.png"
     }
-    this.barHeight = 20;
+
     this.getAppId = function(){
         return appID;
     };
+
     this.createWindow();
 };
 
@@ -37,19 +39,25 @@ Window.prototype.createWindow = function(){
 
 
 Window.prototype.movable = function(desktop, windowDiv, handle){
-    var offX;
-    var offY;
-
-    handle.addEventListener("mousedown", mouseDown, false);
+    var offX,
+        offY,
+        scrollPos,
+        maxOffsetTop = desktop.offsetHeight - windowDiv.offsetHeight,
+        maxOffsetLeft = desktop.offsetWidth - windowDiv.offsetWidth,
+        contentDiv = windowDiv.firstChild.nextSibling;
+    console.log(contentDiv);
     handle.style.cursor = "move";
+    handle.addEventListener("mousedown", mouseDown, false);
+    
 
     function mouseDown(e){
         // Calculates the difference between mouse-pos & windows top & left
+        // So movement of the window is correct w/e you put the mouse
 
-        if(!e){e=window.event;}
+        if(!e) { e = window.event; }
+
         offX = e.clientX - parseInt(windowDiv.offsetLeft);
         offY = e.clientY - parseInt(windowDiv.offsetTop);
-        console.log();
         desktop.classList.add("noselect");
         desktop.addEventListener("mousemove", mouseMove, false);
     }
@@ -57,39 +65,33 @@ Window.prototype.movable = function(desktop, windowDiv, handle){
     function mouseMove(e){
         // Moves the window to the position of the mouse minus
         // the offset that was calculetade so it gets the right pos
-        if(!e){e=window.event;}
-        handle.addEventListener("mouseup", mouseUp, false);
+        // Checks first which of clientY-offY & maxOffset is the least, 
+        // then checks which of that && 0 is the biggest
 
-        console.log(windowDiv.offsetWidth);
-        console.log(desktop.offsetWidth);
+        if(!e){ e = window.event; }
+        e.preventDefault();
 
-        windowDiv.style.top = Math.min((e.clientY - offY), (desktop.offsetHeight - windowDiv.offsetHeight)) + "px";
-        windowDiv.style.left = Math.min((e.clientX - offX), (desktop.offsetWidth - windowDiv.offsetWidth)) + "px";   
+        document.body.addEventListener("mouseup", mouseUp, false);
         
+        windowDiv.style.top = Math.max(Math.min((e.clientY - offY), maxOffsetTop), 0) + "px";
+        windowDiv.style.left = Math.max(Math.min((e.clientX - offX), maxOffsetLeft), 0) + "px";       
     }
 
     function mouseUp(e){
-        // just removes eventlistener for move on mouseup
         desktop.removeEventListener("mousemove", mouseMove, false);
         desktop.classList.remove("noselect");
     }
-
-
-
-
 };
 
-
-
-    
-
 Window.prototype.createMain = function () {
-    var that = this;
-    var windowDiv = document.createElement("div"); 
+    var that = this,
+        windowDiv = document.createElement("div"); 
+
     windowDiv.id = this.windowId;    
     windowDiv.className = "window";
     windowDiv.style.width = this.width + "px";
     windowDiv.style.height = this.height + "px";
+
     windowDiv.addEventListener("click", function(e){
         that.giveFocus(windowDiv, e);
     });
@@ -99,23 +101,27 @@ Window.prototype.createMain = function () {
 
 Window.prototype.createContentArea = function(){
     var contentDiv = document.createElement("div");
+
     contentDiv.className = "wContent";
     contentDiv.style.height = this.height - this.barHeight * 2 + "px"; // total height minus 2 bars
+
     return contentDiv;
 };
 
 Window.prototype.createTopBar = function(){
-    var that = this;
-    var appImg = document.createElement("img");
-    var topBar = document.createElement("div");
-    var statusText = document.createElement("span");
-    var closeA = document.createElement("a");
-    var closeImg = document.createElement("img");
+    var that = this,
+        appImg = document.createElement("img"),
+        topBar = document.createElement("div"),
+        statusText = document.createElement("span"),
+        closeA = document.createElement("a"),
+        closeImg = document.createElement("img");
 
     topBar.className = "wTopBar";
     topBar.style.height = this.barHeight + "px";
+
     appImg.src = this.settings.icon;
     appImg.className = "appMiniPic";
+
     statusText.className = "wStatusText";
     statusText.innerHTML = this.getAppId();
 
@@ -124,9 +130,9 @@ Window.prototype.createTopBar = function(){
     closeImg.src = this.icons.close;
     closeImg.className = "wClosePic";
     
-    topBar.appendChild(appImg);
-    topBar.appendChild(statusText);
     closeA.appendChild(closeImg);
+    topBar.appendChild(appImg);
+    topBar.appendChild(statusText);   
     topBar.appendChild(closeA);
 
     closeA.addEventListener("click", function(e){
@@ -139,16 +145,18 @@ Window.prototype.createTopBar = function(){
 
 Window.prototype.createBottomBar = function(){
     var bottomBar = document.createElement("div");
+
     bottomBar.className = "wBottomBar";
     bottomBar.style.height = this.barHeight + "px";
+
     return bottomBar;
 };
 
 
 Window.prototype.close = function(id){
-    var div = document.querySelector("#desktop");
-    var win = document.getElementById(id);
-    div.removeChild(win);
+    var dektop = document.querySelector("#desktop"),
+        windowDiv = document.getElementById(id);
+    desktop.removeChild(windowDiv);
 };
 
 
@@ -159,23 +167,14 @@ Window.prototype.getRandomId = function(max, min){
 };
 
 Window.prototype.getOffset = function(){
-    var div = document.getElementById("desktop").lastChild.previousSibling; // LastChild is taskbar 
-    var desk = document.getElementById("desktop");
+    var div = document.getElementById("desktop").lastChild.previousSibling, // LastChild is taskbar 
+        desktop = document.getElementById("desktop"),
+        top = div.offsetTop, // Top & left of previous window
+        left = div.offsetLeft,      
+        maxTop = desktop.offsetHeight - this.height - 50, // maxTop & left, so it works with every possible window size
+        maxLeft = desktop.offsetWidth - this.width - 30,  
+        offset = {};
 
-    // Top & left of previous window
-    var top = div.offsetTop; //parseInt(div.style.top, 10);
-    var left = div.offsetLeft; //parseInt(div.style.left, 10);
-
-    // Height & width of desktop
-    var deskHeight = parseInt(window.getComputedStyle(desk, null).height);
-    var deskWidth = parseInt(window.getComputedStyle(desk, null).width);
-
-    // maxTop & left, so it works with every possible window size
-    var maxTop = deskHeight - this.height - 50; // 50 is taskbar + 20px whitespace left
-    var maxLeft = deskWidth - this.width - 30;
-    
-    var offset = {};
-    // If taskbar just return 10
     if (div.id == "taskbar"){
         offset.top = 15;
         offset.left = 15;
@@ -183,16 +182,17 @@ Window.prototype.getOffset = function(){
 
     else if (top >= maxTop){
         offset.top = 15;
-        offset.left = left + 15;
+        offset.left = left + 15; 
     }
     else if(left >=maxLeft){
-        offset.top = top + 45;
+        offset.top =  top + 75;
         offset.left = 15;
     }
     else {
         offset.top = top + 15;
         offset.left = left + 15;
     }   
+
     return offset;    
 };
 
@@ -207,20 +207,21 @@ Window.prototype.giveFocus = function(windowDiv, e){
 };
 
 Window.prototype.setLoading = function(){
-    var statusBar = document.getElementById(this.windowId).lastChild;
-    var ajaxLoader = document.createElement("img");
+    var statusBar = document.getElementById(this.windowId).lastChild,
+        ajaxLoader = document.createElement("img");
+
     ajaxLoader.className = "ajaxLoader";
     ajaxLoader.src = this.icons.ajaxLoader;
+
     statusBar.appendChild(ajaxLoader);
 };
 
 Window.prototype.setLoaded = function(){
-    var statusBar = document.getElementById(this.windowId).lastChild;
-    var ajaxLoader = statusBar.firstChild;
+    var statusBar = document.getElementById(this.windowId).lastChild,
+        ajaxLoader = statusBar.firstChild;
+
     statusBar.removeChild(ajaxLoader);
 };
-
-
 
 return Window;  
 });

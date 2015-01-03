@@ -2,14 +2,13 @@
 
 define(
 [
-"mustache",
 "../modules/window/window",
 "require",
 "apps/Memory/Memory",
 "apps/ImageViewer/ImageViewer",
 "apps/RSSReader/RSSReader"
 ],
-function(mustache, Window, require, Memory, ImageViewer, RSSReader){
+function(Window, require, Memory, ImageViewer, RSSReader){
 
 var Desktop = function(size){
     this.div = document.getElementById("desktop");
@@ -18,7 +17,7 @@ var Desktop = function(size){
         memory: "pics/taskbar/controller.png",
         rss: "pics/taskbar/feed.png",
     }
-        this.setSize = function(_size){
+    this.setSize = function(_size){
         size = _size;
     };
     this.getSize = function(){
@@ -46,8 +45,6 @@ Desktop.prototype.createDesktop = function(div){
 };
 
 Desktop.prototype.createTaskBar = function(div){
-    // Creating elements for the fskbar
-    // Setting icons on the taskbar
     var taskbar = document.createElement("div");
     taskbar.id = "taskbar";
     div.appendChild(taskbar);
