@@ -51,25 +51,27 @@ Window.prototype.movable = function(desktop, windowDiv, handle){
         offY = e.clientY - parseInt(windowDiv.offsetTop);
         console.log();
         desktop.classList.add("noselect");
-        desktop.addEventListener("mousemove", mouseMove, true);
+        desktop.addEventListener("mousemove", mouseMove, false);
     }
 
     function mouseMove(e){
         // Moves the window to the position of the mouse minus
         // the offset that was calculetade so it gets the right pos
-        // if mouse is 7px off from top, top stays 7px from mouse on move (example)
         if(!e){e=window.event;}
         handle.addEventListener("mouseup", mouseUp, false);
-        windowDiv.style.top = (e.clientY - offY) + "px";
-        windowDiv.style.left = (e.clientX - offX) +"px";    
+
+        console.log(windowDiv.offsetWidth);
+        console.log(desktop.offsetWidth);
+
+        windowDiv.style.top = Math.min((e.clientY - offY), (desktop.offsetHeight - windowDiv.offsetHeight)) + "px";
+        windowDiv.style.left = Math.min((e.clientX - offX), (desktop.offsetWidth - windowDiv.offsetWidth)) + "px";   
         
     }
 
     function mouseUp(e){
         // just removes eventlistener for move on mouseup
-        desktop.removeEventListener("mousemove", mouseMove, true);
+        desktop.removeEventListener("mousemove", mouseMove, false);
         desktop.classList.remove("noselect");
-
     }
 
 

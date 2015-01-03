@@ -70,6 +70,7 @@ p, span{
 	display: block;
 	background: #16499a;
 	margin: auto;
+	top: 5px;
 	overflow: hidden;
 	background-image: url("pics/background.jpg");
 
