@@ -5,21 +5,18 @@ var Window = function(settings, appID){
     this.height = settings.height;
     this.width = settings.width;
     this.desktop = document.getElementById("desktop");
-    this.barHeight = 20; // Height of bars
     this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
     this.icons = {
         ajaxLoader: "pics/window/ajax-loader.gif",
         winSettings: "pics/window/cog.png",
         close: "pics/window/cross.png"
     }
-
-
+    this.barHeight = 20;
     this.getAppId = function(){
         return appID;
     };
     this.createWindow();
 };
-
 
 Window.prototype.createWindow = function(){
     var div = document.getElementById("desktop"),
@@ -28,14 +25,61 @@ Window.prototype.createWindow = function(){
         contentDiv = this.createContentArea(),
         bottomBar = this.createBottomBar();
 
-
     div.appendChild(windowDiv);
     windowDiv.appendChild(topBar);
     windowDiv.appendChild(contentDiv); 
     windowDiv.appendChild(bottomBar);
     windowDiv.style.left = this.getOffset().left + "px";
-    windowDiv.style.top = this.getOffset().top + "px";       
+    windowDiv.style.top = this.getOffset().top + "px";
+    this.movable(div, windowDiv, topBar);
+    
 };
+
+
+Window.prototype.movable = function(desktop, windowDiv, handle){
+    var offX;
+    var offY;
+
+    handle.addEventListener("mousedown", mouseDown, false);
+    handle.style.cursor = "move";
+
+    function mouseDown(e){
+        // Calculates the difference between mouse-pos & windows top & left
+
+        if(!e){e=window.event;}
+        offX = e.clientX - parseInt(windowDiv.offsetLeft);
+        offY = e.clientY - parseInt(windowDiv.offsetTop);
+        console.log();
+        desktop.classList.add("noselect");
+        desktop.addEventListener("mousemove", mouseMove, true);
+    }
+
+    function mouseMove(e){
+        // Moves the window to the position of the mouse minus
+        // the offset that was calculetade so it gets the right pos
+        // if mouse is 7px off from top, top stays 7px from mouse on move (example)
+        if(!e){e=window.event;}
+        handle.addEventListener("mouseup", mouseUp, false);
+        windowDiv.style.top = (e.clientY - offY) + "px";
+        windowDiv.style.left = (e.clientX - offX) +"px";    
+        
+    }
+
+    function mouseUp(e){
+        // just removes eventlistener for move on mouseup
+        desktop.removeEventListener("mousemove", mouseMove, true);
+        desktop.classList.remove("noselect");
+
+    }
+
+
+
+
+};
+
+
+
+    
 
 Window.prototype.createMain = function () {
     var that = this;
@@ -67,6 +111,7 @@ Window.prototype.createTopBar = function(){
     var closeImg = document.createElement("img");
 
     topBar.className = "wTopBar";
+    topBar.style.height = this.barHeight + "px";
     appImg.src = this.settings.icon;
     appImg.className = "appMiniPic";
     statusText.className = "wStatusText";
@@ -88,25 +133,19 @@ Window.prototype.createTopBar = function(){
     });
 
     return topBar;
-
 };
 
 Window.prototype.createBottomBar = function(){
-    // TODO add functions that inserts ajax-loader and remove
-    // it when ajax-obj is retrieved from server to bot-bar
     var bottomBar = document.createElement("div");
-
     bottomBar.className = "wBottomBar";
-
+    bottomBar.style.height = this.barHeight + "px";
     return bottomBar;
 };
 
 
 Window.prototype.close = function(id){
-
     var div = document.querySelector("#desktop");
     var win = document.getElementById(id);
-
     div.removeChild(win);
 };
 
@@ -115,15 +154,13 @@ Window.prototype.getRandomId = function(max, min){
     // Random ID for windows to solve the problem of always
     // loading pics in same window and removing first window
     return Math.floor(Math.random()*(max-min+1)+min); // http://stackoverflow.com/a/7228322
-
 };
 
 Window.prototype.getOffset = function(){
-    // Fic func to get the max left & top values instead of hardcoding
     var div = document.getElementById("desktop").lastChild.previousSibling; // LastChild is taskbar 
     var desk = document.getElementById("desktop");
 
-    // Top & left of previous dude
+    // Top & left of previous window
     var top = div.offsetTop; //parseInt(div.style.top, 10);
     var left = div.offsetLeft; //parseInt(div.style.left, 10);
 
@@ -135,28 +172,26 @@ Window.prototype.getOffset = function(){
     var maxTop = deskHeight - this.height - 50; // 50 is taskbar + 20px whitespace left
     var maxLeft = deskWidth - this.width - 30;
     
-    var retObj = {};
+    var offset = {};
     // If taskbar just return 10
     if (div.id == "taskbar"){
-        retObj.top = 15;
-        retObj.left = 15;
+        offset.top = 15;
+        offset.left = 15;
     }
 
     else if (top >= maxTop){
-        retObj.top = 15;
-        retObj.left = left + 15;
+        offset.top = 15;
+        offset.left = left + 15;
     }
     else if(left >=maxLeft){
-        retObj.top = top + 45;
-        retObj.left = 15;
+        offset.top = top + 45;
+        offset.left = 15;
     }
     else {
-        retObj.top = top + 15;
-        retObj.left = left + 15;
-    }
-              
-   
-    return retObj;    
+        offset.top = top + 15;
+        offset.left = left + 15;
+    }   
+    return offset;    
 };
 
 Window.prototype.giveFocus = function(windowDiv, e){
@@ -183,9 +218,6 @@ Window.prototype.setLoaded = function(){
     statusBar.removeChild(ajaxLoader);
 };
 
-Window.prototype.makeMovable = function(div){
-
-};
 
 
 return Window;  

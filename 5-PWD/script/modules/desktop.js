@@ -11,41 +11,28 @@ define(
 ],
 function(mustache, Window, require, Memory, ImageViewer, RSSReader){
 
-// TODO: Event delegation? Click on whole desktop && check for windows ID etc
 var Desktop = function(size){
-
     this.div = document.getElementById("desktop");
-
-    // Getter & Setter for size, might add functionality
-    // to change desktop resolution later
-    this.setSize = function(_size){
+    this.icons = {
+        imgViewer: "pics/taskbar/folder_picture.png",
+        memory: "pics/taskbar/controller.png",
+        rss: "pics/taskbar/feed.png",
+    }
+        this.setSize = function(_size){
         size = _size;
     };
     this.getSize = function(){
         return size;
     };
 
-    this.getIcons = function(){
-        // Icon-array to iterate over it when creating toolbar?
-        var icons = {
-            imgViewer: "pics/taskbar/folder_picture.png",
-            memory: "pics/taskbar/controller.png",
-            rss: "pics/taskbar/feed.png"
-
-        };
-        return icons;
-    };
-
     this.createDesktop(this.div);
-    new ImageViewer("ImageViewer", true);   
-
 };
 
 Desktop.prototype.createDesktop = function(div){
     var that = this;
     div.className = this.getSize();
-    this.createTaskBar(div); 
-
+    this.createTaskBar(div)
+    
 
    /* Listener for contextmeny
    div.addEventListener("contextmenu", function(e){
@@ -58,11 +45,9 @@ Desktop.prototype.createDesktop = function(div){
 
 };
 
-Desktop.prototype.createTaskBar = function(div, icons){
-
+Desktop.prototype.createTaskBar = function(div){
     // Creating elements for the fskbar
     // Setting icons on the taskbar
-    var icons = this.getIcons();
     var taskbar = document.createElement("div");
     taskbar.id = "taskbar";
     div.appendChild(taskbar);
@@ -71,7 +56,7 @@ Desktop.prototype.createTaskBar = function(div, icons){
     var imgViewerA = document.createElement("a");
     var imgViewerImg = document.createElement("img");
     imgViewerA.href = "#";
-    imgViewerImg.src = icons.imgViewer;
+    imgViewerImg.src = this.icons.imgViewer;
     imgViewerImg.className = "imageViewer icon";
     imgViewerA.appendChild(imgViewerImg);
     taskbar.appendChild(imgViewerA);
@@ -79,7 +64,7 @@ Desktop.prototype.createTaskBar = function(div, icons){
     var memoryImg = document.createElement("img");
     var memoryA = document.createElement("a");
     memoryA.href = "#";
-    memoryImg.src = icons.memory;
+    memoryImg.src = this.icons.memory;
     memoryImg.className = "memory icon";
     memoryA.appendChild(memoryImg);
     taskbar.appendChild(memoryA);
@@ -87,7 +72,7 @@ Desktop.prototype.createTaskBar = function(div, icons){
     var rssImg = document.createElement("img");
     var rssA = document.createElement("a");
     rssA.href = "#";
-    rssImg.src = icons.rss;
+    rssImg.src = this.icons.rss;
     rssImg.className = "rss icon";
     rssA.appendChild(rssImg);
     taskbar.appendChild(rssA);
@@ -110,18 +95,9 @@ Desktop.prototype.createTaskBar = function(div, icons){
                 case "rss icon":
                     new RSSReader("RSS");
                     break;
-
             }
         }
-    })
-
-
-
-    
-};
-
-Desktop.prototype.addListeners = function(arrOfIcons){
-
+    });
 };
 
 /*Desktop.prototype.showContextMenu = function(e){
