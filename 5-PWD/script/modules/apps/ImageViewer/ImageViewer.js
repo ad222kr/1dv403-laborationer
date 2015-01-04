@@ -97,7 +97,7 @@ ImageViewer.prototype.clickFunc = function(imgObject){
 };
 
 ImageViewer.prototype.showFullPic = function(id, imgObject){
-	var div = document.getElementById(id);
+	var div = document.getElementById(id),
 		content = div.firstChild.nextSibling, // Firstchild is topbar
 		img = document.createElement("img");
 
