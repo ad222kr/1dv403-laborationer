@@ -25,7 +25,6 @@ var Desktop = function(size){
     };
 
     this.createDesktop(this.div);
-    new RSSReader("RSS");
 };
 
 Desktop.prototype.createDesktop = function(div){

@@ -3,7 +3,6 @@ define(["modules/window/window"],
 function(Window){
 
 var ImageViewer = function(appID, isGallery, imgObject){
-	
 
 	var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
 	this.settings = {
@@ -11,12 +10,11 @@ var ImageViewer = function(appID, isGallery, imgObject){
 		width: 500,
 		icon: "pics/taskbar/folder_picture.png",
 	};
-	
 
-	
 	this.getUrl = function(){
 		return url;
 	};
+
 	Window.call(this, this.settings, appID);
 	this.winDiv = document.getElementById(this.windowId);
 	// Boolean to decide if window should be gallery or big picture
@@ -53,10 +51,10 @@ ImageViewer.prototype.getPics = function(div){
 
 ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
 
-	var maxThumbHeight = 0;
-	var maxThumbWidth = 0;
-	var that = this;
-	var contentDiv = winDiv.firstChild.nextSibling;
+	var maxThumbHeight = 0,
+		maxThumbWidth = 0,
+		that = this,
+		contentDiv = winDiv.firstChild.nextSibling;
 
 	// Getting the highest thumbwidth/height
 	imgArr.forEach(function(element){
@@ -94,16 +92,15 @@ ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
 
 };
 
-
-
 ImageViewer.prototype.clickFunc = function(imgObject){
 	new ImageViewer("ImageViewer", false, imgObject);
 };
 
 ImageViewer.prototype.showFullPic = function(id, imgObject){
 	var div = document.getElementById(id);
-	var content = div.firstChild.nextSibling; // Firstchild is topbar
-	var img = document.createElement("img");
+		content = div.firstChild.nextSibling, // Firstchild is topbar
+		img = document.createElement("img");
+
 	div.style.width = imgObject.width + "px";
 	div.style.height = (imgObject.height + this.barHeight * 2 ) + "px";
 	content.style.height = imgObject.height + "px"; // Tried setting heigh to imgObject.height but scrollbars visible then?
@@ -112,8 +109,6 @@ ImageViewer.prototype.showFullPic = function(id, imgObject){
 	img.src = imgObject.URL;
 	content.appendChild(img);
 };
-
-
 
 return ImageViewer;
 });

@@ -49,11 +49,10 @@ Window.prototype.movable = function(desktop, windowDiv, handle){
         maxOffsetTop = desktop.offsetHeight - windowDiv.offsetHeight,
         maxOffsetLeft = desktop.offsetWidth - windowDiv.offsetWidth,
         contentDiv = windowDiv.firstChild.nextSibling;
-    console.log(contentDiv);
+
     handle.style.cursor = "move";
     handle.addEventListener("mousedown", mouseDown, false);
     
-
     function mouseDown(e){
         // Calculates the difference between mouse-pos & windows top & left
         // So movement of the window is correct w/e you put the mouse
@@ -145,10 +144,8 @@ Window.prototype.createTopBar = function(){
     maxA.appendChild(maxImg);
     topBar.appendChild(appImg);
     topBar.appendChild(statusText);
-
     topBar.appendChild(closeA);
     topBar.appendChild(maxA); 
-
 
     topBar.addEventListener("click", function(e){
         if (!e) { e = window.event; }
@@ -168,12 +165,6 @@ Window.prototype.createTopBar = function(){
             }
         }
     })
-
-
-    /*closeA.addEventListener("click", function(e){
-        e.preventDefault();
-        that.close(that.windowId);
-    });*/
 
     return topBar;
 };
@@ -258,7 +249,6 @@ Window.prototype.setLoaded = function(){
     statusBar.removeChild(ajaxLoader);
 };
 
-
 Window.prototype.maxOrMinimize = function(id){
     var windowDiv = document.getElementById(id),
         desktop = document.getElementById("desktop"),
@@ -266,10 +256,6 @@ Window.prototype.maxOrMinimize = function(id){
         maxIcon = windowDiv.firstChild.lastChild.firstChild,
         width = parseInt(windowDiv.style.width, 10),
         height = parseInt(windowDiv.style.height, 10);
-
-        console.log(contentDiv);
-
-    console.log(this);
 
     if (height < (desktop.offsetHeight - 30) || width < desktop.offsetWidth){
         maxIcon.src = this.icons.min;
@@ -281,27 +267,17 @@ Window.prototype.maxOrMinimize = function(id){
         windowDiv.style.top = 0;
         windowDiv.style.left = 0;
         contentDiv.style.height = (desktop.offsetHeight - 30) - this.barHeight * 2 + "px";
-
-        
-        
+   
     }
-
-    
     else if (height == (desktop.offsetHeight - 30) && width == desktop.offsetWidth){
         windowDiv.style.height = this.height + "px";
         windowDiv.style.width = this.width + "px";
         windowDiv.style.top = this.offTop + "px";
         windowDiv.style.left = this.offLeft + "px";
         maxIcon.src = this.icons.max;
-        console.log(this.height);
         contentDiv.style.height = this.height - this.barHeight * 2 + "px";
         
-
     }
-
-    
-
-
 }
 
 return Window;  

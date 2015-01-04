@@ -20,21 +20,14 @@ define(["modules/window/window", "apps/Memory/random"],
 		this.numberOfTries = 0;
 		this.tiles = [];
 
-
 		// Calling Windows constructor, inhereting its props
-		Window.call(this, this.settings, appID);
-		 
-        
+		Window.call(this, this.settings, appID);        
         this.startGame();
-
-
-
 	};
 	// Inherits functions on Windows prototype
 	Memory.prototype = Object.create(Window.prototype);
 
 	Memory.prototype.startGame = function(){
-
 		this.tiles = Random.getPictureArray(this.cols, this.rows);
 		this.generateTable();
 		this.timer();
@@ -53,12 +46,9 @@ define(["modules/window/window", "apps/Memory/random"],
 			this.flippedCount++;
 		}
 		
-
 		if(this.flippedArr.length === 2){
 			this.checkMatch(this.flippedArr);
-			this.flippedArr = [];
-			
-			
+			this.flippedArr = [];			
 		}
 	};
 
@@ -72,7 +62,6 @@ define(["modules/window/window", "apps/Memory/random"],
 				flippedArr[i].className = "pair";	
 			}
 			this.flippedCount = 0;
-
 		}
 		else{
 			setTimeout(function(){
@@ -80,14 +69,9 @@ define(["modules/window/window", "apps/Memory/random"],
 					flippedArr[i].src = "pics/memory/0.png";
 					flippedArr[i].classList.remove("clicked");	
 				}
-				
-
 				that.flippedCount = 0;
 			}, 1000);
-
-
 		}
-		
 	};
 
 	Memory.prototype.generateTable = function(){
@@ -117,11 +101,9 @@ define(["modules/window/window", "apps/Memory/random"],
                 cell.appendChild(a);
                 row.appendChild(cell);
                 img.className = cellCount;
-                cellCount++;
-                
+                cellCount++;                
             }
         }
-
         // Eventlistener on the whole table
         table.addEventListener("click", function(e){
                     that.clickFunc(e);
@@ -134,9 +116,7 @@ define(["modules/window/window", "apps/Memory/random"],
         });
 	};
 
-
 	Memory.prototype.clickFunc = function(e){
-
 		if (!e) { e = window.event; }
 		var target = e.target;
 
@@ -156,8 +136,7 @@ define(["modules/window/window", "apps/Memory/random"],
 
 		var seconds = 0;
 		var minutes = 0;
-
-		
+	
 		if (this.numberOfMatches < this.maxNumberOfMatcher){
 			setInterval(function(){
 				if (seconds <= 59){
@@ -172,17 +151,10 @@ define(["modules/window/window", "apps/Memory/random"],
 				timerDiv.innerHTML = "Time: " + (minutes < 10 ? "0"+minutes : minutes) + ":" + (seconds < 10 ? "0"+seconds : seconds);
 
 			}, 1000)
-
 		}
-
 		else{
 			timerDiv.innerHTML = timerDiv.innerHTML = "Time: " + (minutes < 10 ? "0"+minutes : minutes) + ":" + (seconds < 10 ? "0"+seconds : seconds);
 		}
-
-		
-
-	}
-
-	
+	}	
 	return Memory;
 });

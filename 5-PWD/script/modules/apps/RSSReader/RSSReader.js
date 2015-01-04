@@ -41,7 +41,5 @@ RSSReader.prototype.getFeed = function(xhr){
 	xhr.open("GET", this.feeds.DN, true);
 	xhr.send(null);
 };
-
 return RSSReader;
-
 })
