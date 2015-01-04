@@ -175,13 +175,13 @@ p, span{
 	width: 100%;
 	text-align: center;
 }
-
-.wClosePic{
+/* Maximize/minimize window & close pictures style */
+.topBarPics{
 	position: relative;
 	width: 15px;
 	height: 15px;
 	float: right;
-	margin-top:2px;
+	margin-top: 2px;
 	margin-right: 2px;
 }
 
@@ -204,6 +204,31 @@ p, span{
 	margin-top: 10px;	
 }
 
+/* RSS-reader */
+
+.rssFeed{
+	display: block;
+	padding: 5px 5px 0px 5px;
+}
+
+.rssFeed h2{
+	border-top: 1px solid black;
+	padding-top: 4px;
+}
+.rssFeed a {
+	font-size: 12px;
+}
+.rssFeed p {
+	color: black;
+}
+.rssFeed img {
+	border: 1px solid black;
+	margin: 5px;
+}
+.rss_title{
+	margin-top: 5px;
+	font-size: 20px;
+}
 
 /* For noselect when dragging around */
 .noselect {

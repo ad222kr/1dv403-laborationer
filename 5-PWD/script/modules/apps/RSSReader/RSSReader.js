@@ -38,7 +38,7 @@ RSSReader.prototype.getFeed = function(xhr){
 			console.log("Läsfel, status: " + xhr.status);
 		}
 	};
-	xhr.open("GET", "https://homepage.lnu.se/staff/tstjo/labbyServer/rssproxy/?url="+escape("http://www.aftonbladet.se/rss.xml"), true);
+	xhr.open("GET", this.feeds.DN, true);
 	xhr.send(null);
 };
 

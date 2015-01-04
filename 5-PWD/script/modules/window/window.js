@@ -7,10 +7,14 @@ var Window = function(settings, appID){
     this.desktop = document.getElementById("desktop");
     this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
     this.barHeight = 20;
+    this.offTop = 0;
+    this.offLeft = 0;
     this.icons = {
         ajaxLoader: "pics/window/ajax-loader.gif",
         winSettings: "pics/window/cog.png",
-        close: "pics/window/cross.png"
+        close: "pics/window/cross.png",
+        max: "pics/window/maximize.png",
+        min: "pics/window/minimize.png"
     }
 
     this.getAppId = function(){
@@ -114,7 +118,9 @@ Window.prototype.createTopBar = function(){
         topBar = document.createElement("div"),
         statusText = document.createElement("span"),
         closeA = document.createElement("a"),
-        closeImg = document.createElement("img");
+        closeImg = document.createElement("img"),
+        maxA = document.createElement("a"),
+        maxImg = document.createElement("img");
 
     topBar.className = "wTopBar";
     topBar.style.height = this.barHeight + "px";
@@ -128,17 +134,46 @@ Window.prototype.createTopBar = function(){
     closeA.href = "#";
     closeA.className = "wClose";
     closeImg.src = this.icons.close;
-    closeImg.className = "wClosePic";
+    closeImg.className = "topBarPics close";
+
+    maxA.href = "#";
+    maxA.className = "wMax";
+    maxImg.src = this.icons.max;
+    maxImg.className = "topBarPics maximize";
     
     closeA.appendChild(closeImg);
+    maxA.appendChild(maxImg);
     topBar.appendChild(appImg);
-    topBar.appendChild(statusText);   
-    topBar.appendChild(closeA);
+    topBar.appendChild(statusText);
 
-    closeA.addEventListener("click", function(e){
+    topBar.appendChild(closeA);
+    topBar.appendChild(maxA); 
+
+
+    topBar.addEventListener("click", function(e){
+        if (!e) { e = window.event; }
+        e.preventDefault();
+        var target = e.target;
+        if (target.tagName === "A"){
+            target = target.firstChild;
+        }
+        if (target.tagName === "IMG"){
+            switch(target.className){
+                case "topBarPics close":
+                    that.close(that.windowId);
+                    break;
+                case "topBarPics maximize":
+                    that.maxOrMinimize(that.windowId);
+                    break;
+            }
+        }
+    })
+
+
+    /*closeA.addEventListener("click", function(e){
         e.preventDefault();
         that.close(that.windowId);
-    });
+    });*/
 
     return topBar;
 };
@@ -200,7 +235,7 @@ Window.prototype.giveFocus = function(windowDiv, e){
     // Ty robin for suggesting this on slack
     // thumbURL to not give gallery focus when clicking on pic,
     // wClosePic to not get error when closing a window
-    if (e.target.className !== "thumbURL" && e.target.className !== "wClosePic"){
+    if (e.target.className !== "thumbURL" && !e.target.classList.contains("topBarPics")){
         this.desktop.removeChild(windowDiv);
         this.desktop.appendChild(windowDiv);   
     }
@@ -222,6 +257,52 @@ Window.prototype.setLoaded = function(){
 
     statusBar.removeChild(ajaxLoader);
 };
+
+
+Window.prototype.maxOrMinimize = function(id){
+    var windowDiv = document.getElementById(id),
+        desktop = document.getElementById("desktop"),
+        contentDiv = windowDiv.firstChild.nextSibling,
+        maxIcon = windowDiv.firstChild.lastChild.firstChild,
+        width = parseInt(windowDiv.style.width, 10),
+        height = parseInt(windowDiv.style.height, 10);
+
+        console.log(contentDiv);
+
+    console.log(this);
+
+    if (height < (desktop.offsetHeight - 30) || width < desktop.offsetWidth){
+        maxIcon.src = this.icons.min;
+        this.offTop = parseInt(windowDiv.style.top, 10);
+        this.offLeft = parseInt(windowDiv.style.left, 10);
+
+        windowDiv.style.height = (desktop.offsetHeight - 30) + "px";
+        windowDiv.style.width = desktop.offsetWidth + "px";
+        windowDiv.style.top = 0;
+        windowDiv.style.left = 0;
+        contentDiv.style.height = (desktop.offsetHeight - 30) - this.barHeight * 2 + "px";
+
+        
+        
+    }
+
+    
+    else if (height == (desktop.offsetHeight - 30) && width == desktop.offsetWidth){
+        windowDiv.style.height = this.height + "px";
+        windowDiv.style.width = this.width + "px";
+        windowDiv.style.top = this.offTop + "px";
+        windowDiv.style.left = this.offLeft + "px";
+        maxIcon.src = this.icons.max;
+        console.log(this.height);
+        contentDiv.style.height = this.height - this.barHeight * 2 + "px";
+        
+
+    }
+
+    
+
+
+}
 
 return Window;  
 });
