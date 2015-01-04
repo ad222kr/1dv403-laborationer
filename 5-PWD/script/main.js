@@ -12,5 +12,5 @@ require.config({
 });
 
 require(["../modules/desktop"], function(desktop){
-    var dp = new desktop("medium");
+    var dp = new desktop("large");
 });

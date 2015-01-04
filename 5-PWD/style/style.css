@@ -98,9 +98,9 @@ p, span{
 }
 
 .large{
-	width: 1280px;
+	width: 1600px;
 	height: 900px;
-	background-size: 1280px 900px !important;
+	background-size: 1600px 900px !important;
 }
 
 /* Style for taskbar */
@@ -126,6 +126,7 @@ p, span{
 .window{
 	display: block;
 	border: 1px black solid;
+	background: white;
 	position: absolute; /* stacking divs on top of each other */
 	-webkit-box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
@@ -143,11 +144,13 @@ p, span{
 .wContent{
 	display: block;
 	overflow: auto;
-	background: white;
 	word-wrap: break-word;
 }
 
-
+.wContent img{
+	display: block;
+	margin: 0px auto;
+}
 .wTopBar{
 	display: block;
 	width: 100%;

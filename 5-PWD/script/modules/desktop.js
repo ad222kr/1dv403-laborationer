@@ -87,7 +87,7 @@ Desktop.prototype.createTaskBar = function(div){
                     new Memory("Memory");
                     break;
                 case "imageViewer icon":
-                    new ImageViewer("ImageViewer", true);
+                    new ImageViewer("ImageViewer", true, null);
                     break;
                 case "rss icon":
                     new RSSReader("RSS");

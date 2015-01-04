@@ -6,28 +6,39 @@ var ImageViewer = function(appID, isGallery, imgObject){
 
 	var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
 	this.settings = {
-		height: 300,
-		width: 500,
+		height: imgObject !== null ? (imgObject.height + 40) : 300, // 40 to take barsize into account. dont like this but else window will be height of img height and bars crops the pic
+		width: imgObject !== null ? imgObject.width  : 500,
 		icon: "pics/taskbar/folder_picture.png",
 	};
-
+	
+	Window.call(this, this.settings, appID);
+	this.winDiv = document.getElementById(this.windowId);
 	this.getUrl = function(){
 		return url;
 	};
 
-	Window.call(this, this.settings, appID);
-	this.winDiv = document.getElementById(this.windowId);
-	// Boolean to decide if window should be gallery or big picture
-	if (isGallery){
-		this.setLoading();
-		this.getPics(this.winDiv);	
+	this.getIsGallery = function(){
+		return isGallery;
 	}
-	else{
-		this.showFullPic(this.windowId, imgObject);
+
+	this.getImgObject = function(){
+		return imgObject;
 	}
+	
+	this.checkIfGallery();
 };
 
 ImageViewer.prototype = Object.create(Window.prototype);
+
+ImageViewer.prototype.checkIfGallery = function(){
+	if(this.getIsGallery() === true){
+		this.setLoading();
+		this.getPics(this.winDiv);
+	}
+	else{
+		this.showFullPic(this.windowId, this.getImgObject());
+	}
+}
 
 ImageViewer.prototype.getPics = function(div){
 	var that = this;
@@ -100,14 +111,13 @@ ImageViewer.prototype.showFullPic = function(id, imgObject){
 	var div = document.getElementById(id),
 		content = div.firstChild.nextSibling, // Firstchild is topbar
 		img = document.createElement("img");
-
-	div.style.width = imgObject.width + "px";
-	div.style.height = (imgObject.height + this.barHeight * 2 ) + "px";
-	content.style.height = imgObject.height + "px"; // Tried setting heigh to imgObject.height but scrollbars visible then?
-	content.style.overflow = "hidden"; // w/o this scrollbars are visible even though they are not needed
+	
+	content.style.width = "100%";
+	content.style.height = "100%"; // Tried setting heigh to imgObject.height but scrollbars visible then?
 	console.log(content);
 	img.src = imgObject.URL;
 	content.appendChild(img);
+
 };
 
 return ImageViewer;

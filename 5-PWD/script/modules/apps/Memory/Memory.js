@@ -146,8 +146,6 @@ define(["modules/window/window", "apps/Memory/random"],
 					minutes++;
 					seconds = 0;
 				}
-				console.log(minutes.length);
-				console.log(seconds.length),
 				timerDiv.innerHTML = "Time: " + (minutes < 10 ? "0"+minutes : minutes) + ":" + (seconds < 10 ? "0"+seconds : seconds);
 
 			}, 1000)

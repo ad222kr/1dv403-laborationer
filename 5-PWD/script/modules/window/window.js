@@ -25,19 +25,19 @@ var Window = function(settings, appID){
 };
 
 Window.prototype.createWindow = function(){
-    var div = document.getElementById("desktop"),
-        windowDiv = this.createMain(),
+
+    var windowDiv = this.createMain(),
         topBar = this.createTopBar(),
         contentDiv = this.createContentArea(),
         bottomBar = this.createBottomBar();
 
-    div.appendChild(windowDiv);
+    this.desktop.appendChild(windowDiv);
     windowDiv.appendChild(topBar);
     windowDiv.appendChild(contentDiv); 
     windowDiv.appendChild(bottomBar);
     windowDiv.style.left = this.getOffset().left + "px";
     windowDiv.style.top = this.getOffset().top + "px";
-    this.movable(div, windowDiv, topBar);
+    this.movable(this.desktop, windowDiv, topBar);
     
 };
 
@@ -56,7 +56,6 @@ Window.prototype.movable = function(desktop, windowDiv, handle){
     function mouseDown(e){
         // Calculates the difference between mouse-pos & windows top & left
         // So movement of the window is correct w/e you put the mouse
-
         if(!e) { e = window.event; }
 
         offX = e.clientX - parseInt(windowDiv.offsetLeft);
@@ -66,18 +65,23 @@ Window.prototype.movable = function(desktop, windowDiv, handle){
     }
 
     function mouseMove(e){
-        // Moves the window to the position of the mouse minus
-        // the offset that was calculetade so it gets the right pos
-        // Checks first which of clientY-offY & maxOffset is the least, 
-        // then checks which of that && 0 is the biggest
+        // Moves the window to the position of the mouse minus the offset that was
+        // calculatade so it gets the right pos. Checks first which of clientY-offY
+        // & maxOffset is the least, then checks which of that && 0 is the biggest
 
         if(!e){ e = window.event; }
         e.preventDefault();
 
-        document.body.addEventListener("mouseup", mouseUp, false);
-        
-        windowDiv.style.top = Math.max(Math.min((e.clientY - offY), maxOffsetTop), 0) + "px";
-        windowDiv.style.left = Math.max(Math.min((e.clientX - offX), maxOffsetLeft), 0) + "px";       
+        window.addEventListener("mouseup", mouseUp, false);
+
+        // Keeps the window whithin the desktop. Checks which is smalles of clientX/Y & maxOffset 
+        // to keep it in desktop div at the bottom & right boundries. Then checks which of that 
+        // & 0 is the biggest to keep it within the boundries at the top & left.
+        if (windowDiv.classList.contains("movable")){
+            windowDiv.style.top = Math.max(Math.min((e.clientY - offY), maxOffsetTop), 0) + "px";
+            windowDiv.style.left = Math.max(Math.min((e.clientX - offX), maxOffsetLeft), 0) + "px";    
+        }
+              
     }
 
     function mouseUp(e){
@@ -91,7 +95,9 @@ Window.prototype.createMain = function () {
         windowDiv = document.createElement("div"); 
 
     windowDiv.id = this.windowId;    
-    windowDiv.className = "window";
+    windowDiv.className = "window movable";
+    console.log(this.height);
+    console.log(this.width);
     windowDiv.style.width = this.width + "px";
     windowDiv.style.height = this.height + "px";
 
@@ -193,12 +199,11 @@ Window.prototype.getRandomId = function(max, min){
 };
 
 Window.prototype.getOffset = function(){
-    var div = document.getElementById("desktop").lastChild.previousSibling, // LastChild is taskbar 
-        desktop = document.getElementById("desktop"),
+    var div = this.desktop.lastChild.previousSibling, // LastChild is taskbar 
         top = div.offsetTop, // Top & left of previous window
         left = div.offsetLeft,      
-        maxTop = desktop.offsetHeight - this.height - 50, // maxTop & left, so it works with every possible window size
-        maxLeft = desktop.offsetWidth - this.width - 30,  
+        maxTop = this.desktop.offsetHeight - this.height - 30, // maxTop & left, so it works with every possible window size
+        maxLeft = this.desktop.offsetWidth - this.width - 30,  
         offset = {};
 
     if (div.id == "taskbar"){
@@ -252,31 +257,49 @@ Window.prototype.setLoaded = function(){
 Window.prototype.maxOrMinimize = function(id){
     var windowDiv = document.getElementById(id),
         desktop = document.getElementById("desktop"),
+        topBar = windowDiv.firstChild,
         contentDiv = windowDiv.firstChild.nextSibling,
         maxIcon = windowDiv.firstChild.lastChild.firstChild,
         width = parseInt(windowDiv.style.width, 10),
         height = parseInt(windowDiv.style.height, 10);
 
     if (height < (desktop.offsetHeight - 30) || width < desktop.offsetWidth){
+        // If window is smaller than desktop, set styles so it takes up whole
+        // desktop. Save windows top & left styles so it has the same position
+        // when it's minimized.
+        windowDiv.classList.remove("movable");
         maxIcon.src = this.icons.min;
         this.offTop = parseInt(windowDiv.style.top, 10);
         this.offLeft = parseInt(windowDiv.style.left, 10);
 
-        windowDiv.style.height = (desktop.offsetHeight - 30) + "px";
+        windowDiv.style.height = desktop.offsetHeight - 30 + "px";
         windowDiv.style.width = desktop.offsetWidth + "px";
         windowDiv.style.top = 0;
         windowDiv.style.left = 0;
-        contentDiv.style.height = (desktop.offsetHeight - 30) - this.barHeight * 2 + "px";
-   
+
+        contentDiv.style.height = (desktop.offsetHeight - 30) - this.barHeight * 2 + "px";   
     }
-    else if (height == (desktop.offsetHeight - 30) && width == desktop.offsetWidth){
+    else if (height == desktop.offsetHeight - 30 && width == desktop.offsetWidth){
+        // If window is as big as desktop (-30 to take taskbar to account, keep or remove?)
+        // minimize it to normal size again & set top & left styles to the position it had before
+        windowDiv.classList.add("movable");
         windowDiv.style.height = this.height + "px";
         windowDiv.style.width = this.width + "px";
         windowDiv.style.top = this.offTop + "px";
         windowDiv.style.left = this.offLeft + "px";
         maxIcon.src = this.icons.max;
         contentDiv.style.height = this.height - this.barHeight * 2 + "px";
-        
+
+        // Checks if getIsGallery is defined or returns true to set contentDivs
+        // Height to apporopriate values depening on what kind of window it is
+        // (big pic needs 100%, rest needs fixed value for scrolling)
+        /*if (typeof this.getIsGallery != "function" || this.getIsGallery() === true){
+            contentDiv.style.height = this.height - this.barHeight * 2 + "px";     
+        }
+        else{
+            contentDiv.style.height = "100%";
+            contentDiv.style.width = "100%";
+        }    */         
     }
 }
 
