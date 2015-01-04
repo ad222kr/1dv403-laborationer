@@ -134,8 +134,8 @@ p, span{
 
 .appMiniPic{
 	position: absolute;
-	margin-left: 3px;
-	margin-top: 3px;
+	margin-left: 2px;
+	margin-top: 2px;
 	width: 16px;
 	height: 16px;
 }
@@ -185,6 +185,7 @@ p, span{
 	margin-right: 2px;
 }
 
+/* ImageViewer */
 .thumbDiv{
 	display: block;
 	position: relative;
@@ -195,6 +196,16 @@ p, span{
 	margin: 5px;
 }
 
+/* Memory */
+
+.memoryGame{
+	display: block;
+	margin: 0px auto;
+	margin-top: 10px;	
+}
+
+
+/* For noselect when dragging around */
 .noselect {
     -webkit-touch-callout: none;
     -webkit-user-select: none;

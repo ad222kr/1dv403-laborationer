@@ -5,7 +5,7 @@ define(["modules/window/window", "apps/Memory/random"],
 	var Memory = function(appID){
 
 		this.settings = {
-			height: 200,
+			height: 250,
 			width: 200,
 			icon: "pics/taskbar/controller.png",
 
@@ -37,6 +37,7 @@ define(["modules/window/window", "apps/Memory/random"],
 
 		this.tiles = Random.getPictureArray(this.cols, this.rows);
 		this.generateTable();
+		this.timer();
 	};
 
 	Memory.prototype.flipTile = function(target){
@@ -92,10 +93,14 @@ define(["modules/window/window", "apps/Memory/random"],
 	Memory.prototype.generateTable = function(){
 		var that = this;
 		var contentDiv = document.getElementById(this.windowId).firstChild.nextSibling;
+		var div = document.createElement("div");
 		var cellCount = 0;
 		var table = document.createElement("table");
-		contentDiv.appendChild(table)
-		;	
+		div.className = "memoryGame";
+		div.style.width = this.rows * 24 + "px";
+		contentDiv.appendChild(div);
+		div.appendChild(table);
+		
 		for(var i = 0; i < this.rows; i++){
 
             var row = document.createElement("tr");
@@ -142,6 +147,41 @@ define(["modules/window/window", "apps/Memory/random"],
 			this.flipTile(target);
 		}
 	};
+
+	Memory.prototype.timer = function(){
+		var contentDiv = document.getElementById(this.windowId).firstChild.nextSibling;
+		var timerDiv = document.createElement("div");
+
+		contentDiv.appendChild(timerDiv);
+
+		var seconds = 0;
+		var minutes = 0;
+
+		
+		if (this.numberOfMatches < this.maxNumberOfMatcher){
+			setInterval(function(){
+				if (seconds <= 59){
+					seconds++;
+				}
+				else{
+					minutes++;
+					seconds = 0;
+				}
+				console.log(minutes.length);
+				console.log(seconds.length),
+				timerDiv.innerHTML = "Time: " + (minutes < 10 ? "0"+minutes : minutes) + ":" + (seconds < 10 ? "0"+seconds : seconds);
+
+			}, 1000)
+
+		}
+
+		else{
+			timerDiv.innerHTML = timerDiv.innerHTML = "Time: " + (minutes < 10 ? "0"+minutes : minutes) + ":" + (seconds < 10 ? "0"+seconds : seconds);
+		}
+
+		
+
+	}
 
 	
 	return Memory;

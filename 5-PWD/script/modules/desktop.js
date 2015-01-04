@@ -25,6 +25,7 @@ var Desktop = function(size){
     };
 
     this.createDesktop(this.div);
+    new Memory("Memory");
 };
 
 Desktop.prototype.createDesktop = function(div){
