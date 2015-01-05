@@ -33,6 +33,10 @@ define(["modules/window/window", "apps/Memory/random"],
         this.timer();
     };
 
+    Memory.prototype.settingsMenu = function(){
+        alert("Memory Settings clicked!");
+    };
+
     Memory.prototype.flipTile = function(target){
         if (!target.classList.contains("clicked")  && this.flippedCount < 2){
 

@@ -1,5 +1,5 @@
 "use strict";
-define(function(){
+define(["../../main"], function(Main){
 
 var Window = function(settings, appID){
     this.height = settings.height;
@@ -14,24 +14,25 @@ var Window = function(settings, appID){
         winSettings: "pics/window/cog.png",
         close: "pics/window/cross.png",
         max: "pics/window/maximize.png",
-        min: "pics/window/minimize.png"
-    }
+        min: "pics/window/minimize.png",
+        settings: "pics/window/cog.png"
+    };
 
     this.getAppId = function(){
         return appID;
     };
-
     this.createWindow();
 };
 
 Window.prototype.createWindow = function(){
 
     var windowDiv = this.createMain(),
-        topBar = this.createTopBar(),
+        topBar = this.createTopBar(windowDiv),
         contentDiv = this.createContentArea(),
         bottomBar = this.createBottomBar();
 
     this.desktop.appendChild(windowDiv);
+    console.log(windowDiv)
     windowDiv.appendChild(topBar);
     windowDiv.appendChild(contentDiv); 
     windowDiv.appendChild(bottomBar);
@@ -57,11 +58,21 @@ Window.prototype.movable = function(desktop, windowDiv, handle){
         // Calculates the difference between mouse-pos & windows top & left
         // So movement of the window is correct w/e you put the mouse
         if(!e) { e = window.event; }
+        var target = e.target;
+
+        if(target.tagName === "A"){
+            target = target.firstChild;
+        }
 
         offX = e.clientX - parseInt(windowDiv.offsetLeft);
         offY = e.clientY - parseInt(windowDiv.offsetTop);
         desktop.classList.add("noselect");
-        desktop.addEventListener("mousemove", mouseMove, false);
+        // Prevents the window from being moved by pressing & holding the icons
+        // for settings, maximize & close
+        if (!target.classList.contains("topBarPics")){
+            desktop.addEventListener("mousemove", mouseMove, false);   
+        }
+        
     }
 
     function mouseMove(e){
@@ -71,13 +82,16 @@ Window.prototype.movable = function(desktop, windowDiv, handle){
 
         if(!e){ e = window.event; }
         e.preventDefault();
+        
 
         window.addEventListener("mouseup", mouseUp, false);
+
 
         // Keeps the window whithin the desktop. Checks which is smalles of clientX/Y & maxOffset 
         // to keep it in desktop div at the bottom & right boundries. Then checks which of that 
         // & 0 is the biggest to keep it within the boundries at the top & left.
-        if (windowDiv.classList.contains("movable")){
+        if (windowDiv.classList.contains("movable") ){
+
             windowDiv.style.top = Math.max(Math.min((e.clientY - offY), maxOffsetTop), 0) + "px";
             windowDiv.style.left = Math.max(Math.min((e.clientX - offX), maxOffsetLeft), 0) + "px";    
         }
@@ -95,7 +109,7 @@ Window.prototype.createMain = function () {
         windowDiv = document.createElement("div"); 
 
     windowDiv.id = this.windowId;    
-    windowDiv.className = "window movable";
+    windowDiv.className = "window movable " + this.getAppId();
     console.log(this.height);
     console.log(this.width);
     windowDiv.style.width = this.width + "px";
@@ -117,7 +131,8 @@ Window.prototype.createContentArea = function(){
     return contentDiv;
 };
 
-Window.prototype.createTopBar = function(){
+
+Window.prototype.createTopBar = function(windowDiv){
     var that = this,
         appImg = document.createElement("img"),
         topBar = document.createElement("div"),
@@ -125,7 +140,10 @@ Window.prototype.createTopBar = function(){
         closeA = document.createElement("a"),
         closeImg = document.createElement("img"),
         maxA = document.createElement("a"),
-        maxImg = document.createElement("img");
+        maxImg = document.createElement("img"),
+        settingsA = document.createElement("a"),
+        settingsImg = document.createElement("img");
+
 
     topBar.className = "wTopBar";
     topBar.style.height = this.barHeight + "px";
@@ -145,14 +163,27 @@ Window.prototype.createTopBar = function(){
     maxA.className = "wMax";
     maxImg.src = this.icons.max;
     maxImg.className = "topBarPics maximize";
+
     
+    
+    settingsA.appendChild(settingsImg);
     closeA.appendChild(closeImg);
     maxA.appendChild(maxImg);
     topBar.appendChild(appImg);
-    topBar.appendChild(statusText);
+    topBar.appendChild(statusText);  
     topBar.appendChild(closeA);
-    topBar.appendChild(maxA); 
+    topBar.appendChild(maxA);
 
+    // ImageViewer doesnt need settings icon cus what
+    // settings could it possibly have?
+    if(!windowDiv.classList.contains("ImageViewer")){
+        settingsA.href = "#";
+        settingsA.className = "wSettings";
+        settingsImg.src = this.icons.settings;
+        settingsImg.className = "topBarPics settings"; 
+        topBar.appendChild(settingsA);      
+    }
+    
     topBar.addEventListener("click", function(e){
         if (!e) { e = window.event; }
         e.preventDefault();
@@ -168,6 +199,8 @@ Window.prototype.createTopBar = function(){
                 case "topBarPics maximize":
                     that.maxOrMinimize(that.windowId);
                     break;
+                case "topBarPics settings":
+                    that.settingsMenu();
             }
         }
     })
@@ -259,7 +292,7 @@ Window.prototype.maxOrMinimize = function(id){
         desktop = document.getElementById("desktop"),
         topBar = windowDiv.firstChild,
         contentDiv = windowDiv.firstChild.nextSibling,
-        maxIcon = windowDiv.firstChild.lastChild.firstChild,
+        maxIcon = windowDiv.querySelector(".maximize"),
         width = parseInt(windowDiv.style.width, 10),
         height = parseInt(windowDiv.style.height, 10);
 

@@ -42,5 +42,10 @@ RSSReader.prototype.getFeed = function(xhr){
     xhr.open("GET", this.feeds.DN, true);
     xhr.send(null);
 };
+
+RSSReader.prototype.settingsMenu = function(){
+    alert("RSS Settings Clicked!");
+};
+
 return RSSReader;
 })

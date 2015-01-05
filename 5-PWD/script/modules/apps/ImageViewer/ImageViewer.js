@@ -24,7 +24,6 @@ var ImageViewer = function(appID, isGallery, imgObject){
     this.getImgObject = function(){
         return imgObject;
     }
-    
     this.checkIfGallery();
 };
 
@@ -38,6 +37,10 @@ ImageViewer.prototype.checkIfGallery = function(){
     else{
         this.showFullPic(this.windowId, this.getImgObject());
     }
+}
+
+ImageViewer.prototype.tjena = function(){
+
 }
 
 ImageViewer.prototype.getPics = function(div){

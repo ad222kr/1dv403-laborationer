@@ -2,7 +2,7 @@
 
 define(
 [
-"../modules/window/window",
+"modules/window/window",
 "require",
 "apps/Memory/Memory",
 "apps/ImageViewer/ImageViewer",
@@ -10,38 +10,27 @@ define(
 ],
 function(Window, require, Memory, ImageViewer, RSSReader){
 
-var Desktop = function(size){
+var Desktop = function(){
     this.div = document.getElementById("desktop");
     this.icons = {
         imgViewer: "pics/taskbar/folder_picture.png",
         memory: "pics/taskbar/controller.png",
         rss: "pics/taskbar/feed.png",
     }
-    this.setSize = function(_size){
-        size = _size;
-    };
-    this.getSize = function(){
-        return size;
-    };
+
+
+    this.width = 1280;
+    this.height = 720;
 
     this.createDesktop(this.div);
 };
 
 Desktop.prototype.createDesktop = function(div){
     var that = this;
-    div.className = this.getSize();
+    div.style.height = this.height + "px";
+    div.style.width = this.width + "px";
+    div.style.backgroundSize = this.width + "px " + this.height + "px";
     this.createTaskBar(div)
-    
-
-   /* Listener for contextmeny
-   div.addEventListener("contextmenu", function(e){
-        e.preventDefault();
-        that.showContextMenu(e);
-    })   
-    div.addEventListener("click", function(e){
-
-    }) */       
-
 };
 
 Desktop.prototype.createTaskBar = function(div){
@@ -96,21 +85,6 @@ Desktop.prototype.createTaskBar = function(div){
         }
     });
 };
-
-/*Desktop.prototype.showContextMenu = function(e){
-    // contextmenu implement later?
-
-    var menu = document.createElement("div");
-    menu.innerHTML = "TJenare";
-    menu.style.display = "block";
-    menu.style.position = "absolute";
-    menu.style.left = e.pageX - this.div.offsetLeft + "px"; //clientX - no scrolling accounted
-    menu.style.top = e.pageY - this.div.offsetTop + "px"; // clientY - no scrolling accounted
-    menu.style.visibility = "visible";
-    this.div.appendChild(menu);
-    console.log(this.div.offsetLeft);
-    console.log(this.div.offsetTop);
-};*/
 
 return Desktop;
 });
