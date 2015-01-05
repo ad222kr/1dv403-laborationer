@@ -93,7 +93,7 @@ ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
         img.className = "thumbURL";
 
         img.src = element.thumbURL;
-ild(div);
+        contentDiv.appendChild(div);
         div.appendChild(a);
         a.appendChild(img);
 
