@@ -6,7 +6,7 @@ var ImageViewer = function(appID, isGallery, imgObject){
 
 	var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
 	this.settings = {
-		height: imgObject !== null ? (imgObject.height + 40) : 300, // 40 to take barsize into account. dont like this but else window will be height of img height and bars crops the pic
+		height: imgObject !== null ? (imgObject.height + 40) : 300, // 40 to take barsize into account. dont like this
 		width: imgObject !== null ? imgObject.width  : 500,
 		icon: "pics/taskbar/folder_picture.png",
 	};
@@ -80,12 +80,13 @@ ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
 	imgArr.forEach(function(element, index){
 
 		// Creates each element for the thumbpic.
-		var div = document.createElement("div");
-		var a = document.createElement("a");
-		var img = document.createElement("img");
+		var div = document.createElement("div"),
+			a = document.createElement("a"),
+			img = document.createElement("img");
 
-		div.className = "thumbDiv";
+		
 		a.href = "#";
+		div.className = "thumbDiv";
 		img.className = "thumbURL";
 
 		img.src = element.thumbURL;
@@ -112,9 +113,6 @@ ImageViewer.prototype.showFullPic = function(id, imgObject){
 		content = div.firstChild.nextSibling, // Firstchild is topbar
 		img = document.createElement("img");
 	
-	content.style.width = "100%";
-	content.style.height = "100%"; // Tried setting heigh to imgObject.height but scrollbars visible then?
-	console.log(content);
 	img.src = imgObject.URL;
 	content.appendChild(img);
 

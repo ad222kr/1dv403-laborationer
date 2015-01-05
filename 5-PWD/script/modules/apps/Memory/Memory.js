@@ -128,7 +128,7 @@ define(["modules/window/window", "apps/Memory/random"],
 		}
 	};
 
-	Memory.prototype.timer = function(){
+	/*Memory.prototype.timer = function(){
 		var contentDiv = document.getElementById(this.windowId).firstChild.nextSibling;
 		var timerDiv = document.createElement("div");
 
@@ -153,6 +153,6 @@ define(["modules/window/window", "apps/Memory/random"],
 		else{
 			timerDiv.innerHTML = timerDiv.innerHTML = "Time: " + (minutes < 10 ? "0"+minutes : minutes) + ":" + (seconds < 10 ? "0"+seconds : seconds);
 		}
-	}	
+	}*/	
 	return Memory;
 });
