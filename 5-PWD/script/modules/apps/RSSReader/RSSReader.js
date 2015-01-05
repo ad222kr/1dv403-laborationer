@@ -33,10 +33,11 @@ RSSReader.prototype.getFeed = function(xhr){
                 content.innerHTML = xhr.responseText;
                 that.setLoaded();
             }
+            else{
+                console.log("Läsfel, status: " + xhr.status);
+            }
         }
-        else{
-            console.log("Läsfel, status: " + xhr.status);
-        }
+        
     };
     xhr.open("GET", this.feeds.DN, true);
     xhr.send(null);
