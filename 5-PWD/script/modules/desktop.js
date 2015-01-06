@@ -10,7 +10,6 @@ define(
 ],
 function(Window, require, Memory, ImageViewer, RSSReader){
 
-
 var PWD = {
     div: document.getElementById("desktop"),
     icons:  {
@@ -19,8 +18,7 @@ var PWD = {
         rss: "pics/taskbar/feed.png",      
     },
     width: 1280,
-    height: 720,
-
+    height: 600,
 
     init: function(){
         PWD.setDimensions();
@@ -32,10 +30,7 @@ var PWD = {
         PWD.div.style.height = PWD.height + "px";
         PWD.div.style.width = PWD.width + "px";
         PWD.div.style.backgroundSize = PWD.width + "px " + PWD.height + "px";
-
-
     },
-
 
     createTaskBar: function(){
         var taskbar = document.createElement("div");
@@ -89,9 +84,6 @@ var PWD = {
             }
         });
     }
-
-
-
 }
 
 return PWD;

@@ -15,7 +15,7 @@ var RSSReader = function(appId){
     this.feeds = {
         DN: "http://homepage.lnu.se/staff/tstjo/labbyServer/rssproxy/?url="+escape("http://www.dn.se/m/rss/senaste-nytt"),                                                                                       
     }
-    Window.call(this, this.settings, appId);
+    Window.call(this, appId);
     this.getFeed(xhr);
 }
 

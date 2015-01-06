@@ -10,8 +10,7 @@ var ImageViewer = function(appID, isGallery, imgObject){
         width: imgObject !== null ? imgObject.width  : 500,
         icon: "pics/taskbar/folder_picture.png",
     };
-    
-    Window.call(this, this.settings, appID);
+    Window.call(this, appID);
     this.winDiv = document.getElementById(this.windowId);
     this.getUrl = function(){
         return url;

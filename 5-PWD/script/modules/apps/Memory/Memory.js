@@ -21,7 +21,7 @@ define(["modules/window/window", "apps/Memory/random"],
         this.tiles = [];
 
         // Calling Windows constructor, inhereting its props
-        Window.call(this, this.settings, appID);        
+        Window.call(this, appID);        
         this.startGame();
     };
     // Inherits functions on Windows prototype
@@ -30,7 +30,6 @@ define(["modules/window/window", "apps/Memory/random"],
     Memory.prototype.startGame = function(){
         this.tiles = Random.getPictureArray(this.cols, this.rows);
         this.generateTable();
-        this.timer();
     };
 
     Memory.prototype.settingsMenu = function(){

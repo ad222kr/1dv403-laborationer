@@ -1,32 +1,37 @@
 "use strict";
-define( function(){
+define(function(){
 
-var Window = function(settings, appID){
-    this.height = settings.height;
-    this.width = settings.width;
-    this.desktop = document.getElementById("desktop");
+var Window = function(appID){
+    
+    this.PWD = require("modules/desktop");
+    this.height = this.settings.height;
+    this.width = this.settings.width;
     this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
     this.barHeight = 20;
     this.offTop = 0;
     this.offLeft = 0;
-    this.icons = {
-        ajaxLoader: "pics/window/ajax-loader.gif",
-        winSettings: "pics/window/cog.png",
-        close: "pics/window/cross.png",
-        max: "pics/window/maximize.png",
-        min: "pics/window/minimize.png",
-        settings: "pics/window/cog.png"
-    };
 
     this.getAppId = function(){
         return appID;
     };
     this.createWindow();
-    var PWD = require("modules/desktop");
-    console.log(PWD.height);
+    console.log(this.PWD) 
+    console.log(this.icons);
 
-    
+
 };
+
+
+// THese properties are always the same for each window
+// WHy create them everytime? Better on prototype?
+Window.prototype.icons = {
+    ajaxLoader: "pics/window/ajax-loader.gif",
+    close: "pics/window/cross.png",
+    max: "pics/window/maximize.png",
+    min: "pics/window/minimize.png",
+    settings: "pics/window/cog.png"
+};
+
 
 Window.prototype.createWindow = function(){
 
@@ -35,14 +40,13 @@ Window.prototype.createWindow = function(){
         contentDiv = this.createContentArea(),
         bottomBar = this.createBottomBar();
 
-    this.desktop.appendChild(windowDiv);
-    console.log(windowDiv)
+    this.PWD.div.appendChild(windowDiv);
     windowDiv.appendChild(topBar);
     windowDiv.appendChild(contentDiv); 
     windowDiv.appendChild(bottomBar);
     windowDiv.style.left = this.getOffset().left + "px";
     windowDiv.style.top = this.getOffset().top + "px";
-    this.movable(this.desktop, windowDiv, topBar);
+    this.movable(this.PWD.div, windowDiv, topBar);
     
 };
 
@@ -51,8 +55,8 @@ Window.prototype.movable = function(desktop, windowDiv, handle){
     var offX,
         offY,
         scrollPos,
-        maxOffsetTop = desktop.offsetHeight - windowDiv.offsetHeight,
-        maxOffsetLeft = desktop.offsetWidth - windowDiv.offsetWidth,
+        maxOffsetTop = this.PWD.height - windowDiv.offsetHeight,
+        maxOffsetLeft = this.PWD.width - windowDiv.offsetWidth,
         contentDiv = windowDiv.firstChild.nextSibling;
 
     handle.style.cursor = "move";
@@ -114,8 +118,6 @@ Window.prototype.createMain = function () {
 
     windowDiv.id = this.windowId;    
     windowDiv.className = "window movable " + this.getAppId();
-    console.log(this.height);
-    console.log(this.width);
     windowDiv.style.width = this.width + "px";
     windowDiv.style.height = this.height + "px";
 
@@ -156,6 +158,7 @@ Window.prototype.createTopBar = function(windowDiv){
     appImg.className = "appMiniPic";
 
     statusText.className = "wStatusText";
+    console.log(this.getAppId());
     statusText.innerHTML = this.getAppId();
 
     closeA.href = "#";
@@ -168,8 +171,6 @@ Window.prototype.createTopBar = function(windowDiv){
     maxImg.src = this.icons.max;
     maxImg.className = "topBarPics maximize";
 
-    
-    
     settingsA.appendChild(settingsImg);
     closeA.appendChild(closeImg);
     maxA.appendChild(maxImg);
@@ -202,6 +203,7 @@ Window.prototype.createTopBar = function(windowDiv){
                     break;
                 case "topBarPics maximize":
                     that.maxOrMinimize(that.windowId);
+                    console.log(that.windowId);
                     break;
                 case "topBarPics settings":
                     that.settingsMenu();
@@ -223,9 +225,8 @@ Window.prototype.createBottomBar = function(){
 
 
 Window.prototype.close = function(id){
-    var dektop = document.querySelector("#desktop"),
-        windowDiv = document.getElementById(id);
-    desktop.removeChild(windowDiv);
+    var windowDiv = document.getElementById(id);
+    this.PWD.div.removeChild(windowDiv);
 };
 
 
@@ -236,11 +237,11 @@ Window.prototype.getRandomId = function(max, min){
 };
 
 Window.prototype.getOffset = function(){
-    var div = this.desktop.lastChild.previousSibling, // LastChild is taskbar 
+    var div = this.PWD.div.lastChild.previousSibling, // LastChild is taskbar 
         top = div.offsetTop, // Top & left of previous window
         left = div.offsetLeft,      
-        maxTop = this.desktop.offsetHeight - this.height - 30, // maxTop & left, so it works with every possible window size
-        maxLeft = this.desktop.offsetWidth - this.width - 30,  
+        maxTop = this.PWD.height - this.height - 30, // maxTop & left, so it works with every possible window size
+        maxLeft = this.PWD.width - this.width - 30,  
         offset = {};
 
     if (div.id == "taskbar"){
@@ -268,9 +269,14 @@ Window.prototype.giveFocus = function(windowDiv, e){
     // Ty robin for suggesting this on slack
     // thumbURL to not give gallery focus when clicking on pic,
     // wClosePic to not get error when closing a window
-    if (e.target.className !== "thumbURL" && !e.target.classList.contains("topBarPics")){
-        this.desktop.removeChild(windowDiv);
-        this.desktop.appendChild(windowDiv);   
+    if (!e) { e = window.event; }
+    var target = e.target;
+    if(target.tagName === "A"){
+        target = target.firstChild;
+    }
+    if (target.className !== "thumbURL"){
+        this.PWD.div.removeChild(windowDiv);
+        this.PWD.div.appendChild(windowDiv);   
     }
 };
 
@@ -293,14 +299,14 @@ Window.prototype.setLoaded = function(){
 
 Window.prototype.maxOrMinimize = function(id){
     var windowDiv = document.getElementById(id),
-        desktop = document.getElementById("desktop"),
         topBar = windowDiv.firstChild,
         contentDiv = windowDiv.firstChild.nextSibling,
         maxIcon = windowDiv.querySelector(".maximize"),
         width = parseInt(windowDiv.style.width, 10),
         height = parseInt(windowDiv.style.height, 10);
+        
 
-    if (height < (desktop.offsetHeight - 30) || width < desktop.offsetWidth){
+    if (height < (this.PWD.height - 30) || width < this.PWD.width){
         // If window is smaller than desktop, set styles so it takes up whole
         // desktop. Save windows top & left styles so it has the same position
         // when it's minimized.
@@ -309,14 +315,15 @@ Window.prototype.maxOrMinimize = function(id){
         this.offTop = parseInt(windowDiv.style.top, 10);
         this.offLeft = parseInt(windowDiv.style.left, 10);
 
-        windowDiv.style.height = desktop.offsetHeight - 30 + "px";
-        windowDiv.style.width = desktop.offsetWidth + "px";
+        windowDiv.style.height = this.PWD.height - 30 + "px";
+        windowDiv.style.width = this.PWD.width + "px";
         windowDiv.style.top = 0;
         windowDiv.style.left = 0;
 
-        contentDiv.style.height = (desktop.offsetHeight - 30) - this.barHeight * 2 + "px";   
+
+        contentDiv.style.height = (this.PWD.height - 30) - this.barHeight * 2 + "px";   
     }
-    else if (height == desktop.offsetHeight - 30 && width == desktop.offsetWidth){
+    else if (height == this.PWD.height - 30 && width == this.PWD.width){
         // If window is as big as desktop (-30 to take taskbar to account, keep or remove?)
         // minimize it to normal size again & set top & left styles to the position it had before
         windowDiv.classList.add("movable");
@@ -326,17 +333,8 @@ Window.prototype.maxOrMinimize = function(id){
         windowDiv.style.left = this.offLeft + "px";
         maxIcon.src = this.icons.max;
         contentDiv.style.height = this.height - this.barHeight * 2 + "px";
-
-        // Checks if getIsGallery is defined or returns true to set contentDivs
-        // Height to apporopriate values depening on what kind of window it is
-        // (big pic needs 100%, rest needs fixed value for scrolling)
-        /*if (typeof this.getIsGallery != "function" || this.getIsGallery() === true){
-            contentDiv.style.height = this.height - this.barHeight * 2 + "px";     
-        }
-        else{
-            contentDiv.style.height = "100%";
-            contentDiv.style.width = "100%";
-        }    */         
+        contentDiv.style.overflow = "auto"; 
+        this.giveFocus();            
     }
 }
 
