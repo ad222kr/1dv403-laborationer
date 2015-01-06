@@ -12,7 +12,7 @@ require.config({
     }
 });
 
-require(["../modules/desktop"], function (desktop){
+require(["modules/desktop"], function (PWD){
     
-    var dp = new desktop("large");
+    PWD.init();
 });

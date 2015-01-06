@@ -1,5 +1,5 @@
 "use strict";
-define(["../../main"], function(Main){
+define( function(){
 
 var Window = function(settings, appID){
     this.height = settings.height;
@@ -22,6 +22,10 @@ var Window = function(settings, appID){
         return appID;
     };
     this.createWindow();
+    var PWD = require("modules/desktop");
+    console.log(PWD.height);
+
+    
 };
 
 Window.prototype.createWindow = function(){
