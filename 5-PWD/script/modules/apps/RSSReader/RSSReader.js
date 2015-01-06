@@ -12,14 +12,17 @@ var RSSReader = function(appId){
         width: 400,
         icon: "pics/taskbar/feed.png",
     };
-    this.feeds = {
-        DN: "http://homepage.lnu.se/staff/tstjo/labbyServer/rssproxy/?url="+escape("http://www.dn.se/m/rss/senaste-nytt"),                                                                                       
-    }
+
     Window.call(this, appId);
     this.getFeed(xhr);
 }
 
 RSSReader.prototype = Object.create(Window.prototype);
+
+RSSReader.prototype.feeds = {
+    DN: "http://homepage.lnu.se/staff/tstjo/labbyServer/rssproxy/?url="+escape("http://www.dn.se/m/rss/senaste-nytt"),
+
+}
 
 RSSReader.prototype.getFeed = function(xhr){
     var that = this;

@@ -19,6 +19,8 @@ var PWD = {
     },
     width: 1280,
     height: 600,
+    // Change CSS if you change height for taskbar
+    taskBarHeight: 30, 
 
     init: function(){
         PWD.setDimensions();

@@ -4,17 +4,13 @@ function(Window){
 
 var ImageViewer = function(appID, isGallery, imgObject){
 
-    var url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
     this.settings = {
-        height: imgObject !== null ? (imgObject.height + 40) : 300, // 40 to take barsize into account. dont like this
+        height: imgObject !== null ? (imgObject.height + 40) : 300,
         width: imgObject !== null ? imgObject.width  : 500,
         icon: "pics/taskbar/folder_picture.png",
     };
     Window.call(this, appID);
     this.winDiv = document.getElementById(this.windowId);
-    this.getUrl = function(){
-        return url;
-    };
 
     this.getIsGallery = function(){
         return isGallery;
@@ -28,6 +24,8 @@ var ImageViewer = function(appID, isGallery, imgObject){
 
 ImageViewer.prototype = Object.create(Window.prototype);
 
+ImageViewer.prototype.url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/"
+
 ImageViewer.prototype.checkIfGallery = function(){
     if(this.getIsGallery() === true){
         this.setLoading();
@@ -36,10 +34,6 @@ ImageViewer.prototype.checkIfGallery = function(){
     else{
         this.showFullPic(this.windowId, this.getImgObject());
     }
-}
-
-ImageViewer.prototype.tjena = function(){
-
 }
 
 ImageViewer.prototype.getPics = function(div){
@@ -58,7 +52,7 @@ ImageViewer.prototype.getPics = function(div){
         }
     };
 
-    xhr.open("GET", this.getUrl(), true);
+    xhr.open("GET", this.url, true);
     xhr.send(null);
 };
 

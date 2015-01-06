@@ -15,9 +15,6 @@ var Window = function(appID){
         return appID;
     };
     this.createWindow();
-    console.log(this.PWD) 
-    console.log(this.icons);
-
 
 };
 
@@ -240,8 +237,8 @@ Window.prototype.getOffset = function(){
     var div = this.PWD.div.lastChild.previousSibling, // LastChild is taskbar 
         top = div.offsetTop, // Top & left of previous window
         left = div.offsetLeft,      
-        maxTop = this.PWD.height - this.height - 30, // maxTop & left, so it works with every possible window size
-        maxLeft = this.PWD.width - this.width - 30,  
+        maxTop = this.PWD.height - this.height - this.PWD.taskBarHeight, // maxTop & left, so it works with every possible window size
+        maxLeft = this.PWD.width - this.width - this.PWD.taskBarHeight,  
         offset = {};
 
     if (div.id == "taskbar"){
@@ -274,6 +271,7 @@ Window.prototype.giveFocus = function(windowDiv, e){
     if(target.tagName === "A"){
         target = target.firstChild;
     }
+    console.log(target);
     if (target.className !== "thumbURL"){
         this.PWD.div.removeChild(windowDiv);
         this.PWD.div.appendChild(windowDiv);   
@@ -306,35 +304,36 @@ Window.prototype.maxOrMinimize = function(id){
         height = parseInt(windowDiv.style.height, 10);
         
 
-    if (height < (this.PWD.height - 30) || width < this.PWD.width){
+    if (height < (this.PWD.height - this.PWD.taskBarHeight) || width < this.PWD.width){
         // If window is smaller than desktop, set styles so it takes up whole
         // desktop. Save windows top & left styles so it has the same position
         // when it's minimized.
         windowDiv.classList.remove("movable");
+        windowDiv.classList.add("maximized");
         maxIcon.src = this.icons.min;
         this.offTop = parseInt(windowDiv.style.top, 10);
         this.offLeft = parseInt(windowDiv.style.left, 10);
 
-        windowDiv.style.height = this.PWD.height - 30 + "px";
+        windowDiv.style.height = this.PWD.height - this.PWD.taskBarHeight + "px";
         windowDiv.style.width = this.PWD.width + "px";
         windowDiv.style.top = 0;
         windowDiv.style.left = 0;
 
 
-        contentDiv.style.height = (this.PWD.height - 30) - this.barHeight * 2 + "px";   
+        contentDiv.style.height = (this.PWD.height - this.PWD.taskBarHeight) - this.barHeight * 2 + "px";   
     }
-    else if (height == this.PWD.height - 30 && width == this.PWD.width){
+    else if (height == this.PWD.height - this.PWD.taskBarHeight && width == this.PWD.width){
         // If window is as big as desktop (-30 to take taskbar to account, keep or remove?)
         // minimize it to normal size again & set top & left styles to the position it had before
         windowDiv.classList.add("movable");
+        windowDiv.classList.remove("maximized");
         windowDiv.style.height = this.height + "px";
         windowDiv.style.width = this.width + "px";
         windowDiv.style.top = this.offTop + "px";
         windowDiv.style.left = this.offLeft + "px";
         maxIcon.src = this.icons.max;
         contentDiv.style.height = this.height - this.barHeight * 2 + "px";
-        contentDiv.style.overflow = "auto"; 
-        this.giveFocus();            
+        contentDiv.style.overflow = "auto";           
     }
 }
 
