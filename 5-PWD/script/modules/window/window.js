@@ -1,11 +1,11 @@
 "use strict";
-define(function(){
+define(["modules/window/eventhandlers"],function(EventHandlers){
 
 var Window = function(appID){
     
     this.PWD = require("modules/desktop");
-    this.height = this.settings.height;
-    this.width = this.settings.width;
+    this.height = this.settings.height > this.PWD.height ? this.PWD.height - 50 : this.settings.height; // Makes sure the window isnt bigger than the desk
+    this.width = this.settings.height > this.PWD.height ? this.settings.width + 17 : this.settings.width; // To remove bottom scrollbar. probably need func to calc this instead of hardcode
     this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
     this.barHeight = 20;
     this.offTop = 0;
@@ -15,6 +15,7 @@ var Window = function(appID){
         return appID;
     };
     this.createWindow();
+    console.log(EventHandlers);
 
 };
 

@@ -3,12 +3,13 @@
 define(
 [
 "modules/window/window",
+"modules/window/eventhandlers",
 "require",
 "apps/Memory/Memory",
 "apps/ImageViewer/ImageViewer",
 "apps/RSSReader/RSSReader"
 ],
-function(Window, require, Memory, ImageViewer, RSSReader){
+function(Window, EventHandlers, require, Memory, ImageViewer, RSSReader){
 
 var PWD = {
     div: document.getElementById("desktop"),
@@ -18,7 +19,7 @@ var PWD = {
         rss: "pics/taskbar/feed.png",      
     },
     width: 1280,
-    height: 600,
+    height: 640,
     // Change CSS if you change height for taskbar
     taskBarHeight: 30, 
 
@@ -64,7 +65,9 @@ var PWD = {
         rssA.appendChild(rssImg);
         taskbar.appendChild(rssA);
 
-        taskbar.addEventListener("click", function(e){
+
+        taskbar.addEventListener("click", EventHandlers.openApp, false);
+        /*taskbar.addEventListener("click", function(e){
             if(!e){e=window.event;}
             e.preventDefault();
             var target = e.target;
@@ -84,7 +87,7 @@ var PWD = {
                         break;
                 }
             }
-        });
+        });*/
     }
 }
 
