@@ -273,7 +273,7 @@ Window.prototype.giveFocus = function(windowDiv, e){
         target = target.firstChild;
     }
     console.log(target);
-    if (target.className !== "thumbURL"){
+    if (target.className !== "thumbURL" && !target.classList.contains("close")){
         this.PWD.div.removeChild(windowDiv);
         this.PWD.div.appendChild(windowDiv);   
     }

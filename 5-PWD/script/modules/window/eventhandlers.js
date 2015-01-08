@@ -1,8 +1,9 @@
 "use strict";
 
-define(["require"], function(){
+define( function(){
 
 var EventHandlers = {
+
 
 	openApp: function(e){
 		if(!e) { e = window.event; }
@@ -34,6 +35,11 @@ var EventHandlers = {
 		}
 
 	},
+
+	draggable: function(e){
+		var offX, offY,
+			maxOffsetTop;
+	},
 	
 
 };
@@ -41,4 +47,4 @@ var EventHandlers = {
 
 return EventHandlers
 	
-})
+});
