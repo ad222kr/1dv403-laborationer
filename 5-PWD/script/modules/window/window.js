@@ -97,7 +97,6 @@ Window.prototype.createTopBar = function(windowDiv){
         settingsA = document.createElement("a"),
         settingsImg = document.createElement("img");
 
-
     topBar.className = "wTopBar";
     topBar.style.height = this.barHeight + "px";
 
