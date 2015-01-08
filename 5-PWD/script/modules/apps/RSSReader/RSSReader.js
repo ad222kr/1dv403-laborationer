@@ -4,16 +4,17 @@ define(
 ["modules/window/window"],
  function(Window){
 
-var RSSReader = function(appId){
+var RSSReader = function(desktopSettings){
 
     var xhr = new XMLHttpRequest();
     this.settings = {
         height: 550,
         width: 400,
         icon: "pics/taskbar/feed.png",
+        appID: "RSS"
     };
 
-    Window.call(this, appId);
+    Window.call(this, desktopSettings);
     this.getFeed(xhr);
 }
 

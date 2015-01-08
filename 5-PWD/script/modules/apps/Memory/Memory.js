@@ -2,12 +2,13 @@
 define(["modules/window/window", "apps/Memory/random"],
 function(Window, Random){
 
-var Memory = function(appID){
+var Memory = function(desktopSettings){
 
     this.settings = {
         height: 250,
         width: 200,
         icon: "pics/taskbar/controller.png",
+        appID: "Memory",
     };
 
     this.rows = 4;
@@ -20,7 +21,7 @@ var Memory = function(appID){
     this.tiles = [];
 
     // Calling Windows constructor, inhereting its props
-    Window.call(this, appID);        
+    Window.call(this, desktopSettings);        
     this.startGame();
 };
 // Inherits functions on Windows prototype

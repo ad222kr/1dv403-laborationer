@@ -1,12 +1,13 @@
 "use strict";
 
-define( function(){
+define(function(){
 
 var EventHandlers = {
 
 
 	openApp: function(e){
 		if(!e) { e = window.event; }
+		console.log(desktop);
 		var target = e.target,
 			Memory,
 			ImageViewer,
@@ -36,9 +37,8 @@ var EventHandlers = {
 
 	},
 
-	draggable: function(e){
-		var offX, offY,
-			maxOffsetTop;
+	draggable: function(e, desktop, windowDiv, handle){
+		
 	},
 	
 

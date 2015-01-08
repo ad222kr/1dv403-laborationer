@@ -2,14 +2,15 @@
 define(["modules/window/window"],
 function(Window){
 
-var ImageViewer = function(appID, isGallery, imgObject){
+var ImageViewer = function(desktopSettings, isGallery, imgObject){
 
     this.settings = {
         height: imgObject !== null ? (imgObject.height + 40) : 300,
         width: imgObject !== null ? imgObject.width  : 500,
         icon: "pics/taskbar/folder_picture.png",
+        appID : "ImageViewer"
     };
-    Window.call(this, appID);
+    Window.call(this, desktopSettings);
     this.winDiv = document.getElementById(this.windowId);
 
     this.getIsGallery = function(){
@@ -102,7 +103,7 @@ ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
 };
 
 ImageViewer.prototype.clickFunc = function(imgObject){
-    new ImageViewer("ImageViewer", false, imgObject);
+    new ImageViewer(this.getPWDSettings(), false, imgObject);
 };
 
 ImageViewer.prototype.showFullPic = function(id, imgObject){
