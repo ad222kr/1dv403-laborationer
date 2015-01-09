@@ -13,7 +13,7 @@ function(Window, require, Memory, ImageViewer, RSSReader){
 var PWD = {
     settings: {
         width: 1280,
-        height: 640,
+        height: 800,
         taskBarHeight: 30,
     },
     div: document.getElementById("desktop"),
@@ -28,9 +28,10 @@ var PWD = {
     },
 
     setDimensions: function(){
+        PWD.div.style.backgroundSize = PWD.settings.width + "px " + PWD.settings.height + "px";
         PWD.div.style.height = PWD.settings.height + "px";
         PWD.div.style.width = PWD.settings.width + "px";
-        PWD.div.style.backgroundSize = PWD.settings.width + "px " + PWD.height + "px";
+        
     },
 
     createTaskBar: function(){

@@ -34,7 +34,8 @@ Window.prototype.icons = {
 
 Window.prototype.createWindow = function(){
 
-    var windowDiv = this.createMain(),
+    var that = this,
+        windowDiv = this.createMain(),
         topBar = this.createTopBar(windowDiv),
         contentDiv = this.createContentArea(),
         bottomBar = this.createBottomBar(),
@@ -46,16 +47,17 @@ Window.prototype.createWindow = function(){
     windowDiv.appendChild(bottomBar);
     windowDiv.style.left = this.getOffset().left + "px";
     windowDiv.style.top = this.getOffset().top + "px";
-    this.movable(this.PWD, windowDiv, topBar);
-    
+    console.log(this);
+    windowDiv.addEventListener("click", function(e){
+        that.handlers.giveFocus.call(that, e, windowDiv);    
+    }, false); 
+      
 };
+
 
 
 Window.prototype.movable = function(desktop, windowDiv, handle){
 
-    handle.addEventListener("mousedown", function(e){
-        EventHandlers.draggable(e, desktop, windowDiv, handle);
-    }, false);
  
 } 
 
@@ -68,9 +70,7 @@ Window.prototype.createMain = function () {
     windowDiv.style.width = this.width + "px";
     windowDiv.style.height = this.height + "px";
 
-    windowDiv.addEventListener("click", function(e){
-        that.handlers.giveFocus();
-    });
+    
    
     return windowDiv;       
 };
@@ -83,6 +83,7 @@ Window.prototype.createContentArea = function(){
 
     return contentDiv;
 };
+
 
 
 Window.prototype.createTopBar = function(windowDiv){
@@ -134,11 +135,12 @@ Window.prototype.createTopBar = function(windowDiv){
         settingsImg.className = "topBarPics settings"; 
         topBar.appendChild(settingsA);      
     }
-    
-    topBar.addEventListener("click", function(e){
-        that.handlers.yo();
-    })
 
+    // Adding listeners
+    closeImg.addEventListener("click", function(){
+        that.handlers.close.call(that, windowDiv);
+    });
+    
     return topBar;
 };
 
@@ -151,17 +153,9 @@ Window.prototype.createBottomBar = function(){
     return bottomBar;
 };
 
-
-Window.prototype.close = function(id){
-    var windowDiv = document.getElementById(id);
-    this.PWDdiv.removeChild(windowDiv);
-};
-
-
 Window.prototype.getRandomId = function(max, min){
-    // Random ID for windows to solve the problem of always
-    // loading pics in same window and removing first window
-    return Math.floor(Math.random()*(max-min+1)+min); // http://stackoverflow.com/a/7228322
+    // http://stackoverflow.com/a/7228322
+    return Math.floor(Math.random()*(max-min+1)+min); 
 };
 
 Window.prototype.getOffset = function(){
@@ -199,36 +193,49 @@ Window.prototype.getOffset = function(){
 Window.prototype.setLoading = function(){
     var statusBar = document.getElementById(this.windowId).lastChild,
         ajaxLoader = document.createElement("img");
-
     ajaxLoader.className = "ajaxLoader";
     ajaxLoader.src = this.icons.ajaxLoader;
-
     statusBar.appendChild(ajaxLoader);
 };
 
 Window.prototype.setLoaded = function(){
     var statusBar = document.getElementById(this.windowId).lastChild,
         ajaxLoader = statusBar.firstChild;
-
     statusBar.removeChild(ajaxLoader);
 };
 
-Window.prototype.handlers = function(){
 
-    console.log(this);
- 
-        /*giveFocus: function(e){
-            if(!e) { e = window.event; }
-            e.preventDefault();
-            var target = e.target;
-            if(target.tagName === "A"){
-                target = target.firstChild;
-            }
-            if(target.className !== "thumbURL" && !target.classList.contains("close")){
-                this.PWDdiv.removeChild(handlers.windowDiv);
-                this.PWDdiv.appendChild(handlers.windowId)
-            }
+Window.prototype.handlers = {
+
+    giveFocus: function(e, windowDiv){
+        if(!e) { e = window.event; }
+        e.preventDefault();
+        var target = e.target;
+        if(target.tagName === "A"){
+            target = target.firstChild;
+        }
+        if(!target.classList.contains("thumbURL") && !target.classList.contains("close")){
+            this.PWDdiv.removeChild(windowDiv);
+            this.PWDdiv.appendChild(windowDiv);
+        }
+    },
+
+    close: function (windowDiv) {
+        this.PWDdiv.removeChild(windowDiv);    
+    }
+};
+
+
+/*Window.prototype.handlers = function(){
+
+            Window.prototype.close = function(id){
+    var windowDiv = document.getElementById(id);
+    this.PWDdiv.removeChild(windowDiv);
         }*/
+
+
+        
+
 
         /*Window.prototype.giveFocus = function(windowDiv, e){
         // Ty robin for suggesting this on slack
@@ -350,11 +357,6 @@ Window.prototype.handlers = function(){
             desktop.removeEventListener("mousemove", mouseMove, false);
             desktop.classList.remove("noselect");
         }*/
-
- 
-
-}
-
 
 
 return Window;  
