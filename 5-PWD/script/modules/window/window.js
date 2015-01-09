@@ -54,156 +54,9 @@ Window.prototype.createWindow = function(){
       
 };
 
-
-
-Window.prototype.movable = function(desktop, windowDiv, handle){
-
- 
-} 
-
-Window.prototype.createMain = function () {
-    var that = this,
-        windowDiv = document.createElement("div"); 
-
-    windowDiv.id = this.windowId;    
-    windowDiv.className = "window movable " + this.settings.appID;
-    windowDiv.style.width = this.width + "px";
-    windowDiv.style.height = this.height + "px";
-
-    
-   
-    return windowDiv;       
+Window.prototype.addListeners = function(windowDiv, topBar, contentDiv) {
+    // body...
 };
-
-Window.prototype.createContentArea = function(){
-    var contentDiv = document.createElement("div");
-
-    contentDiv.className = "wContent";
-    contentDiv.style.height = this.height - this.barHeight * 2 + "px"; // total height minus 2 bars
-
-    return contentDiv;
-};
-
-
-
-Window.prototype.createTopBar = function(windowDiv){
-    var that = this,
-        appImg = document.createElement("img"),
-        topBar = document.createElement("div"),
-        statusText = document.createElement("span"),
-        closeA = document.createElement("a"),
-        closeImg = document.createElement("img"),
-        maxA = document.createElement("a"),
-        maxImg = document.createElement("img"),
-        settingsA = document.createElement("a"),
-        settingsImg = document.createElement("img");
-
-    topBar.className = "wTopBar";
-    topBar.style.height = this.barHeight + "px";
-
-    appImg.src = this.settings.icon;
-    appImg.className = "appMiniPic";
-
-    statusText.className = "wStatusText";
-
-    statusText.innerHTML = this.settings.appID;
-
-    closeA.href = "#";
-    closeA.className = "wClose";
-    closeImg.src = this.icons.close;
-    closeImg.className = "topBarPics close";
-
-    maxA.href = "#";
-    maxA.className = "wMax";
-    maxImg.src = this.icons.max;
-    maxImg.className = "topBarPics maximize";
-
-    settingsA.appendChild(settingsImg);
-    closeA.appendChild(closeImg);
-    maxA.appendChild(maxImg);
-    topBar.appendChild(appImg);
-    topBar.appendChild(statusText);  
-    topBar.appendChild(closeA);
-    topBar.appendChild(maxA);
-
-    // ImageViewer doesnt need settings icon cus what
-    // settings could it possibly have?
-    if(!windowDiv.classList.contains("ImageViewer")){
-        settingsA.href = "#";
-        settingsA.className = "wSettings";
-        settingsImg.src = this.icons.settings;
-        settingsImg.className = "topBarPics settings"; 
-        topBar.appendChild(settingsA);      
-    }
-
-    // Adding listeners
-    closeImg.addEventListener("click", function(){
-        that.handlers.close.call(that, windowDiv);
-    });
-    
-    return topBar;
-};
-
-Window.prototype.createBottomBar = function(){
-    var bottomBar = document.createElement("div");
-
-    bottomBar.className = "wBottomBar";
-    bottomBar.style.height = this.barHeight + "px";
-
-    return bottomBar;
-};
-
-Window.prototype.getRandomId = function(max, min){
-    // http://stackoverflow.com/a/7228322
-    return Math.floor(Math.random()*(max-min+1)+min); 
-};
-
-Window.prototype.getOffset = function(){
-    var div = this.PWDdiv.lastChild.previousSibling,
-        PWDSettings = this.getPWDSettings(), // LastChild is taskbar 
-        top = div.offsetTop, // Top & left of previous window
-        left = div.offsetLeft,      
-        maxTop = PWDSettings.height - this.height - PWDSettings.taskBarHeight, // maxTop & left, so it works with every possible window size
-        maxLeft = PWDSettings.width - this.width - PWDSettings.taskBarHeight,  
-        offset = {};
-
-    if (div.id == "taskbar"){
-        offset.top = 15;
-        offset.left = 15;
-    }
-
-    else if (top >= maxTop){
-        offset.top = 15;
-        offset.left = left + 15; 
-    }
-    else if(left >=maxLeft){
-        offset.top =  top + 75;
-        offset.left = 15;
-    }
-    else {
-        offset.top = top + 15;
-        offset.left = left + 15;
-    }   
-
-    return offset;    
-};
-
-
-
-Window.prototype.setLoading = function(){
-    var statusBar = document.getElementById(this.windowId).lastChild,
-        ajaxLoader = document.createElement("img");
-    ajaxLoader.className = "ajaxLoader";
-    ajaxLoader.src = this.icons.ajaxLoader;
-    statusBar.appendChild(ajaxLoader);
-};
-
-Window.prototype.setLoaded = function(){
-    var statusBar = document.getElementById(this.windowId).lastChild,
-        ajaxLoader = statusBar.firstChild;
-    statusBar.removeChild(ajaxLoader);
-};
-
 
 Window.prototype.handlers = {
 
@@ -223,34 +76,45 @@ Window.prototype.handlers = {
     close: function (windowDiv) {
         this.PWDdiv.removeChild(windowDiv);    
     }
+
+    maxOrMinimize: function(windowDiv){
+        var topBar = windowDiv.firstChild,
+            contentDiv = topBar.nextSibling,
+            maxIcon = windowDiv.querySelector(".maximize"),
+            width = parseInt(windowDiv.style.width, 10),
+            height = parseInt(windowDiv.style.height, 10),
+            PWDSettings = this.getPWDSettings();
+
+        if (!windowDiv.classList.contains("maximized")){
+            windowDiv.classList.remove("movable");
+            windowDiv.classList.add("maximized");
+            maxIcon.src = this.icons.min;
+            this.offTop = parseInt(windowDiv.style.top, 10);
+            this.offLeft = parseInt(windowDiv.style.left, 10);
+            windowDiv.style.width = PWDSettings.height - PWDSettings.taskBarHeight + "px";
+            windowDiv.style.width = PWDSettings.width + "px";
+            windowDiv.style.top = 0;
+            windowDiv.style.left = 0;
+
+        }
+        else if (windowDiv.classList.contains("maximized")){
+            windowDiv.classList.add("movable");
+            windowDiv.classList.remove("maximized");
+            maxIcon.src = this.icon.max;
+            windowDiv.style.height = this.height + "px";
+            windowDiv.style.width = this.width + "px";
+            windowDiv.style.top = this.offTop + "px";
+            windowDiv.style.left = this.offLeft + "px";
+            contentDiv.style.height = this.height - this.barHeight * 2 + "px";
+            contentDiv.style.overflow = "auto";
+
+        }
+
+    }
 };
 
 
 /*Window.prototype.handlers = function(){
-
-            Window.prototype.close = function(id){
-    var windowDiv = document.getElementById(id);
-    this.PWDdiv.removeChild(windowDiv);
-        }*/
-
-
-        
-
-
-        /*Window.prototype.giveFocus = function(windowDiv, e){
-        // Ty robin for suggesting this on slack
-        // thumbURL to not give gallery focus when clicking on pic,
-        // wClosePic to not get error when closing a window
-        if (!e) { e = window.event; }
-        var target = e.target;
-        if(target.tagName === "A"){
-            target = target.firstChild;
-        }
-        console.log(target);
-        if (target.className !== "thumbURL" && !target.classList.contains("close")){
-            this.PWDdiv.removeChild(windowDiv);
-            this.PWDdiv.appendChild(windowDiv);   
-        }
 
 
         Window.prototype.maxOrMinimize = function(id){
@@ -357,6 +221,152 @@ Window.prototype.handlers = {
             desktop.removeEventListener("mousemove", mouseMove, false);
             desktop.classList.remove("noselect");
         }*/
+
+
+
+Window.prototype.movable = function(desktop, windowDiv, handle){
+
+ 
+} 
+
+Window.prototype.createMain = function () {
+    var that = this,
+        windowDiv = document.createElement("div"); 
+
+    windowDiv.id = this.windowId;    
+    windowDiv.className = "window movable " + this.settings.appID;
+    windowDiv.style.width = this.width + "px";
+    windowDiv.style.height = this.height + "px";
+
+    
+   
+    return windowDiv;       
+};
+
+Window.prototype.createContentArea = function(){
+    var contentDiv = document.createElement("div");
+
+    contentDiv.className = "wContent";
+    contentDiv.style.height = this.height - this.barHeight * 2 + "px"; // total height minus 2 bars
+
+    return contentDiv;
+};
+
+
+
+Window.prototype.createTopBar = function(windowDiv){
+    var that = this,
+        appImg = document.createElement("img"),
+        topBar = document.createElement("div"),
+        statusText = document.createElement("span"),
+        closeA = document.createElement("a"),
+        closeImg = document.createElement("img"),
+        maxA = document.createElement("a"),
+        maxImg = document.createElement("img"),
+        settingsA = document.createElement("a"),
+        settingsImg = document.createElement("img");
+
+    topBar.className = "wTopBar";
+    topBar.style.height = this.barHeight + "px";
+
+    appImg.src = this.settings.icon;
+    appImg.className = "appMiniPic";
+
+    statusText.className = "wStatusText";
+
+    statusText.innerHTML = this.settings.appID;
+
+    closeA.href = "#";
+    closeA.className = "wClose";
+    closeImg.src = this.icons.close;
+    closeImg.className = "topBarPics close";
+
+    maxA.href = "#";
+    maxA.className = "wMax";
+    maxImg.src = this.icons.max;
+    maxImg.className = "topBarPics maximize";
+
+    settingsA.appendChild(settingsImg);
+    closeA.appendChild(closeImg);
+    maxA.appendChild(maxImg);
+    topBar.appendChild(appImg);
+    topBar.appendChild(statusText);  
+    topBar.appendChild(closeA);
+    topBar.appendChild(maxA);
+
+    // ImageViewer doesnt need settings icon cus what
+    // settings could it possibly have?
+    if(!windowDiv.classList.contains("ImageViewer")){
+        settingsA.href = "#";
+        settingsA.className = "wSettings";
+        settingsImg.src = this.icons.settings;
+        settingsImg.className = "topBarPics settings"; 
+        topBar.appendChild(settingsA);      
+    }
+};
+
+Window.prototype.createBottomBar = function(){
+    var bottomBar = document.createElement("div");
+
+    bottomBar.className = "wBottomBar";
+    bottomBar.style.height = this.barHeight + "px";
+
+    return bottomBar;
+};
+
+Window.prototype.getRandomId = function(max, min){
+    // http://stackoverflow.com/a/7228322
+    return Math.floor(Math.random()*(max-min+1)+min); 
+};
+
+Window.prototype.getOffset = function(){
+    var div = this.PWDdiv.lastChild.previousSibling,
+        PWDSettings = this.getPWDSettings(), // LastChild is taskbar 
+        top = div.offsetTop, // Top & left of previous window
+        left = div.offsetLeft,      
+        maxTop = PWDSettings.height - this.height - PWDSettings.taskBarHeight, // maxTop & left, so it works with every possible window size
+        maxLeft = PWDSettings.width - this.width - PWDSettings.taskBarHeight,  
+        offset = {};
+
+    if (div.id == "taskbar"){
+        offset.top = 15;
+        offset.left = 15;
+    }
+
+    else if (top >= maxTop){
+        offset.top = 15;
+        offset.left = left + 15; 
+    }
+    else if(left >=maxLeft){
+        offset.top =  top + 75;
+        offset.left = 15;
+    }
+    else {
+        offset.top = top + 15;
+        offset.left = left + 15;
+    }   
+
+    return offset;    
+};
+
+
+
+Window.prototype.setLoading = function(){
+    var statusBar = document.getElementById(this.windowId).lastChild,
+        ajaxLoader = document.createElement("img");
+    ajaxLoader.className = "ajaxLoader";
+    ajaxLoader.src = this.icons.ajaxLoader;
+    statusBar.appendChild(ajaxLoader);
+};
+
+Window.prototype.setLoaded = function(){
+    var statusBar = document.getElementById(this.windowId).lastChild,
+        ajaxLoader = statusBar.firstChild;
+    statusBar.removeChild(ajaxLoader);
+};
+
+
+
 
 
 return Window;  
