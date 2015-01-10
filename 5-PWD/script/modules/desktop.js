@@ -22,9 +22,28 @@ var PWD = {
         memory: "pics/taskbar/controller.png",
         rss: "pics/taskbar/feed.png",      
     },
+
+    apps: [
+        {
+            name: "imageViewer",
+            icon: "pics/taskbar/folder_picture.png",
+        },
+        {
+            name: "memory",
+            icon: "pics/taskbar/controller.png"
+        },
+        {
+            name: "rss",
+            icon: "pics/taskbar/feed.png"
+        }
+    ],
+
+
+
     init: function(){
         PWD.setDimensions();
         PWD.createTaskBar();
+        console.log(PWD.apps);
     },
 
     setDimensions: function(){
@@ -39,30 +58,17 @@ var PWD = {
         taskbar.id = "taskbar";
         PWD.div.appendChild(taskbar);
 
-        // Icons for imageviewer
-        var imgViewerA = document.createElement("a");
-        var imgViewerImg = document.createElement("img");
-        imgViewerA.href = "#";
-        imgViewerImg.src = this.icons.imgViewer;
-        imgViewerImg.className = "imageViewer icon";
-        imgViewerA.appendChild(imgViewerImg);
-        taskbar.appendChild(imgViewerA);
+        PWD.apps.forEach(function(element, index){
+            var a = document.createElement("a"),
+                img = document.createElement("img");
 
-        var memoryImg = document.createElement("img");
-        var memoryA = document.createElement("a");
-        memoryA.href = "#";
-        memoryImg.src = this.icons.memory;
-        memoryImg.className = "memory icon";
-        memoryA.appendChild(memoryImg);
-        taskbar.appendChild(memoryA);
-
-        var rssImg = document.createElement("img");
-        var rssA = document.createElement("a");
-        rssA.href = "#";
-        rssImg.src = this.icons.rss;
-        rssImg.className = "rss icon";
-        rssA.appendChild(rssImg);
-        taskbar.appendChild(rssA);
+            a.href = "#";
+            img.src = element.icon;
+            img.className = element.name + " icon";
+            
+            a.appendChild(img);
+            taskbar.appendChild(a);
+        });
 
         taskbar.addEventListener("click", PWD.openApp, false);       
     },
@@ -71,6 +77,7 @@ var PWD = {
         if(!e){ e = window.event; }
         e.preventDefault();
         var target = e.target;
+        console.log(Memory);
 
         if(target.tagName === "A") { target = target.firstChild; }
         if(target.tagName === "IMG"){
