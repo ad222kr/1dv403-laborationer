@@ -11,7 +11,7 @@ var ImageViewer = function(desktopSettings, isGallery, imgObject){
         appID : "ImageViewer"
     };
     Window.call(this, desktopSettings);
-    this.winDiv = document.getElementById(this.windowId);
+    
 
     this.getIsGallery = function(){
         return isGallery;
@@ -62,7 +62,7 @@ ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
     var maxThumbHeight = 0,
         maxThumbWidth = 0,
         that = this,
-        contentDiv = winDiv.firstChild.nextSibling;
+        contentDiv = document.getElementById(this.windowId).querySelector(".wContent")
 
     // Getting the highest thumbwidth/height
     imgArr.forEach(function(element){
