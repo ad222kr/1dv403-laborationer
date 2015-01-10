@@ -11,50 +11,48 @@ define(
 function(Window, require, Memory, ImageViewer, RSSReader){
 
 var PWD = {
+
+    div: document.getElementById("desktop"),
+
     settings: {
         width: 1280,
         height: 800,
         taskBarHeight: 30,
     },
-    div: document.getElementById("desktop"),
-    icons:  {
-        imgViewer: "pics/taskbar/folder_picture.png",
-        memory: "pics/taskbar/controller.png",
-        rss: "pics/taskbar/feed.png",      
-    },
-
+    
     apps: [
         {
-            name: "imageViewer",
+            constructor: ImageViewer,
+            cssClass: "imageViewer icon",
             icon: "pics/taskbar/folder_picture.png",
         },
         {
-            name: "memory",
+            constructor: Memory,
+            cssClass: "memory icon",
             icon: "pics/taskbar/controller.png"
         },
         {
-            name: "rss",
+            constructor: RSSReader,
+            cssClass: "rss icon",
             icon: "pics/taskbar/feed.png"
         }
     ],
 
-
-
     init: function(){
         PWD.setDimensions();
         PWD.createTaskBar();
-        console.log(PWD.apps);
     },
 
     setDimensions: function(){
         PWD.div.style.backgroundSize = PWD.settings.width + "px " + PWD.settings.height + "px";
         PWD.div.style.height = PWD.settings.height + "px";
-        PWD.div.style.width = PWD.settings.width + "px";
-        
+        PWD.div.style.width = PWD.settings.width + "px";        
     },
 
     createTaskBar: function(){
-        var taskbar = document.createElement("div");
+        // Creates the taskbar, loops through our applications-array.
+        // For each app, creates neccesary elements. 
+        var taskbar = document.createElement("div");            
         taskbar.id = "taskbar";
         PWD.div.appendChild(taskbar);
 
@@ -64,35 +62,33 @@ var PWD = {
 
             a.href = "#";
             img.src = element.icon;
-            img.className = element.name + " icon";
-            
+            img.className = element.cssClass;
+
             a.appendChild(img);
             taskbar.appendChild(a);
         });
 
-        taskbar.addEventListener("click", PWD.openApp, false);       
+        taskbar.addEventListener("click", function(e){
+            PWD.openApp(e, PWD.apps);
+        }, false);       
     },
 
-    openApp: function(e){
+    openApp: function(e, apps){
+        // Opens an application. Param is app-array. Loops through it & checks
+        // for similarity in classname. If true, calls apps constructor which is 
+        // referenced by the constructor-property on the application-object
         if(!e){ e = window.event; }
         e.preventDefault();
         var target = e.target;
-        console.log(Memory);
-
         if(target.tagName === "A") { target = target.firstChild; }
         if(target.tagName === "IMG"){
-            switch(target.className){
-                case "memory icon":
-                    new Memory(PWD.settings);
-                    break;
-                case "imageViewer icon":
-                    new ImageViewer(PWD.settings, true, null);
-                    break;
-                case "rss icon":
-                    new RSSReader(PWD.settings);
-                    break;
-            }
-        }  
+            apps.forEach(function(app){
+                if(app.cssClass === target.className){
+                    new app.constructor(PWD.settings, true, null);
+                }
+            });
+        }
+        
     }
 }
 

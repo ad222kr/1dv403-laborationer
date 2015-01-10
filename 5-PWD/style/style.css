@@ -103,7 +103,7 @@ p, span{
 }
 .wStatusText{
 	position: absolute;
-	top: 3px;
+	top: 2px;
 	width: 100%;
 	text-align: center;
 }
