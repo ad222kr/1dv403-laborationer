@@ -62,7 +62,7 @@ ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
     var maxThumbHeight = 0,
         maxThumbWidth = 0,
         that = this,
-        contentDiv = document.getElementById(this.windowId).querySelector(".wContent")
+        contentDiv = document.getElementById(this.windowId).querySelector(".wContent");
 
     // Getting the highest thumbwidth/height
     imgArr.forEach(function(element){

@@ -51,6 +51,10 @@ Window.prototype.createWindow = function(){
     windowDiv.style.top = this.getOffset().top + "px";
     console.log(this);
     this.addListeners(windowDiv, topBar, contentDiv);
+    console.log(windowDiv.offsetHeight);
+    console.log(windowDiv.style.height);
+    console.log(this.PWDdiv.offsetHeight);
+    console.log(parseInt(this.PWDdiv.style.height));
       
 };
 
@@ -78,7 +82,7 @@ Window.prototype.addListeners = function(windowDiv, topBar, contentDiv) {
 
     })
 
-    this.handlers.draggable.call(this, windowDiv, topBarPics);
+    this.handlers.draggable.call(this, windowDiv, topBar);
 
     
 };
