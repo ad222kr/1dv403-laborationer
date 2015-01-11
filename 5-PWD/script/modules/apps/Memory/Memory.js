@@ -11,9 +11,9 @@ var Memory = function(desktopSettings){
         appID: "Memory",
     };
 
-    this.rows = 4;
-    this.cols = 4;
-    this.maxNumberOfMatcher = (this.rows / this.cols) / 2;
+    this.rows = 2;
+    this.cols = 2;
+    this.maxNumberOfMatcher = (this.rows * this.cols) / 2;
     this.numberOfMatches = 0;
     this.flippedCount = 0;
     this.flippedArr = [];
@@ -75,6 +75,11 @@ Memory.prototype.checkMatch = function(flippedArr){
             that.flippedCount = 0;
         }, 1000);
     }
+
+    if(this.numberOfMatches === this.maxNumberOfMatcher){
+        console.log("YOLO")
+        this.victory();
+    }
 };
 
 Memory.prototype.generateTable = function(){
@@ -130,31 +135,15 @@ Memory.prototype.clickFunc = function(e){
     }
 };
 
-/*Memory.prototype.timer = function(){
-    var contentDiv = document.getElementById(this.windowId).firstChild.nextSibling;
-    var timerDiv = document.createElement("div");
+Memory.prototype.victory = function() {
+    var that = this,
+        p = document.createElement("p"),
+        contentDiv = document.getElementById(this.windowId).querySelector(".wContent");
 
-    contentDiv.appendChild(timerDiv);
-
-    var seconds = 0;
-    var minutes = 0;
-
-    if (this.numberOfMatches < this.maxNumberOfMatcher){
-        setInterval(function(){
-            if (seconds <= 59){
-                seconds++;
-            }
-            else{
-                minutes++;
-                seconds = 0;
-            }
-            timerDiv.innerHTML = "Time: " + (minutes < 10 ? "0"+minutes : minutes) + ":" + (seconds < 10 ? "0"+seconds : seconds);
-
-        }, 1000)
-    }
-    else{
-        timerDiv.innerHTML = timerDiv.innerHTML = "Time: " + (minutes < 10 ? "0"+minutes : minutes) + ":" + (seconds < 10 ? "0"+seconds : seconds);
-    }
-}*/ 
+    p.className = "memVictoryMess";
+    p.innerHTML = "Grattis! Det tog dig " + this.numberOfTries + " försök att lösa Memoryt!";
+    contentDiv.appendChild(p);
+};
+ 
 return Memory;
 });
