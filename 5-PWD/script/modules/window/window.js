@@ -4,7 +4,7 @@ define(["modules/window/eventhandlers"],function(EventHandlers){
 var Window = function(desktopSettings){
     
     this.PWDdiv = document.getElementById("desktop");
-    this.height = this.settings.height > desktopSettings.height ? desktopSettings.height - 50 : this.settings.height; // Makes sure the window isnt bigger than the desk
+    this.height = this.settings.height > desktopSettings.height ? desktopSettings.height - desktopSettings.taskBarHeight * 1.5 : this.settings.height; // Makes sure the window isnt bigger than the desk
     this.width = this.settings.height > desktopSettings.height ? this.settings.width + 17 : this.settings.width; // To remove bottom scrollbar. probably need func to calc this instead of hardcode
     this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
     this.barHeight = 20;
@@ -18,19 +18,14 @@ var Window = function(desktopSettings){
     }
 
     this.createWindow();
-    console.log(desktopSettings);
-
 };
 
 
-// THese properties are always the same for each window
-// WHy create them everytime? Better on prototype?
 Window.prototype.icons = {
     ajaxLoader: "pics/window/ajax-loader.gif",
     close: "pics/window/cross.png",
     max: "pics/window/maximize.png",
     min: "pics/window/minimize.png",
-    settings: "pics/window/cog.png"
 };
 
 
@@ -93,8 +88,6 @@ Window.prototype.eventHelper = function(e){
 Window.prototype.handlers = {
 
     giveFocus: function(e, windowDiv, target){
-
-        console.log(target);
         if(!target.classList.contains("thumbURL") && !target.classList.contains("close")){
             this.PWDdiv.removeChild(windowDiv);
             this.PWDdiv.appendChild(windowDiv);
@@ -289,20 +282,20 @@ Window.prototype.getOffset = function(){
         offset = {};
 
     if (div.id == "taskbar"){
-        offset.top = 15;
-        offset.left = 15;
+        offset.top = 5;
+        offset.left = 5;
     }
     else if (top >= maxTop){
-        offset.top = 15;
-        offset.left = left + 15; 
+        offset.top = 5;
+        offset.left = left + 20; 
     }
     else if(left >=maxLeft){
-        offset.top =  top + 75;
-        offset.left = 15;
+        offset.top =  top + 60;
+        offset.left = 5;
     }
     else {
-        offset.top = top + 15;
-        offset.left = left + 15;
+        offset.top = top + 20;
+        offset.left = left + 20;
     }   
 
     return offset;    
@@ -315,12 +308,14 @@ Window.prototype.setLoading = function(){
     ajaxLoader.className = "ajaxLoader";
     ajaxLoader.src = this.icons.ajaxLoader;
     statusBar.appendChild(ajaxLoader);
+    console.log("LOADING");
 };
 
 Window.prototype.setLoaded = function(){
     var statusBar = document.getElementById(this.windowId).lastChild,
-        ajaxLoader = statusBar.firstChild;
+        ajaxLoader = statusBar.querySelector(".ajaxLoader");
     statusBar.removeChild(ajaxLoader);
+    console.log("LOADED");
 };
 
 return Window;  

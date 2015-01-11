@@ -86,6 +86,7 @@ ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
 
         
         a.href = "#";
+        a.className = "thumbURL";
         div.className = "thumbDiv";
         img.className = "thumbURL";
 

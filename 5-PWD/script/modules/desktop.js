@@ -16,7 +16,7 @@ var PWD = {
 
     settings: {
         width: 1280,
-        height: 800,
+        height: 640,
         taskBarHeight: 30,
     },
     
@@ -80,10 +80,13 @@ var PWD = {
         if(!e){ e = window.event; }
         e.preventDefault();
         var target = e.target;
+
         if(target.tagName === "A") { target = target.firstChild; }
         if(target.tagName === "IMG"){
             apps.forEach(function(app){
                 if(app.cssClass === target.className){
+                    // Since ImageViewer is the only app that takes 3 args, can 
+                    // send them to other aswell. Or check with if-statement?
                     new app.constructor(PWD.settings, true, null);
                 }
             });
