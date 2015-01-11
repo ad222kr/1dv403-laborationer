@@ -5,7 +5,7 @@ function(Window, Random){
 var Memory = function(desktopSettings){
 
     this.settings = {
-        height: 250,
+        height: 200,
         width: 200,
         icon: "pics/taskbar/controller.png",
         appID: "Memory",
@@ -83,8 +83,7 @@ Memory.prototype.generateTable = function(){
     var div = document.createElement("div");
     var cellCount = 0;
     var table = document.createElement("table");
-    div.className = "memoryGame";
-    div.style.width = this.rows * 24 + "px";
+    table.className = "memoryGame";
     contentDiv.appendChild(div);
     div.appendChild(table);
     

@@ -20,6 +20,7 @@ var PWD = {
         taskBarHeight: 30,
     },
     
+    // TODO: Change to object, use Object.keys to iterate
     apps: [
         {
             constructor: ImageViewer,
@@ -90,11 +91,8 @@ var PWD = {
                     new app.constructor(PWD.settings, true, null);
                 }
             });
-        }
-        
+        }       
     }
 }
-
 return PWD;
-
 });

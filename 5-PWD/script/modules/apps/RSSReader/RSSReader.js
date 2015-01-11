@@ -74,7 +74,7 @@ RSSReader.prototype.changeFeed = function(e, url){
 }
 
 
-RSSReader.prototype.getFeed = function(xhr, feed){
+RSSReader.prototype.getFeed = function(xhr, url){
     var that = this;
     var content = document.getElementById(this.windowId).firstChild.nextSibling;
     var response;
@@ -93,7 +93,7 @@ RSSReader.prototype.getFeed = function(xhr, feed){
         
         
     };
-    xhr.open("GET", this.rssproxyURL+escape(feed), true);
+    xhr.open("GET", this.rssproxyURL+escape(url), true);
     xhr.send(null);
 };
 

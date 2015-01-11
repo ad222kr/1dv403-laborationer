@@ -4,12 +4,25 @@ define(["modules/window/eventhandlers"],function(EventHandlers){
 var Window = function(desktopSettings){
     
     this.PWDdiv = document.getElementById("desktop");
-    this.height = this.settings.height > desktopSettings.height ? desktopSettings.height - desktopSettings.taskBarHeight * 1.5 : this.settings.height; // Makes sure the window isnt bigger than the desk
-    this.width = this.settings.height > desktopSettings.height ? this.settings.width + 17 : this.settings.width; // To remove bottom scrollbar. probably need func to calc this instead of hardcode
-    this.windowId = this.getRandomId(1, 9000000); // Random Id for window to select the right window.
+
+    // Makes sure the window is not higher than the desktop. When clicking up big pic,
+    // if deskheight is less than pic-height, it gets scrollable
+    this.height = this.settings.height > desktopSettings.height ? desktopSettings.height - desktopSettings.taskBarHeight * 1.5 : this.settings.height;
+
+    // 17 is scroll-bar width, ugly but else window gets a horizontal scrollbar if
+    // it has a vertical scroll.
+    this.width = this.settings.height > desktopSettings.height ? this.settings.width + 17 : this.settings.width;
+
     this.barHeight = 20;
+
+    // Random Id for selecting the right window
+    this.windowId = this.getRandomId(1, 9000000);
+
+    // For saving the windows top & left when maximizing it, retaining it's 
+    // previous position when minimized again 
     this.offTop = 0;
     this.offLeft = 0;
+
     this.movable = true;
     this.maximized = false;
 
@@ -30,7 +43,6 @@ Window.prototype.icons = {
 
 
 Window.prototype.createWindow = function(){
-
     var that = this,
         windowDiv = this.createMain(),
         topBar = this.createTopBar(windowDiv),
@@ -54,7 +66,6 @@ Window.prototype.addListeners = function(windowDiv, topBar, contentDiv) {
     var that = this,
         target;
 
-    // Listener for focus
     windowDiv.addEventListener("click", function(e){
         target = that.eventHelper(e);
         that.handlers.giveFocus.call(that, e, windowDiv, target);
@@ -69,17 +80,14 @@ Window.prototype.addListeners = function(windowDiv, topBar, contentDiv) {
             case "topBarPics maximize":
                 that.handlers.maxOrMinimize.call(that, windowDiv);
                 break;
-
         }
-
     })
-
-    this.handlers.draggable.call(this, windowDiv, topBar);
-
-    
+    // How to implement this nicely?
+    this.handlers.draggable.call(this, windowDiv, topBar);   
 };
 
 Window.prototype.eventHelper = function(e){
+    // Instead of typing this in every handler
     if (!e) { e = window.event; }
     var target = e.target;
     return target;
@@ -130,11 +138,6 @@ Window.prototype.handlers = {
     },
 
     draggable: function(windowDiv, handle, target){
-
-    }
-};
-
-
         /*var offX,
             offY,
             maxOffsetTop = this.PWD.height - windowDiv.offsetHeight,
@@ -191,8 +194,8 @@ Window.prototype.handlers = {
             desktop.removeEventListener("mousemove", mouseMove, false);
             desktop.classList.remove("noselect");
         }*/
-
-
+    }
+};
 
 Window.prototype.createMain = function () {
     var that = this,
@@ -203,23 +206,18 @@ Window.prototype.createMain = function () {
     windowDiv.style.width = this.width + "px";
     windowDiv.style.height = this.height + "px";
 
-    
-   
     return windowDiv;       
 };
 
 Window.prototype.createContentArea = function(){
     var contentDiv = document.createElement("div");
-
     contentDiv.className = "wContent";
-    //contentDiv.style.height = this.height - this.barHeight * 2 + "px"; // total height minus 2 bars
 
     return contentDiv;
 };
 
-
-
 Window.prototype.createTopBar = function(windowDiv){
+    // TODO: Change with Obj.keys for less code
     var that = this,
         appImg = document.createElement("img"),
         topBar = document.createElement("div"),
@@ -273,11 +271,15 @@ Window.prototype.getRandomId = function(max, min){
 };
 
 Window.prototype.getOffset = function(){
-    var div = this.PWDdiv.lastChild.previousSibling,
-        PWDSettings = this.getPWDSettings(), // LastChild is taskbar 
-        top = div.offsetTop, // Top & left of previous window
+    // Calculates the windows position by getting the top & left styles from previous 
+    // window and adding to those numbers, returning an object with a number for left
+    // and top. Also calculates the max for top & left, if they are breached, reset.
+    console.log(this.PWDdiv.lastChild.previousSibling);
+    var div = document.getElementById(this.windowId).previousSibling,
+        PWDSettings = this.getPWDSettings(), 
+        top = div.offsetTop, 
         left = div.offsetLeft,      
-        maxTop = PWDSettings.height - this.height - PWDSettings.taskBarHeight, // maxTop & left, so it works with every possible window size
+        maxTop = PWDSettings.height - this.height - PWDSettings.taskBarHeight, 
         maxLeft = PWDSettings.width - this.width - PWDSettings.taskBarHeight,  
         offset = {};
 
