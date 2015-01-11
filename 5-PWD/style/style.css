@@ -1,5 +1,6 @@
 
 
+
 /*START OF REAL CSS*/
 @import url(http://fonts.googleapis.com/css?family=Ubuntu);
 
@@ -24,6 +25,7 @@ p, span{
 	margin: auto;
 	top: 5px;
 	background-image: url("pics/background.jpg");
+	overflow: hidden;
 
 }
 
@@ -52,7 +54,6 @@ p, span{
 /* Style for the window, its top/bottombar, statustext */
 .window{
 	display: block;
-	outline: 1px black solid;
 	background: white;
 	position: absolute; /* stacking divs on top of each other */
 	-webkit-box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);

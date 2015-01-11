@@ -83,7 +83,7 @@ Window.prototype.addListeners = function(windowDiv, topBar, contentDiv) {
         }
     })
     // How to implement this nicely?
-    this.handlers.draggable.call(this, windowDiv, topBar);   
+    this.handlers.draggable.call(this, windowDiv, topBar, this.getPWDSettings());   
 };
 
 Window.prototype.eventHelper = function(e){
@@ -137,11 +137,11 @@ Window.prototype.handlers = {
 
     },
 
-    draggable: function(windowDiv, handle, target){
-        /*var offX,
+    draggable: function(windowDiv, handle, PWDSettings){
+        var offX,
             offY,
-            maxOffsetTop = this.PWD.height - windowDiv.offsetHeight,
-            maxOffsetLeft = this.PWD.width - windowDiv.offsetWidth,
+            maxOffsetTop = PWDSettings.height - windowDiv.offsetHeight,
+            maxOffsetLeft = PWDSettings.width - windowDiv.offsetWidth,
             contentDiv = windowDiv.firstChild.nextSibling;
 
         handle.style.cursor = "move";
@@ -193,7 +193,7 @@ Window.prototype.handlers = {
         function mouseUp(e){
             desktop.removeEventListener("mousemove", mouseMove, false);
             desktop.classList.remove("noselect");
-        }*/
+        }
     }
 };
 

@@ -21,23 +21,23 @@ var PWD = {
     },
     
     // TODO: Change to object, use Object.keys to iterate
-    apps: [
-        {
+    apps: {
+        img : {
             constructor: ImageViewer,
             cssClass: "imageViewer icon",
-            icon: "pics/taskbar/folder_picture.png",
+            icon: "pics/taskbar/folder_picture.png"
         },
-        {
+        mem: {
             constructor: Memory,
             cssClass: "memory icon",
-            icon: "pics/taskbar/controller.png"
+            icon: "pics/taskbar/controller.png",
         },
-        {
+        rss: {
             constructor: RSSReader,
             cssClass: "rss icon",
             icon: "pics/taskbar/feed.png"
         }
-    ],
+    },
 
     init: function(){
         PWD.setDimensions();
@@ -45,6 +45,7 @@ var PWD = {
     },
 
     setDimensions: function(){
+
         PWD.div.style.backgroundSize = PWD.settings.width + "px " + PWD.settings.height + "px";
         PWD.div.style.height = PWD.settings.height + "px";
         PWD.div.style.width = PWD.settings.width + "px";        
@@ -57,13 +58,13 @@ var PWD = {
         taskbar.id = "taskbar";
         PWD.div.appendChild(taskbar);
 
-        PWD.apps.forEach(function(element, index){
+        Object.keys(PWD.apps).forEach(function(key){
             var a = document.createElement("a"),
                 img = document.createElement("img");
 
             a.href = "#";
-            img.src = element.icon;
-            img.className = element.cssClass;
+            img.src = PWD.apps[key].icon;
+            img.className = PWD.apps[key].cssClass;
 
             a.appendChild(img);
             taskbar.appendChild(a);
@@ -75,7 +76,7 @@ var PWD = {
     },
 
     openApp: function(e, apps){
-        // Opens an application. Param is app-array. Loops through it & checks
+        // Opens an application. Param is app-object. Loops through it & checks
         // for similarity in classname. If true, calls apps constructor which is 
         // referenced by the constructor-property on the application-object
         if(!e){ e = window.event; }
@@ -84,11 +85,11 @@ var PWD = {
 
         if(target.tagName === "A") { target = target.firstChild; }
         if(target.tagName === "IMG"){
-            apps.forEach(function(app){
-                if(app.cssClass === target.className){
+            Object.keys(apps).forEach(function(key){
+                if(apps[key].cssClass === target.className){
                     // Since ImageViewer is the only app that takes 3 args, can 
                     // send them to other aswell. Or check with if-statement?
-                    new app.constructor(PWD.settings, true, null);
+                    new apps[key].constructor(PWD.settings, true, null);
                 }
             });
         }       

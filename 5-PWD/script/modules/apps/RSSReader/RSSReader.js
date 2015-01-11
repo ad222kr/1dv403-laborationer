@@ -17,7 +17,6 @@ var RSSReader = function(desktopSettings){
     Window.call(this, desktopSettings);
     this.getFeed(this.xhr, this.feeds.DN.URL);
     this.addFeedsToStatusBar();
-    console.log("HORA");
 }
 
 RSSReader.prototype = Object.create(Window.prototype);
@@ -81,17 +80,16 @@ RSSReader.prototype.getFeed = function(xhr, url){
 
     this.setLoading();
     xhr.onreadystatechange = function(e){
-        if(xhr.readyState === 4 && xhr.status === 200){
-
+        if(xhr.readyState === 4){
+            if(xhr.status === 200){
                 content.innerHTML = xhr.responseText;
                 that.setLoaded();
-                console.log(xhr.status);
+                console.log(xhr.status);    
+            }
+            else{
+                console.log("Läsfel, status: " + xhr.status);
+            }               
         }    
-        else{
-            console.log("Läsfel, status: " + xhr.status);
-        }
-        
-        
     };
     xhr.open("GET", this.rssproxyURL+escape(url), true);
     xhr.send(null);
