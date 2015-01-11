@@ -66,12 +66,13 @@ Window.prototype.addListeners = function(windowDiv, topBar, contentDiv) {
     var that = this,
         target;
 
-    windowDiv.addEventListener("click", function(e){
+    windowDiv.addEventListener("mousedown", function(e){
+        
         target = that.eventHelper(e);
         that.handlers.giveFocus.call(that, e, windowDiv, target);
-    })
+    }, false)
 
-    topBar.addEventListener("click", function(e){
+    topBar.addEventListener("mouseup", function(e){
         target = that.eventHelper(e);
         switch(target.className){
             case "topBarPics close":
@@ -113,7 +114,7 @@ Window.prototype.handlers = {
             height = parseInt(windowDiv.style.height, 10),
             PWDSettings = this.getPWDSettings();
 
-        if (this.maximized === false){
+        if (!this.maximized){
             this.movable = false;
             this.maximized = true;
             maxIcon.src = this.icons.min;
@@ -138,7 +139,8 @@ Window.prototype.handlers = {
     },
 
     draggable: function(windowDiv, handle, PWDSettings){
-        var offX,
+        var that = this,
+            offX,
             offY,
             maxOffsetTop = PWDSettings.height - windowDiv.offsetHeight,
             maxOffsetLeft = PWDSettings.width - windowDiv.offsetWidth,
@@ -182,7 +184,8 @@ Window.prototype.handlers = {
             // Keeps the window whithin the desktop. Checks which is smalles of clientX/Y & maxOffset 
             // to keep it in desktop div at the bottom & right boundries. Then checks which of that 
             // & 0 is the biggest to keep it within the boundries at the top & left.
-            if (windowDiv.classList.contains("movable") ){
+            console.log(that.movable);
+            if (that.movable){
 
                 windowDiv.style.top = Math.max(Math.min((e.clientY - offY), maxOffsetTop), 0) + "px";
                 windowDiv.style.left = Math.max(Math.min((e.clientX - offX), maxOffsetLeft), 0) + "px";    

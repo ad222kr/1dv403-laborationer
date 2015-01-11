@@ -52,13 +52,23 @@ p, span{
 
 
 /* Style for the window, its top/bottombar, statustext */
+
+
 .window{
 	display: block;
-	background: white;
 	position: absolute; /* stacking divs on top of each other */
 	-webkit-box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
 	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+
+}
+.wContent{
+	background: white;
+	display: block;
+	overflow: auto;
+	word-wrap: break-word;
+	height: calc(100% - 40px);
+
 }
 
 .appMiniPic{
@@ -69,12 +79,7 @@ p, span{
 	height: 16px;
 }
 
-.wContent{
-	display: block;
-	overflow: auto;
-	word-wrap: break-word;
-	height: calc(100% - 40px);
-}
+
 
 .memVictoryMess{
 	color: black;
@@ -84,11 +89,13 @@ p, span{
 .wContent img{
 	display: block;
 	margin: 0px auto;
+
 }
 .wTopBar{
 	display: block;
 	width: 100%;
 	background-color: #003366 ;
+
 }
 
 
@@ -98,6 +105,7 @@ p, span{
 	background-color: #003366 ;
 	position: absolute;
 	bottom: 0px;
+
 
 }
 

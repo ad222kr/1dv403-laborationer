@@ -51,7 +51,7 @@ RSSReader.prototype.addFeedsToStatusBar = function(){
         bottomBar.appendChild(a);
     })
 
-    bottomBar.addEventListener("click", function(e){
+    bottomBar.addEventListener("mouseup", function(e){
         that.changeFeed();
     }, false);
 }
