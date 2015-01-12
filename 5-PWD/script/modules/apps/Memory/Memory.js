@@ -11,8 +11,8 @@ var Memory = function(desktopSettings){
         appID: "Memory",
     };
 
-    this.rows = 2;
-    this.cols = 2;
+    this.rows = 4;
+    this.cols = 4;
     this.maxNumberOfMatcher = (this.rows * this.cols) / 2;
     this.numberOfMatches = 0;
     this.flippedCount = 0;
@@ -112,7 +112,7 @@ Memory.prototype.generateTable = function(){
         }
     }
     // Eventlistener on the whole table
-    table.addEventListener("click", function(e){
+    table.addEventListener("mousedown", function(e){
                 that.clickFunc(e);
             });
     table.addEventListener("keydown", function(e){

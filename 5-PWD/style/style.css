@@ -39,7 +39,7 @@ p, span{
 	position: absolute; /* Absolute and bottom for keeping taskbar att bottom of parent div */
 	width: 100%;
 	bottom: 0px;
-	z-index: 5;
+	z-index: 9000000;
 }
 
 .icon{
@@ -60,6 +60,7 @@ p, span{
 	-webkit-box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
 	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+	outline: 1px solid black;
 
 }
 .wContent{

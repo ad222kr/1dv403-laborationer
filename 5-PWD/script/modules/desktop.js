@@ -53,12 +53,15 @@ var PWD = {
     createTaskBar: function(){
         // Creates the taskbar, loops through our applications-array.
         // For each app, creates neccesary elements. 
-        var taskbar = document.createElement("div");            
+
+        var taskbar = document.createElement("div"),
+            a,
+            img;            
         taskbar.id = "taskbar";
         PWD.div.appendChild(taskbar);
 
         Object.keys(PWD.apps).forEach(function(key){
-            var a = document.createElement("a"),
+                a = document.createElement("a");
                 img = document.createElement("img");
 
             a.href = "#";
@@ -75,9 +78,9 @@ var PWD = {
     },
 
     openApp: function(e, apps){
-        // Opens an application. Param is app-object. Loops through it & checks
-        // for similarity in classname. If true, calls apps constructor which is 
-        // referenced by the constructor-property on the application-object
+        // Opens an application. Loops through the application-object & checks
+        // for similarity in classname. If true, calls apps constructor 
+
         if(!e){ e = window.event; }
         e.preventDefault();
         var target = e.target;

@@ -51,14 +51,13 @@ RSSReader.prototype.addFeedsToStatusBar = function(){
         bottomBar.appendChild(a);
     })
 
-    bottomBar.addEventListener("mouseup", function(e){
+    bottomBar.addEventListener("click", function(e){
         that.changeFeed();
     }, false);
 }
 
 RSSReader.prototype.changeFeed = function(e, url){
     if(!e) { e = window.event; };
-    e.preventDefault();
     var target = e.target;
     console.log(target);
     if(target.tagName === "A"){
@@ -78,6 +77,7 @@ RSSReader.prototype.getFeed = function(xhr, url){
     var content = document.getElementById(this.windowId).firstChild.nextSibling;
     var response;
 
+
     this.setLoading();
     xhr.onreadystatechange = function(e){
         if(xhr.readyState === 4){
@@ -93,10 +93,6 @@ RSSReader.prototype.getFeed = function(xhr, url){
     };
     xhr.open("GET", this.rssproxyURL+escape(url), true);
     xhr.send(null);
-};
-
-RSSReader.prototype.settingsMenu = function(){
-    alert("RSS Settings Clicked!");
 };
 
 return RSSReader;
