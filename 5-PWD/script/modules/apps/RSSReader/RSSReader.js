@@ -49,11 +49,11 @@ RSSReader.prototype.addFeedsToStatusBar = function(){
     })
 
     bottomBar.addEventListener("click", function(e){
-        that.changeFeed();
+        that.changeFeed(e);
     }, false);
 }
 
-RSSReader.prototype.changeFeed = function(e, url){
+RSSReader.prototype.changeFeed = function(e){
     if(!e) { e = window.event; };
     var target = e.target;
 

@@ -226,7 +226,6 @@ Window.prototype.handlers = {
                      zIndexMax = parseInt(nodeList[i].style.zIndex);
                 }
             }
-            console.log(zIndexMax);
             windowDiv.style.zIndex = ++zIndexMax;
         }
     },
@@ -306,7 +305,6 @@ Window.prototype.handlers = {
             // & maxOffset is the least, then checks which of that && 0 is the biggest
             if(!e){ e = window.event; }
 
-            console.log(that.movable);
             if (that.movable){
                 windowDiv.style.top = Math.max(Math.min((e.clientY - offY), maxOffsetTop), 0) + "px";
                 windowDiv.style.left = Math.max(Math.min((e.clientX - offX), maxOffsetLeft), 0) + "px";    

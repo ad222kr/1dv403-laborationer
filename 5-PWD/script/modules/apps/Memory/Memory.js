@@ -77,7 +77,6 @@ Memory.prototype.checkMatch = function(flippedArr){
     }
 
     if(this.numberOfMatches === this.maxNumberOfMatcher){
-        console.log("YOLO")
         this.victory();
     }
 };
