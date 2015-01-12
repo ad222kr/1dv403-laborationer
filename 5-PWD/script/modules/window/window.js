@@ -54,14 +54,9 @@ Window.prototype.createWindow = function(){
     windowDiv.style.left = offset.left + "px";
     windowDiv.style.top = offset.top + "px";
 
-    console.log(windowDiv.previousSibling);
     if(windowDiv.previousSibling.id != "taskbar"){
         windowDiv.style.zIndex = parseInt(windowDiv.previousSibling.style.zIndex) + 1;   
-    }
-    else{
-        windowDiv.style.zIndex = 1
-    }
-    
+    }   
     this.addListeners(windowDiv, topBar, contentDiv);      
 };
 
@@ -73,8 +68,6 @@ Window.prototype.createMain = function () {
     windowDiv.className = "window movable " + this.settings.appID;
     windowDiv.style.width = this.width + "px";
     windowDiv.style.height = this.height + "px";
-
-    
 
     return windowDiv;       
 };
@@ -171,6 +164,7 @@ Window.prototype.getOffset = function(){
     // Calculates the windows position by getting the top & left styles from previous 
     // window and adding to those numbers, returning an object with a number for left
     // and top. Also calculates the max for top & left, if they are breached, reset.
+    
     var div = document.getElementById(this.windowId).previousSibling,
         PWDSettings = this.getPWDSettings(), 
         top = div.offsetTop, 

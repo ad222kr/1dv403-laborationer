@@ -1,9 +1,54 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
 
-
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
 
 /*START OF REAL CSS*/
 @import url(http://fonts.googleapis.com/css?family=Ubuntu);
-
 
 body{
 	font-family: 'Ubuntu', sans-serif;
@@ -15,9 +60,6 @@ p, span{
 	color: white;
 }
 
-
-
-
 #desktop{
 	position: relative; /* For keeping task-bar div inside of parent div */
 	display: block;
@@ -26,11 +68,7 @@ p, span{
 	top: 5px;
 	background-image: url("pics/background.jpg");
 	overflow: hidden;
-
 }
-
-/* Classes for different resolutions*/
-
 
 /* Style for taskbar */
 #taskbar{
@@ -52,7 +90,6 @@ p, span{
 
 
 /* Style for the window, its top/bottombar, statustext */
-
 
 .window{
 	display: block;
@@ -80,13 +117,6 @@ p, span{
 	height: 16px;
 }
 
-
-
-.memVictoryMess{
-	color: black;
-	text-align: center;
-}
-
 .wContent img{
 	display: block;
 	margin: 0px auto;
@@ -99,15 +129,12 @@ p, span{
 
 }
 
-
 .wBottomBar{
 	display: block;
 	width: 100%;
 	background-color: #003366 ;
 	position: absolute;
 	bottom: 0px;
-
-
 }
 
 .ajaxLoader{
@@ -115,13 +142,14 @@ p, span{
 	top: 2px;
 	left: 2px;
 }
+
 .wStatusText{
 	position: absolute;
 	top: 2px;
 	width: 100%;
 	text-align: center;
 }
-/* Maximize/minimize window & close pictures style */
+
 .topBarPics{
 	position: relative;
 	width: 15px;
@@ -151,8 +179,11 @@ p, span{
 .memoryGame {
 	margin: 0px auto;
 	vertical-align: bottom;
+}
 
-
+.memVictoryMess{
+	color: black;
+	text-align: center;
 }
 
 /* RSS-reader */
@@ -200,7 +231,3 @@ p, span{
     -ms-user-select: none;
     user-select: none;
 }
-
-
-
-

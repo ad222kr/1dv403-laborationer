@@ -23,7 +23,6 @@ RSSReader.prototype = Object.create(Window.prototype);
 
 RSSReader.prototype.rssproxyURL = "http://homepage.lnu.se/staff/tstjo/labbyServer/rssproxy/?url=";
 
-
 RSSReader.prototype.feeds = {
     AB: {
         name: "Aftonbladet",
@@ -41,8 +40,6 @@ RSSReader.prototype.addFeedsToStatusBar = function(){
     var that = this,
         bottomBar = document.getElementById(this.windowId).querySelector(".wBottomBar");
 
-    console.log(bottomBar);
-
     Object.keys(this.feeds).forEach(function(key){
         var a = document.createElement("a");
         a.href = "#"
@@ -59,7 +56,7 @@ RSSReader.prototype.addFeedsToStatusBar = function(){
 RSSReader.prototype.changeFeed = function(e, url){
     if(!e) { e = window.event; };
     var target = e.target;
-    console.log(target);
+
     if(target.tagName === "A"){
         switch(target.className){
             case "AB feed":
@@ -71,26 +68,25 @@ RSSReader.prototype.changeFeed = function(e, url){
     }
 }
 
-
 RSSReader.prototype.getFeed = function(xhr, url){
-    var that = this;
-    var content = document.getElementById(this.windowId).firstChild.nextSibling;
-    var response;
-
+    var that = this,
+        content = document.getElementById(this.windowId).firstChild.nextSibling,
+        response;
 
     this.setLoading();
+
     xhr.onreadystatechange = function(e){
         if(xhr.readyState === 4){
             if(xhr.status === 200){
                 content.innerHTML = xhr.responseText;
-                that.setLoaded();
-                console.log(xhr.status);    
+                that.setLoaded();    
             }
             else{
                 console.log("Läsfel, status: " + xhr.status);
             }               
         }    
     };
+    
     xhr.open("GET", this.rssproxyURL+escape(url), true);
     xhr.send(null);
 };
