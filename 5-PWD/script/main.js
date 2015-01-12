@@ -1,6 +1,4 @@
 "uses strict";
-
-
 require.config({
     "baseUrl": "script/lib",
 

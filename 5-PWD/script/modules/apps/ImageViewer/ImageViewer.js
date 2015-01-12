@@ -15,17 +15,17 @@ var ImageViewer = function(desktopSettings, isGallery, imgObject){
 
     this.getIsGallery = function(){
         return isGallery;
-    }
+    };
 
     this.getImgObject = function(){
         return imgObject;
-    }
+    };
     this.checkIfGallery();
 };
 
 ImageViewer.prototype = Object.create(Window.prototype);
 
-ImageViewer.prototype.url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/"
+ImageViewer.prototype.url = "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/";
 
 ImageViewer.prototype.checkIfGallery = function(){
     if(this.getIsGallery() === true){
@@ -35,7 +35,7 @@ ImageViewer.prototype.checkIfGallery = function(){
     else{
         this.showFullPic(this.windowId, this.getImgObject());
     }
-}
+};
 
 ImageViewer.prototype.getPics = function(div){
     var that = this;
@@ -57,7 +57,7 @@ ImageViewer.prototype.getPics = function(div){
     xhr.send(null);
 };
 
-ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
+ImageViewer.prototype.renderThumbs = function(imgArr){
 
     var maxThumbHeight = 0,
         maxThumbWidth = 0,
@@ -82,7 +82,6 @@ ImageViewer.prototype.renderThumbs = function(imgArr, winDiv){
             img = document.createElement("img");
         div.style.width = maxThumbWidth+"px";
         div.style.height = maxThumbHeight+"px";
-        contentDiv.appendCh
 
         
         a.href = "#";

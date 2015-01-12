@@ -96,6 +96,6 @@ var PWD = {
             });
         }       
     }
-}
+};
 return PWD;
 });

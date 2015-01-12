@@ -32,10 +32,6 @@ Memory.prototype.startGame = function(){
     this.generateTable();
 };
 
-Memory.prototype.settingsMenu = function(){
-    alert("Memory Settings clicked!");
-};
-
 Memory.prototype.flipTile = function(target){
     if (!target.classList.contains("clicked")  && this.flippedCount < 2){
 
@@ -135,8 +131,8 @@ Memory.prototype.clickFunc = function(e){
 };
 
 Memory.prototype.victory = function() {
-    var that = this,
-        p = document.createElement("p"),
+
+    var p = document.createElement("p"),
         contentDiv = document.getElementById(this.windowId).querySelector(".wContent");
 
     p.className = "memVictoryMess";

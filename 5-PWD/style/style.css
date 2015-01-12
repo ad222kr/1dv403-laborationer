@@ -137,6 +137,7 @@ p, span{
 	bottom: 0px;
 }
 
+
 .ajaxLoader{
 	position: relative;
 	top: 2px;
@@ -214,10 +215,12 @@ p, span{
 
 .feed{
 	display: block;
+	position: relative;
 	float: right;
 	color: white;
 	font-size: 12px;
 	margin-right: 5px;
+	top: 4px;
 
 
 }

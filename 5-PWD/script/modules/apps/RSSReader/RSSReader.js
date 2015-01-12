@@ -17,7 +17,7 @@ var RSSReader = function(desktopSettings){
     Window.call(this, desktopSettings);
     this.getFeed(this.xhr, this.feeds.DN.URL);
     this.addFeedsToStatusBar();
-}
+};
 
 RSSReader.prototype = Object.create(Window.prototype);
 
@@ -42,19 +42,19 @@ RSSReader.prototype.addFeedsToStatusBar = function(){
 
     Object.keys(this.feeds).forEach(function(key){
         var a = document.createElement("a");
-        a.href = "#"
+        a.href = "#";
         a.className = that.feeds[key].cssClass + " feed";
         a.innerHTML = that.feeds[key].name;
         bottomBar.appendChild(a);
-    })
+    });
 
     bottomBar.addEventListener("click", function(e){
         that.changeFeed(e);
     }, false);
-}
+};
 
 RSSReader.prototype.changeFeed = function(e){
-    if(!e) { e = window.event; };
+    if(!e) { e = window.event; }
     var target = e.target;
 
     if(target.tagName === "A"){
@@ -66,16 +66,15 @@ RSSReader.prototype.changeFeed = function(e){
                 this.getFeed(this.xhr, this.feeds.DN.URL);
         }
     }
-}
+};
 
 RSSReader.prototype.getFeed = function(xhr, url){
     var that = this,
-        content = document.getElementById(this.windowId).firstChild.nextSibling,
-        response;
+        content = document.getElementById(this.windowId).querySelector(".wContent");
 
     this.setLoading();
 
-    xhr.onreadystatechange = function(e){
+    xhr.onreadystatechange = function(){
         if(xhr.readyState === 4){
             if(xhr.status === 200){
                 content.innerHTML = xhr.responseText;
@@ -92,4 +91,4 @@ RSSReader.prototype.getFeed = function(xhr, url){
 };
 
 return RSSReader;
-})
+});
